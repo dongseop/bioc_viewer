@@ -25,7 +25,7 @@
   .infons,
   .annotations
   {
-    opacity: 0.5;
+    opacity: 0.3;
     .body{
       display: none;
     }
@@ -37,6 +37,9 @@
     {
       opacity: 1.0;
       z-index: 1000;
+      .segment {
+        box-shadow: rgba(0, 0, 0, 0.3980392) 2px 2px 10px 0px;
+      }
       .ribbon {
         background-color: #00b5ad !important;
         color: #fff!important;

@@ -32,7 +32,7 @@ gem "paperclip-meta"
 gem "bourbon"
 gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-rvm'
-# gem 'capistrano-rails'
+gem 'capistrano-rails'
 gem 'capistrano-passenger'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
