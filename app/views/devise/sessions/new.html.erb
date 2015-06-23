@@ -1,0 +1,30 @@
+<h2 class="ui dividing header">Log in</h2>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html:{class: "ui form"}) do |f| %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="field">
+      <div class="ui checkbox">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div class="actions">
+    <%= f.submit "Log in", class: "ui primary button" %>
+  </div>
+<% end %>
+
+<div class="ui divider"></div>
+
+<%= render "devise/shared/links" %>

@@ -1,0 +1,83 @@
+<h2 class="ui dividing header">
+  <%= @project.title %>
+</h2>
+
+<ul class="ui bulleted list">
+  <li class="item">
+    <strong>Owner:</strong>
+    <%= @project.owner.name %>
+  </li>
+  <li class="item">
+    <strong>Description:</strong>
+    <%=simple_format @project.description %>
+  </li>
+</ul>
+
+<table class="ui table celled striped ">
+  <thead>
+    <tr>
+      <th>Doc ID</th>
+      <th>Source</th>
+      <th>Date</th>
+      <th>Key</th>
+      <th>Updated At</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @project.documents.each do |d| %>
+    <tr>
+      <td><%=link_to d.doc_id, d %></td>
+      <td><%=link_to d.source, d %></td>
+      <td><%=link_to d.d_date, d %></td>
+      <td><%=link_to d.key, d %></td>
+      <td><%=time_ago_in_words d.updated_at %> ago </td>
+      <td>
+        <div class="ui dropdown">
+          <i class="setting icon"></i>
+          <div class="menu">
+            <div class="item">
+              <%= link_to "#" do %>
+                <i class="history icon"></i> Revision History
+              <% end %>
+            </div>
+            <div class="ui divider"></div>
+            <div class="item">
+              <%= link_to d, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                <i class="delete icon"></i> Remove
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% if @project.writable?(current_user) %>
+  <div class="ui dimmer" id="uploadSpinner">
+    <div class="ui text loader">Uploading</div>
+  </div>
+  <button class="ui button primary" id="uploadBtn">Upload BioC Document</button>
+  <%= form_for(@project.documents.new, :url => project_documents_path(@project), html: {:multipart => true, id: "uploadForm", class: "ui form"}) do |f| %>
+    <input type="file" name="file" id="hiddenFileInput" placeholder="BioC file" class="hidden">
+  <% end %>
+<% end %>
+
+<div class="ui divider"></div>
+<%= link_to 'Back', projects_path , class: "ui button"%>
+<% if @project.admin?(current_user) %>
+  <%= link_to 'Edit', edit_project_path(@project), class: "ui button" %>
+  <%= link_to 'Destroy', @project, method: :delete, data: { confirm: 'Are you sure?' }, class: "ui button red" %>
+<% end %>
+
+<script>
+$(function() {
+  $("#hiddenFileInput").change(function() {
+    $("#uploadSpinner").addClass("active");
+    $("#uploadForm").submit();
+  });
+
+  $("#uploadBtn").click(function() {
+    $("#hiddenFileInput").click();
+  });
+});
+</script>

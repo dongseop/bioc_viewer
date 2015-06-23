@@ -1,0 +1,96 @@
+// Place all the styles related to the documents controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.passage div.text {
+  line-height: 200%;
+  padding-top: 20px;
+}
+.passage .title_1,
+.passage .title
+ {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.passage .title_2,
+ {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.passage,
+.document
+{
+  .infons,
+  .annotations
+  {
+    opacity: 0.5;
+    .body{
+      display: none;
+    }
+  }
+
+  &:hover {
+    .infons,
+    .annotations
+    {
+      opacity: 1.0;
+      z-index: 1000;
+      .ribbon {
+        background-color: #00b5ad !important;
+        color: #fff!important;
+        &.label {
+          border-color: #00827c!important;
+        }
+      }
+      .body{
+        display: block;
+      }
+    }
+  }
+
+  span.annotation {
+    &.G {
+      background-color: #FFF64C;
+    }
+
+    &.E {
+      border-bottom: 2px solid #900;
+    }
+    &.EP {
+      border-bottom: 2px solid #00f;
+    }
+    &.EM {
+      border-bottom: 2px solid #f00;
+    }
+    &.EG {
+      border-bottom: 2px solid #0a0;
+    }
+  
+    &.EP.EG {
+      border-bottom: 2px solid #0aa;
+    }
+    &.EP.EM {
+      border-bottom: 2px solid #a0a;
+    }
+
+    &.O {
+      background-color: #95EEFF;
+    }
+
+    &.O.G {
+      background-color: #95FF9A;
+    }
+  }
+}
+
+.popup-item {
+  line-height: 110%;
+  strong {
+    font-weight: bold;
+    padding: 2px 3px;
+    display: inline-block;
+  }
+  margin: 2px 0
+}

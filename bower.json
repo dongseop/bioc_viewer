@@ -1,0 +1,22 @@
+{
+  "name": "bioc-viewer",
+  "version": "0.0.0",
+  "authors": [
+    "Dongseop Kwon <dongseop@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "handlebars": "~3.0.3"
+  }
+}

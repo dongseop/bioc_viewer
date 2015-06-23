@@ -1,0 +1,2 @@
+module TempDocumentsHelper
+end

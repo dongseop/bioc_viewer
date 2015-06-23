@@ -1,0 +1,6 @@
+<%= link_to @document.project, class: "ui button" do %>
+  <i class="icon chevron left"></i> Back to Project
+<% end %>
+<%= link_to "/documents/#{@document.id}.xml", class: "ui button green", target: "_blank" do %>
+  <i class="icon download cloud"></i> Download BioC file
+<% end %>

@@ -1,0 +1,88 @@
+<%-
+ranges = [p.offset]
+max = p.offset + if p.text.nil? then 0 else p.text.size end
+logger.debug("MAX: #{max.inspect}")
+p.annotations.each do |a|
+  a.locations.each do |l|
+    n_pos = l.offset.to_i + l.length.to_i 
+    ranges << l.offset.to_i
+    ranges << n_pos if n_pos < max
+  end
+end
+ranges = ranges.uniq.sort
+
+ranges.each_with_index do |s_pos, index|
+  if index < ranges.size - 1
+    e_pos = ranges[index + 1]
+  else 
+    e_pos = max
+  end
+
+  ids = []
+  p.annotations.each do |a|
+    a.locations.each do |l|
+      ss = l.offset.to_i
+      ee = l.offset.to_i + l.length.to_i
+      if !(ee <= s_pos || e_pos <= ss)
+        ids << a.id
+      end
+    end
+  end
+  ids = ids.uniq.sort
+
+  # cls = ids.map{|i| "#{i.split("_")[0]}"}.uniq
+  # cls2 = ids.map{|i| "#{i[0]}"}.uniq
+  # if cls.blank?
+  #   cls = []
+  # else 
+  #   cls = cls + cls2
+  #   cls << "annotation"
+  # end
+
+  type2color = {
+    "gene" => "yellow",
+    "organism" => "orange",
+    "experimentalmethod" => "red",
+    "geneticinteractiontype" => "green",
+    "gievidence" => "green",
+    "gimention" => "green",
+    "ppievidence" => "blue",
+    "ppimention" => "blue"
+  }
+  cls = []
+  content = ids.map do |id| 
+    a = p.annotations.select{|a| a.id == id}[0]
+    ret = []
+    ret << "<div class='item popup-item'>"
+    ret << "<strong>#{id}</strong>"
+    type = a.infons['type']
+    unless type.nil?
+      ret << "<span class='ui label mini #{type2color[type.downcase]}'>#{type}</span>"
+      case type.downcase
+      when 'gene'
+        cls << "G"
+        tid = a.infons['GeneID']
+        ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
+      when 'organism'
+        cls << "O"
+        tid = a.infons['OrganismID']
+        ret << "<a href='http://www.ncbi.nlm.nih.gov/bioproject?term=txid#{tid}%5Borgn%5D target='_blank'><i class='icon globe'></i>#{tid}</a>"
+      when 'ppimention','ppievidence'
+        cls << "EP"
+      when 'experimentalmethod'
+        cls << "EM"
+      when 'geneticinteractiontype', 'gievidence', 'gimention'
+        cls << "EG"
+      else
+        cls << "E"
+      end
+    end
+    ret << "</div>"
+    ret.join()
+  end
+
+  cls = cls.uniq
+  cls << "annotation" unless cls.blank?
+
+  -%><span data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=p.text[s_pos - p.offset, e_pos - s_pos]%></span><%-
+end -%>

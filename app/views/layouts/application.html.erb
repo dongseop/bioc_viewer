@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<!-- Site Properities -->
+<title>BioC-Editor</title>
+
+<meta name="description" content="BioC-Editor: BioCreative V - Track 1- Collaborative Biocurator Assistant Task (BioC) - 8. Visual tool for displaying various annotations" />
+<meta name="keywords" content="BioC visul tool BioC-Viewer BioCurator Assistant Task" />
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= csrf_meta_tags %>
+</head>
+<body id="bioc" class="default-layout <%=params[:controller]%>-<%=params[:action]%>" ontouchstart="">
+
+<nav class="ui fixed menu inverted navbar" id="main-nav">
+  <div class="container">
+    <a href="/" class="brand item">
+      <i class="icon home"></i>
+      BioC-Editor
+    </a>
+    <% if user_signed_in? %>
+      <div class="item">
+        <a href="/" class="section">Projects</a>
+        <% unless @project.nil? %>
+          <i class="right chevron icon divider"></i>
+          <%=link_to @project.title, @project %>
+        <% end %>
+        <% unless @document.nil? %>
+          <i class="right chevron icon divider"></i>
+          <%=link_to @document.doc_id, @document %>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="right item">
+      <% if user_signed_in? %>
+        <div class="ui dropdown">
+          <div class="text">
+            <i class="icon user"></i>
+            <%=current_user.name %>
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">
+              <%=link_to  edit_user_registration_path(current_user) do %>
+                <i class="icon edit"></i> Edit Profile
+              <% end %>
+            </div>
+            <div class="divider"></div>
+            <div class="item">
+              <%=link_to destroy_user_session_path, data: {method: 'delete'}, rel: 'nofollow', role: "menuitem", tabindex: "-1" do %>
+                <i class="icon sign out"></i> Sign Out
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <a href="/users/sign_in" class="ui teal button"><i class="icon sign in"></i> Log-in</a>
+        <a href="/users/sign_up" class="ui primary button"><i class="icon add user"></i> Sign up</a>
+      <% end %>
+    </div>
+  </div>
+</nav> <!-- end nav -->
+<div class="main container">
+  <%- 
+  flash_types = {
+    "alert": "info",
+    "notice": "positive",
+    "error": "negative"
+  }
+  flash.each do |name, msg|
+   -%>
+    <div class="ui <%=name%> <%=flash_types[name.to_sym]%> message">
+      <i class="close icon"></i>
+      <%=msg %>
+    </div>
+  <%- end -%>
+
+  <%= yield %>
+</div>
+<div class="">
+  <div class="ui inverted black footer vertical segment" id="main-footer">
+    <div class="container">
+      Copyright © 2015 BioC Viewer: DISLAB, Myongji University
+    </div>
+  </div>
+</div>
+<script>
+  $('.message .close').on('click', function() {
+    $(this).closest('.message').fadeOut();
+  });
+  $('.ui.dropdown').dropdown();
+</script>
+</body>
+</html>
+

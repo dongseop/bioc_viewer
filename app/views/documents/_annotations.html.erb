@@ -1,0 +1,22 @@
+  <div class="ui very close rail right annotations">
+    <div class="ui segment">
+      <span class="ui right ribbon label">Annotations 
+        (<%=annotations.size %>)
+      </span>
+      <ul class="ui list body">
+        <% annotations.each do |a| %>
+          <li>
+            <%=a.id %>
+            <!--a href="#" class="mini"><i class="icon setting"></i></a-->
+            <% a.locations.each do |l| %>
+              <span class="label mini ui"><%=l.offset%>:<%=l.length%></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <div class="body right">
+        <div class="ui divider"></div>
+        <button class="ui button mini blue">Add New</button>
+      </div>
+    </div>
+  </div>

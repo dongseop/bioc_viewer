@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @temp_document.user %>
+</p>
+
+<p>
+  <strong>Document:</strong>
+  <%= @temp_document.document %>
+</p>
+
+<p>
+  <strong>Xml:</strong>
+  <%= @temp_document.xml %>
+</p>
+
+<%= link_to 'Edit', edit_temp_document_path(@temp_document) %> |
+<%= link_to 'Back', temp_documents_path %>
