@@ -1,6 +1,6 @@
 <%-
 ranges = [p.offset]
-max = p.offset + if p.text.nil? then 0 else p.text.size end
+max = p.offset + if ptext.nil? then 0 else ptext.size end
 logger.debug("MAX: #{max.inspect}")
 p.annotations.each do |a|
   a.locations.each do |l|
@@ -66,7 +66,7 @@ ranges.each_with_index do |s_pos, index|
       when 'organism'
         cls << "O"
         tid = a.infons['OrganismID']
-        ret << "<a href='http://www.ncbi.nlm.nih.gov/bioproject?term=txid#{tid}%5Borgn%5D target='_blank'><i class='icon globe'></i>#{tid}</a>"
+        ret << "<a href='http://www.ncbi.nlm.nih.gov/bioproject?term=txid#{tid}%5Borgn%5D' target='_blank'><i class='icon globe'></i>#{tid}</a>"
       when 'ppimention','ppievidence'
         cls << "EP"
       when 'experimentalmethod'
@@ -84,5 +84,5 @@ ranges.each_with_index do |s_pos, index|
   cls = cls.uniq
   cls << "annotation" unless cls.blank?
 
-  -%><span data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=p.text[s_pos - p.offset, e_pos - s_pos]%></span><%-
+  -%><span data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
 end -%>

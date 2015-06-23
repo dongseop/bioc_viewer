@@ -26,7 +26,7 @@
     <% if user_signed_in? %>
       <div class="item">
         <a href="/" class="section">Projects</a>
-        <% unless @project.nil? %>
+        <% if !@project.nil? && !@project.id.nil?%>
           <i class="right chevron icon divider"></i>
           <%=link_to @project.title, @project %>
         <% end %>

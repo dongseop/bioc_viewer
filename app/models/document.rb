@@ -2,6 +2,17 @@ class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
 
+  TYPE2COLOR = {
+    "gene" => "yellow",
+    "organism" => "orange",
+    "experimentalmethod" => "red",
+    "geneticinteractiontype" => "green",
+    "gievidence" => "green",
+    "gimention" => "green",
+    "ppievidence" => "blue",
+    "ppimention" => "blue"
+  }
+  
   def self.create_from_file(file)
     doc = Document.new
   

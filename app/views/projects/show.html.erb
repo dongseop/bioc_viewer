@@ -16,6 +16,7 @@
 <table class="ui table celled striped ">
   <thead>
     <tr>
+      <th>id</th>
       <th>Doc ID</th>
       <th>Source</th>
       <th>Date</th>
@@ -26,6 +27,7 @@
   </thead>
   <% @project.documents.each do |d| %>
     <tr>
+      <td><%=link_to d.id, d %></td>
       <td><%=link_to d.doc_id, d %></td>
       <td><%=link_to d.source, d %></td>
       <td><%=link_to d.d_date, d %></td>

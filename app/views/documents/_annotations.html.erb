@@ -5,12 +5,28 @@
       </span>
       <ul class="ui list body">
         <% annotations.each do |a| %>
-          <li>
+          <li class="annotation-item">
             <%=a.id %>
-            <!--a href="#" class="mini"><i class="icon setting"></i></a-->
-            <% a.locations.each do |l| %>
-              <span class="label mini ui"><%=l.offset%>:<%=l.length%></span>
+            <% type = a.infons['type'] %>
+
+            <% unless type.nil? %>
+              <span class='ui label mini <%=Document::TYPE2COLOR[type.downcase]%>'><%=type%></span>
+              <% case type.downcase %>
+              <% when 'gene' %>
+                <% tid = a.infons['GeneID'] %>
+                <a href='http://www.ncbi.nlm.nih.gov/gene?term=<%=tid%>' target='_blank'><i class='icon globe'></i><%=tid%></a>
+              <% when 'organism' %>
+                <% tid = a.infons['OrganismID'] %>
+                <a href='http://www.ncbi.nlm.nih.gov/bioproject?term=txid<%=tid%>%5Borgn%5D' target='_blank'><i class='icon globe'></i><%=tid%></a>
+              <% else %>
+              <% end %>
             <% end %>
+            <div class="locations">
+              <!--a href="#" class="mini"><i class="icon setting"></i></a-->
+              <% a.locations.each do |l| %>
+                <span class="label mini ui"><%=l.offset%>:<%=l.length%></span>
+              <% end %>
+            </div>
           </li>
         <% end %>
       </ul>

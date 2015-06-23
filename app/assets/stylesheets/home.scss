@@ -1690,6 +1690,10 @@ body.progress.animated .ui.progress .bar {
     width: 680px;
   }
   #bioc .container {
+    width: 900px;
+    margin: 0em auto;
+  }
+  #bioc.documents-show .container {
     width: 480px;
     margin: 0em auto;
   }
@@ -1705,6 +1709,11 @@ body.progress.animated .ui.progress .bar {
 }
 @media only screen and (min-width : 1200px) and (max-width: 1355px) {
   #bioc .container {
+    width: 1100px;
+    margin: 0em auto;
+  }
+
+  #bioc.documents-show  .container {
     width: 700px;
     margin: 0em auto;
   }
@@ -1720,6 +1729,10 @@ body.progress.animated .ui.progress .bar {
 }
 @media only screen and (min-width : 1355px) {
   #bioc .container {
+    width: 1200px;
+  }
+
+  #bioc.documents-show .container {
     width: 850px;
   }
   #bioc.item .container,
