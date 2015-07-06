@@ -17,7 +17,7 @@
 <body id="bioc" class="default-layout <%=params[:controller]%>-<%=params[:action]%>" ontouchstart="">
 
 <nav class="ui fixed menu inverted navbar" id="main-nav">
-  <div class="container">
+  <div class="ui container clearing">
     <a href="/" class="brand item">
       <i class="icon home"></i>
       BioC-Viewer
@@ -35,9 +35,9 @@
         <% end %>
       </div>
     <% end %>
-    <div class="right item">
+    <div class="right floated menu">
       <% if user_signed_in? %>
-        <div class="ui dropdown">
+        <div class="ui dropdown item">
           <div class="text">
             <i class="icon user"></i>
             <%=current_user.name %>
@@ -58,13 +58,13 @@
           </div>
         </div>
       <% else %>
-        <a href="/users/sign_in" class="ui teal button"><i class="icon sign in"></i> Log-in</a>
-        <a href="/users/sign_up" class="ui primary button"><i class="icon add user"></i> Sign up</a>
+        <a href="/users/sign_in" class="ui item"><i class="icon sign in"></i> Log-in</a>
+        <a href="/users/sign_up" class="ui item"><i class="icon add user"></i> Sign up</a>
       <% end %>
     </div>
   </div>
 </nav> <!-- end nav -->
-<div class="main container">
+<div class="ui main container">
   <%- 
   flash_types = {
     "alert": "info",
@@ -81,6 +81,11 @@
 
   <%= yield %>
 </div>
+<div class="footer" id="main-footer">
+  <div class="ui container">
+    Copyright © 2015 BioC-Viewer: http://kauai.mju.ac.kr, Contact us: dongseop@gmail.com
+  </div>
+</div> 
 <script>
   $('.message .close').on('click', function() {
     $(this).closest('.message').fadeOut();
