@@ -33,7 +33,6 @@ gem 'capistrano-rvm'
 gem 'capistrano-passenger'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
-gem 'csv'
 
 gem "simple_bioc"
 
