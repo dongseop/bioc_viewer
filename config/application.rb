@@ -32,6 +32,11 @@ module BiocViewer
         'bootstrap',
         'fonts'
     )
+    config.assets.paths << Rails.root.join(
+        'app',
+        'assets',
+        'fonts'
+    )
     config.assets.precompile << /\.(?:svg|eot|woff|woff2|ttf)$/
     Sass::Script::Number.precision = 8
 

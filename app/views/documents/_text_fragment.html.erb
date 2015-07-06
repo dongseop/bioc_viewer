@@ -1,7 +1,6 @@
 <%-
 ranges = [p.offset]
 max = p.offset + if ptext.nil? then 0 else ptext.size end
-logger.debug("MAX: #{max.inspect}")
 p.annotations.each do |a|
   a.locations.each do |l|
     n_pos = l.offset.to_i + l.length.to_i 
@@ -33,7 +32,7 @@ ranges.each_with_index do |s_pos, index|
   # cls = ids.map{|i| "#{i.split("_")[0]}"}.uniq
   # cls2 = ids.map{|i| "#{i[0]}"}.uniq
   # if cls.blank?
-  #   cls = []
+#   cls = []
   # else 
   #   cls = cls + cls2
   #   cls << "annotation"
@@ -50,31 +49,41 @@ ranges.each_with_index do |s_pos, index|
     "ppimention" => "blue"
   }
   cls = []
+  gene_id = ""
   content = ids.map do |id| 
     a = p.annotations.select{|a| a.id == id}[0]
-    ret = []
-    ret << "<div class='item popup-item'>"
-    ret << "<strong>#{id}</strong>"
+    
     type = a.infons['type']
+    cls_name = case type.downcase
+    when 'gene'
+      "G"
+    when 'organism'
+      "O"
+    when 'ppimention','ppievidence'
+      "EP"
+    when 'geneticinteractiontype', 'gievidence', 'gimention'
+      "EG"
+    when 'experimentalmethod'
+      "EM"
+    when 'none'
+      ""
+    else
+      "E"
+    end unless type.nil?
+
+    ret = []
+    ret << "<div class='item popup-item #{cls_name}'>"
+    ret << "<strong class='annotation-id'>#{id}</strong>"
+    cls << cls_name
     unless type.nil?
       ret << "<span class='ui label mini #{type2color[type.downcase]}'>#{type}</span>"
       case type.downcase
       when 'gene'
-        cls << "G"
-        tid = a.infons['GeneID']
-        ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
+        gene_id = a.infons['GeneID']
+        ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
       when 'organism'
-        cls << "O"
         tid = a.infons['OrganismID']
-        ret << "<a href='http://www.ncbi.nlm.nih.gov/bioproject?term=txid#{tid}%5Borgn%5D' target='_blank'><i class='icon globe'></i>#{tid}</a>"
-      when 'ppimention','ppievidence'
-        cls << "EP"
-      when 'experimentalmethod'
-        cls << "EM"
-      when 'geneticinteractiontype', 'gievidence', 'gimention'
-        cls << "EG"
-      else
-        cls << "E"
+        ret << "<a href='http://www.ncbi.nlm.nih.gov/taxonomy/?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
       end
     end
     ret << "</div>"
@@ -84,5 +93,5 @@ ranges.each_with_index do |s_pos, index|
   cls = cls.uniq
   cls << "annotation" unless cls.blank?
 
-  -%><span data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
+  -%><span data-gene="<%=gene_id%>" data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
 end -%>

@@ -17,6 +17,8 @@
     "tests"
   ],
   "dependencies": {
-    "handlebars": "~3.0.3"
+    "handlebars": "~3.0.3",
+    "semantic-ui": "~2.0.0",
+    "toastr": "~2.1.1"
   }
 }

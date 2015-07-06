@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Document:</strong>
+  <%= @ppi.document %>
+</p>
+
+<p>
+  <strong>Gene1:</strong>
+  <%= @ppi.gene1 %>
+</p>
+
+<p>
+  <strong>Gene2:</strong>
+  <%= @ppi.gene2 %>
+</p>
+
+<%= link_to 'Edit', edit_ppi_path(@ppi) %> |
+<%= link_to 'Back', ppis_path %>

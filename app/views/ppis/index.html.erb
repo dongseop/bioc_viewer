@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Ppis</h1>
+
+<table class="ui table">
+  <thead>
+    <tr>
+      <th>Gene1</th>
+      <th>Gene2</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ppis.each do |ppi| %>
+      <tr>
+        <td><%= ppi.gene1 %></td>
+        <td><%= ppi.gene2 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<a href="/documents/<%=@document.id%>/ppis.csv" class="ui button small teal">
+  <i class="icon file text outline"></i>
+  Downoad CSV
+</a>
+<a href="/documents/<%=@document.id%>/ppis.xls" class="ui button small teal">
+  <i class="icon file excel outline"></i>
+  Downoad Excel
+</a>

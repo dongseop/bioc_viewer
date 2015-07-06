@@ -1,6 +1,23 @@
-<%= link_to @document.project, class: "ui button" do %>
-  <i class="icon chevron left"></i> Back to Project
-<% end %>
-<%= link_to "/documents/#{@document.id}.xml", class: "ui button green", target: "_blank" do %>
-  <i class="icon download cloud"></i> Download BioC file
-<% end %>
+<div class="fixed-buttons">
+  <%= link_to @document.project, class: "ui button small" do %>
+    <i class="icon chevron left"></i> Back to Project
+  <% end %>
+  <%= link_to "/documents/#{@document.id}.xml", class: "ui button small green", target: "_blank" do %>
+    <i class="icon download cloud"></i> Download BioC file
+  <% end %>
+  <button class="ui button small doc-info-btn" type="button">
+    <i class="icon info circle"></i> Doc Info
+  </button>
+  
+  <div class="ui buttons small annotation-toggles">
+    <button class="ui button small yellow" data-id="G">
+      <i class="icon checkmark"></i> Gene
+    </button>
+    <button class="ui button small blue" data-id="O">
+      <i class="icon checkmark"></i> Organism
+    </button>
+    <button class="ui button small purple" data-id="E">
+      <i class="icon checkmark"></i> Sentence
+    </button>
+  </div>
+</div>

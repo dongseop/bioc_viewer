@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  document_id: 
+  gene1: MyString
+  gene2: MyString
+
+two:
+  document_id: 
+  gene1: MyString
+  gene2: MyString

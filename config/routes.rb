@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
     
+  resources :ppis
+
   authenticated :user do
     root 'projects#index'
   end
@@ -12,7 +14,9 @@ Rails.application.routes.draw do
 
   resources :revisions
 
-  resources :documents
+  resources :documents do
+    resources :ppis
+  end
 
   resources :project_users
 

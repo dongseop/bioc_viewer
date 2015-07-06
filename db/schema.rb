@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623033047) do
+ActiveRecord::Schema.define(version: 20150706150519) do
 
   create_table "documents", force: :cascade do |t|
     t.text     "xml",        limit: 4294967295
@@ -24,10 +24,21 @@ ActiveRecord::Schema.define(version: 20150623033047) do
     t.string   "d_date",     limit: 255
     t.string   "key",        limit: 255
     t.string   "doc_id",     limit: 255
+    t.integer  "ppis_count", limit: 4,          default: 0
   end
 
   add_index "documents", ["project_id"], name: "index_documents_on_project_id", using: :btree
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
+
+  create_table "ppis", force: :cascade do |t|
+    t.integer  "document_id", limit: 4
+    t.string   "gene1",       limit: 255
+    t.string   "gene2",       limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "ppis", ["document_id"], name: "index_ppis_on_document_id", using: :btree
 
   create_table "project_users", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -98,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150623033047) do
 
   add_foreign_key "documents", "projects"
   add_foreign_key "documents", "users"
+  add_foreign_key "ppis", "documents"
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "projects", "users"

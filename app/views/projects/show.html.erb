@@ -34,14 +34,9 @@
       <td><%=link_to d.key, d %></td>
       <td><%=time_ago_in_words d.updated_at %> ago </td>
       <td>
-        <div class="ui dropdown">
+        <div class="ui right pointing dropdown">
           <i class="setting icon"></i>
           <div class="menu">
-            <div class="item">
-              <%= link_to "#" do %>
-                <i class="history icon"></i> Revision History
-              <% end %>
-            </div>
             <div class="ui divider"></div>
             <div class="item">
               <%= link_to d, method: :delete, data: { confirm: 'Are you sure?' } do %>

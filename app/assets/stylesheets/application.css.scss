@@ -15,10 +15,30 @@
  */
 
 
-@import "semantic-ui";
 @import "home";
 @import "documents";
 
+body {
+  background-color: #eee!important;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.clearfix {
+    *zoom: 1;
+}
 
 #main-nav {
   .dropdown .menu a {
@@ -28,8 +48,14 @@
 
 #main-footer {
   .container {
-    color: #666;
+    background-color: #1b1c1d!important;
+    padding: 2em 1em 5em 1em;
+    font-size: 0.9em;
+    font-weight: lighter;
+    color: #aaa;
+
   }
+
 }
 
 #hiddenFileInput {
@@ -38,4 +64,41 @@
 
 #documentSpinner {
   position: fixed;
+}
+
+.main.container {
+  padding: 1em;
+  background-color: #fff;
+  margin-top: 40px;
+}
+.documents-show .main.container {
+  margin-top: 80px;
+  width: 100%;
+  background: #eee;
+}
+
+.annotation-toggles {
+  .ui.button {
+    i.icon {
+      display: inline;
+    }
+    &.inactive {
+      background-color: #cacbcd;
+      color: #fff;
+      i.icon {
+        // display: none;
+      }
+    }
+  }
+}
+
+.fixed-buttons {
+  position: fixed;
+  top: 45px;
+  left: 0;
+  padding: 0.5em;
+  background: #666;
+  width: 100%;
+  z-index:1000;
+  color: #fff;
 }

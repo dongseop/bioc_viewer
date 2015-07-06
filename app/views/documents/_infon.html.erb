@@ -1,15 +1,16 @@
-  <div class="ui very close rail left infons">
-    <div class="ui segment">
-      <span class="ui ribbon label">Infon 
-        (<%=infons.size %>)
-      </span>
-      <ul class="ui list body">
-        <% infons.each do |key, value| %>
-          <li>
-            <%=key %>: <%= value %>
-            <!--a href="#" class="mini"><i class="icon setting"></i></a-->
-          </li>
-        <% end %>
-      </ul>
-    </div>
+<div class="ui modal <%=cls_name%>">
+  <i class="close icon"></i>
+  <div class="header">
+    Infon (<%=infons.size %>)
   </div>
+  <div class="content">
+    <ul class="ui list body">
+      <% infons.each do |key, value| %>
+        <li>
+          <%=key %>: <%= value %>
+          <!--a href="#" class="mini"><i class="icon setting"></i></a-->
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

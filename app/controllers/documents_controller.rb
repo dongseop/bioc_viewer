@@ -12,6 +12,8 @@ class DocumentsController < ApplicationController
   # GET /documents/1.json
   def show
     @project = @document.project
+
+    
     respond_to do |format|
       format.html
       format.json

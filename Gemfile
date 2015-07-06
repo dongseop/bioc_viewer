@@ -23,8 +23,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'semantic-ui-sass', github: 'doabit/semantic-ui-sass'
-
 gem "nokogiri"
 gem 'devise'
 gem "paperclip"
@@ -32,11 +30,10 @@ gem "paperclip-meta"
 gem "bourbon"
 gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-rvm'
-gem 'capistrano-rails'
 gem 'capistrano-passenger'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
-
+gem 'csv'
 
 gem "simple_bioc"
 

@@ -1,0 +1,34 @@
+  <form class="ui segment inverted form black ppi-form" action="/documents/<%=@document.id%>/ppis">
+    PPI Annotator
+      <span class="ui label circular olive ppi-cnt tiny"></span>
+    <div class="ui divider"></div>
+    <div class="two fields">
+      <div class="field">
+        <input placeholder="GeneID 1" type="text" id="gene1" class="gene-field gene1" name="ppi[gene1]">
+      </div>
+      <div class="field">
+        <input placeholder="GeneID 2" type="text" id="gene2" class="gene-field gene2" name="ppi[gene2]">
+      </div>
+    </div>
+    <button class="ui submit teal small button left" type="button">
+      Create PPI
+    </button>
+    <div class="ui buttons small ">
+      <div class="ui button small "><i class="icon download"></i> Download</div>
+      <div class="ui floating dropdown icon button small ">
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "item", target: "_blank" do %>
+            <i class="icon file text outline"></i> CSV
+          <% end %>
+          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "item", target: "_blank" do %>
+            <i class="icon file excel outline"></i> Excel
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="ui error message"></div>
+  </form>
+  <div class="ui dimmer">
+    <div class="ui text loader">Updating ...</div>
+  </div>
