@@ -15,6 +15,7 @@
     top: 92px;
     padding: 1em;
     padding-bottom: 200px;
+    box-sizing: border-box;
   }
   .left-side {
     // position: fixed;
@@ -45,13 +46,14 @@
     border-right: 1px solid #ccc;
   }
   .right-side {
+    padding: 0;
     left: 850px;
     width: 300px;
     background-color: #ddd;
 
     .ppis {
       margin-top: 162px;
-
+      padding: 1em;
     }
 
     .ppi-list {
@@ -64,12 +66,36 @@
 }
 
 .ui.segment.ppi-form {
-  margin-left: -1em;
   border-radius:0;
   position: fixed;
   top: 92px;
+  right: 9px;
   width: 300px;
   z-index: 1000;
+
+  .field {
+    position: relative;
+
+    .close.icon {
+      color: #DC1644;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    &.empty {
+      .close.icon {
+        color: #DDD;
+        cursor: default;
+      }
+    }
+    &:last-child {
+      .close.icon {
+        right: 3px;
+      }
+    }
+  }
 }
 .ui.basic.segment.passage {
   padding: 2em 0 1em;
@@ -251,19 +277,35 @@ body {
   margin: 2px 0
 }
 
-.ui.form input.gene-field.changed {
-  animation: flash .5s 1;
-  -webkit-animation: flash .5s 1;
+.ui.form div.field.changed {
+  animation: flash-scale .5s 1;
+  -webkit-animation: flash-scale .5s 1;
+}
+
+.ui.form div.field.changed .gene-field {
+  animation: flash-bg .5s 1;
+  -webkit-animation: flash-bg .5s 1;
 }
 
 
-@keyframes flash {
-  from { transform: none; background: #FFF64C;}
+@keyframes flash-scale {
+  from { transform: none; }
   50% { transform: scale(1.2); }
-  to { transform: none;  background: #fff;}
+  to { transform: none; }
 }
-@-webkit-keyframes flash {
-  from { transform: none; background: #FFF64C;}
+@-webkit-keyframes flash-scale {
+  from { transform: none; }
   50% { transform: scale(1.2); }
-  to { transform: none;  background: #fff;}
+  to { transform: none; }
+}
+
+@keyframes flash-bg {
+  from { background-color: #fff;}
+  50% { background-color: #dd0; }
+  to { background-color: #fff;}
+}
+@-webkit-keyframes flash-bg {
+  from { background-color: #fff;}
+  50% { background-color: #dd0; }
+  to { background-color: #fff;}
 }

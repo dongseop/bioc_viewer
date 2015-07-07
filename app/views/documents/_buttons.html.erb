@@ -2,13 +2,9 @@
   <%= link_to @document.project, class: "ui button small" do %>
     <i class="icon chevron left"></i> Back to Project
   <% end %>
-  <%= link_to "/documents/#{@document.id}.xml", class: "ui button small green", target: "_blank" do %>
-    <i class="icon download cloud"></i> Download BioC file
-  <% end %>
   <button class="ui button small doc-info-btn" type="button">
     <i class="icon info circle"></i> Doc Info
   </button>
-  
   <div class="ui buttons small annotation-toggles">
     <button class="ui button small yellow" data-id="G">
       <i class="icon checkmark"></i> Gene

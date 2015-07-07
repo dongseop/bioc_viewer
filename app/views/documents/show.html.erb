@@ -5,7 +5,7 @@
 <%= render partial: "doc_info" %>
 <div class="document clearfix">
   <div class="left-side pane">
-    Outline
+    <h4>Outline</h4>
     <%= render partial: "outline", locals: {nodes: @document.outline} %>
   </div>
   <div class="main pane" id="main-document">
@@ -40,6 +40,7 @@
   <div class="ui right top right-side pane">
     <%= render partial: "ppi_form" %>
     <div class="ppis">
+      <h4>PPI/GI Annotation List</h4>
       <ul class="ppi-list ui bulleted list">
         <% @document.ppis.each do |p| %>
         <% end %>

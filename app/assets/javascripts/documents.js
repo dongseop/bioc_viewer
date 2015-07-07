@@ -9,7 +9,11 @@ var BioC = function(id) {
   this.initAnnotationPopup();
   this.initAnnotationClick();
   this.initAnnotationToggle();
-  this.initPaneHeight();
+  this.initPaneWidthHeight();
+
+  $(window).on('resize', function() {
+    this.initPaneWidthHeight();
+  }.bind(this));
   this.initModal();
   this.initOutlineScroll();
   this.initPPI();
@@ -74,30 +78,40 @@ BioC.prototype.initAnnotationClick = function() {
     var $target;
     var $geneField1 = $(".gene-field.gene1");
     var $geneField2 = $(".gene-field.gene2");
+    var $targetParent;
+
     if (!gene) {
       return;
     }
 
-    if (!$geneField1.val() || ($geneField2.val() && lastModifiedGeneField != "g1")) {
+    if (!$geneField1.val() || ($geneField2.val() && this.lastModifiedGeneField != "g1")) {
       $target = $geneField1;
-      lastModifiedGeneField = "g1";
+      this.lastModifiedGeneField = "g1";
     } else {
       $target = $geneField2;
-      lastModifiedGeneField = "g2";
+      this.lastModifiedGeneField = "g2";
     }
-    $target.val(gene).removeClass("changed");
+    $target.val(gene);
+    $targetParent = $target.parent();
+
+    $targetParent.removeClass("changed empty");
     setTimeout(function() {
-      $target.addClass("changed");
+      $targetParent.addClass("changed");
     }, 100);
-  });
+  }.bind(this));
 };
 
-BioC.prototype.initPaneHeight = function() {
+BioC.prototype.initPaneWidthHeight = function() {
   var maxContentHeight = _.max(_.map(
           $(".pane"), 
           function(item) {return $(item).height()}
         ));
   $(".document").css("height", (maxContentHeight) + 200 + "px");
+
+  var width = parseInt($(".document").width(), 10) - 10;
+  var mainWidth = width - 550;
+  $(".main.pane").width((width - 550) + "px");
+  $(".right.pane").css('left', (($(".main.pane").outerWidth() + 250) + "px"));
 };
 
 BioC.prototype.initAnnotationToggle = function() {
@@ -150,6 +164,21 @@ BioC.prototype.initOutlineScroll = function() {
 };
 
 BioC.prototype.initPPI = function() {
+  $(".ppi-form .gene-field").on('keyup change', function(e) {
+    var $e = $(e.currentTarget);
+    $e.val($e.val().trim());
+    if ($e.val().length > 0) {
+      $e.parent().removeClass("empty");
+    } else {
+      $e.parent().addClass("empty");
+    }
+  });
+
+  $(".ppi-form .field .close.icon").click(function(e) {
+    var $e = $(e.currentTarget).parent();
+    $e.addClass("empty");
+    $e.find(".gene-field").val("");
+  });
   $(".ppi-form").form({
     fields: {
       gene1: {
