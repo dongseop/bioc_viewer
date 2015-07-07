@@ -14,23 +14,13 @@
     </div>
     <button class="ui submit teal small button left" type="button">
       Create PPI
+        (<% if browser.mac? %>
+          &#8984; + S
+        <% else %>
+          &#8983; + S
+        <% end %>)
     </button>
-    <div class="ui buttons small ">
-      <%=link_to "/documents/#{@document.id}/ppis.csv", class: "ui green button small ", target: "_blank" do %>
-        <i class="icon download"></i> Download
-      <% end %>
-      <div class="ui floating dropdown icon button green small ">
-        <i class="dropdown icon"></i>
-        <div class="menu">
-          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "item", target: "_blank" do %>
-            <i class="icon file text outline"></i> CSV
-          <% end %>
-          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "item", target: "_blank" do %>
-            <i class="icon file excel outline"></i> Excel
-          <% end %>
-        </div>
-      </div>
-    </div>
+
     <div class="ui error message"></div>
   </form>
   <div class="ui dimmer">

@@ -26,6 +26,10 @@ var BioC = function(id) {
     newestOnTop: true
   };
 
+  Mousetrap.bind('mod+s', function() {
+    $(".ppi-form").submit();
+    return false;
+  });
 
   return this;
 };
@@ -108,7 +112,7 @@ BioC.prototype.initPaneWidthHeight = function() {
         ));
   $(".document").css("height", (maxContentHeight) + 200 + "px");
 
-  var width = parseInt($(".document").width(), 10) - 10;
+  var width = parseInt($(".document").width(), 10);
   var mainWidth = width - 550;
   $(".main.pane").width((width - 550) + "px");
   $(".right.pane").css('left', (($(".main.pane").outerWidth() + 250) + "px"));
@@ -197,7 +201,14 @@ BioC.prototype.initPPI = function() {
     onSuccess: function() {
       this.addPPI();
       return false;
-    }.bind(this)
+    }.bind(this),
+    onFailure: function() {
+      setTimeout(function() {
+        $(".ppi-form").removeClass("error");
+        $(".ppi-form .field.error").removeClass("error");
+      }, 3000);
+      return false;
+    }
   });
 
   Q($.getJSON(this.url + "/ppis.json"))

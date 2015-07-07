@@ -33,7 +33,7 @@ gem 'capistrano-rvm'
 gem 'capistrano-passenger'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
-
+gem 'browser'
 gem "simple_bioc"
 
 # Use ActiveModel has_secure_password

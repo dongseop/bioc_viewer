@@ -13,6 +13,10 @@ class Document < ActiveRecord::Base
     "ppimention" => "blue"
   }
   
+  def unique_id
+    self.doc_id || "D#{self.id}"
+  end
+
   def self.create_from_file(file)
     doc = Document.new
   

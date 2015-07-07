@@ -9,7 +9,7 @@ class PpisController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.csv { send_data @ppis.to_csv }
+      format.csv { send_data @ppis.to_csv, :filename => "#{@document.unique_id}_ppi.csv" }
       format.xls # { send_data @products.to_csv(col_sep: "\t") }
     end
   end
