@@ -16,7 +16,6 @@
 
 
 @import "home";
-@import "documents";
 
 body {
   background-color: #eee!important;
@@ -50,7 +49,7 @@ body {
 #main-footer {
   .container {
     background-color: #1b1c1d!important;
-    padding: 1em;
+    padding: 0.5em 1em;
     font-size: 0.9em;
     font-weight: lighter;
     color: #aaa;

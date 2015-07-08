@@ -8,12 +8,18 @@
     <Table>
       <Row>
         <Cell><Data ss:Type="String">Gene1</Data></Cell>
+        <Cell><Data ss:Type="String">Name1</Data></Cell>
         <Cell><Data ss:Type="String">Gene2</Data></Cell>
+        <Cell><Data ss:Type="String">Name2</Data></Cell>
+        <Cell><Data ss:Type="String">Type</Data></Cell>
       </Row>
     <% @ppis.each do |p| %>
       <Row>
-        <Cell><Data ss:Type="Number"><%= p.gene1 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.gene1 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.name1 %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.gene2 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.name2 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.itype %></Data></Cell>
       </Row>
     <% end %>
     </Table>

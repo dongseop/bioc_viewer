@@ -1,19 +1,32 @@
-  <form class="ui segment inverted form black ppi-form" action="/documents/<%=@document.id%>/ppis">
+  <form class="ui segment inverted small form grey ppi-form" action="/documents/<%=@document.id%>/ppis">
     PPI/GI Annotator
-      <span class="ui label circular olive ppi-cnt tiny"></span>
+    <input name="ppi[itype]" type="hidden" value="ppi">
+
     <div class="ui divider"></div>
     <div class="two fields">
-      <div class="field empty">
-        <input placeholder="GeneID 1" type="text" id="gene1" class="gene-field gene1" name="ppi[gene1]">
-        <i class="close icon"></i>
+      <div class="field">
+        <div class="close-field empty">
+          <input placeholder="GeneID 1" type="text" id="gene1" class="gene-field gene1" name="ppi[gene1]">
+          <i class="close icon"></i>
+        </div>
+        <div class="close-field empty">
+          <input placeholder="Name 1" type="text" id="name1" class="gene-field name1" name="ppi[name1]">
+          <i class="close icon"></i>
+        </div>
       </div>
-      <div class="field empty">
-        <input placeholder="GeneID 2" type="text" id="gene2" class="gene-field gene2" name="ppi[gene2]">
-        <i class="close icon"></i>
+      <div class="field">
+        <div class="close-field empty">
+          <input placeholder="GeneID 2" type="text" id="gene2" class="gene-field gene2" name="ppi[gene2]">
+          <i class="close icon"></i>
+        </div>
+        <div class="close-field empty">
+          <input placeholder="Name 2" type="text" id="name2" class="gene-field name2" name="ppi[name2]">
+          <i class="close icon"></i>
+        </div>
       </div>
     </div>
     <button class="ui submit teal small button left" type="button">
-      Create PPI
+      Create Interaction
         (<% if browser.mac? %>
           &#8984; + S
         <% else %>

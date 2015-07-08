@@ -58,8 +58,9 @@ class PpisController < ApplicationController
   # PATCH/PUT /ppis/1
   # PATCH/PUT /ppis/1.json
   def update
+    @ppi.itype = params[:itype]
     respond_to do |format|
-      if @ppi.update(ppi_params)
+      if @ppi.save
         format.html { redirect_to @ppi, notice: 'Ppi was successfully updated.' }
         format.json { render :show, status: :ok, location: @ppi }
       else
@@ -87,6 +88,6 @@ class PpisController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ppi_params
-      params.require(:ppi).permit(:gene1, :gene2)
+      params.require(:ppi).permit(:gene1, :gene2, :name1, :name2, :itype)
     end
 end

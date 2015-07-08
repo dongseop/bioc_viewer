@@ -50,6 +50,7 @@ ranges.each_with_index do |s_pos, index|
   }
   cls = []
   gene_id = ""
+  gene_name = ""
   content = ids.map do |id| 
     a = p.annotations.select{|a| a.id == id}[0]
     
@@ -80,6 +81,7 @@ ranges.each_with_index do |s_pos, index|
       case type.downcase
       when 'gene'
         gene_id = a.infons['GeneID']
+        gene_name = a.text
         ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
       when 'organism'
         tid = a.infons['OrganismID']
@@ -93,5 +95,5 @@ ranges.each_with_index do |s_pos, index|
   cls = cls.uniq
   cls << "annotation" unless cls.blank?
 
-  -%><span data-gene="<%=gene_id%>" data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
+  -%><span data-gene="<%=gene_id%>" data-name="<%=gene_name%>" data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
 end -%>

@@ -79,7 +79,9 @@ BioC.prototype.initAnnotationClick = function() {
   $("span.annotation").click(function(e) {
     var $e = $(e.currentTarget);
     var gene = $e.data("gene");
+    var name = $e.data("name");
     var $target;
+    var $targetName;
     var $geneField1 = $(".gene-field.gene1");
     var $geneField2 = $(".gene-field.gene2");
     var $targetParent;
@@ -90,15 +92,20 @@ BioC.prototype.initAnnotationClick = function() {
 
     if (!$geneField1.val() || ($geneField2.val() && this.lastModifiedGeneField != "g1")) {
       $target = $geneField1;
+      $targetName = $(".gene-field.name1");
       this.lastModifiedGeneField = "g1";
     } else {
       $target = $geneField2;
+      $targetName = $(".gene-field.name2");
       this.lastModifiedGeneField = "g2";
     }
     $target.val(gene);
-    $targetParent = $target.parent();
+    $targetName.val(name);
+    $targetParent = $target.parents(".field");
 
     $targetParent.removeClass("changed empty");
+    $targetName.parent().removeClass("empty");
+    $target.parent().removeClass("empty");
     setTimeout(function() {
       $targetParent.addClass("changed");
     }, 100);
@@ -170,8 +177,7 @@ BioC.prototype.initOutlineScroll = function() {
 BioC.prototype.initPPI = function() {
   $(".ppi-form .gene-field").on('keyup change', function(e) {
     var $e = $(e.currentTarget);
-    $e.val($e.val().trim());
-    if ($e.val().length > 0) {
+    if ($e.val().trim().length > 0) {
       $e.parent().removeClass("empty");
     } else {
       $e.parent().addClass("empty");
@@ -199,7 +205,13 @@ BioC.prototype.initPPI = function() {
       }
     },
     onSuccess: function() {
-      this.addPPI();
+      $(".ui.modal.ppi-type").modal({
+        onApprove: function($e) {
+          $(".ppi-form input[name='ppi[itype]']").val($e.data('value'));
+          this.addPPI();
+          return true;
+        }.bind(this)
+      }).modal('show');
       return false;
     }.bind(this),
     onFailure: function() {
@@ -217,7 +229,7 @@ BioC.prototype.initPPI = function() {
     _.each(arr, function(item) {
       $(".ppis .ppi-list").append(this.template.ppi(item));
     }.bind(this));
-    this.bindDeletePPI();
+    this.bindPPIActions();
   }.bind(this));
 };
 
@@ -237,7 +249,9 @@ BioC.prototype.addPPI = function() {
     $(".ppi-cnt").text(ppiCnt + 1);
     $("#gene1").val("");
     $("#gene2").val("");
-    this.bindDeletePPI();
+    $("#name1").val("");
+    $("#name2").val("");
+    this.bindPPIActions();
   }.bind(this))
   .catch(function(xhr) {
     console.log(xhr);
@@ -252,14 +266,48 @@ BioC.prototype.addPPI = function() {
   });
 }
 
-BioC.prototype.bindDeletePPI = function() {
+BioC.prototype.bindPPIActions = function() {
   $(".ppi-list .delete-button").off("click");
   $(".ppi-list .delete-button").on("click", function(e) {
-    if (confirm("Are you sure?")) {
-      var $e = $(e.currentTarget);
-      var id = $e.parent().data("id");
-      this.removePPI(id);
-    }
+    $(".ui.modal.delete-confirm").modal({
+        onApprove: function($e) {
+          var $e = $(e.currentTarget);
+          var id = $e.parents("tr").data("id");
+          this.removePPI(id);
+          return true;
+        }.bind(this)
+      }).modal('show');
+  }.bind(this));
+  $('.gene .popup').popup({
+    hoverable: true,
+    position : 'left center',
+  });
+  $(".ppi-list .type-toggle").off("click");
+  $(".ppi-list .type-toggle").on("click", function(e) {
+    var $e = $(e.currentTarget);
+    var $parent = $e.parents("tr")
+    var id = $parent.data("id");
+    var type = $parent.hasClass("ppi") ? "gi" : "ppi";
+
+    $(".right-side .dimmer").addClass("active");
+    Q($.ajax({
+      url: '/ppis/' + id + '.json', 
+      type: "PUT",
+      dataType: 'json',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      data: {itype: type}
+    }))
+    .then(function(data) {
+      $parent.removeClass("ppi gi").addClass(data.itype);
+      $e.transition('tada');
+    }.bind(this))
+    .catch(function(xhr) {
+      console.log(xhr);
+      toastr.error("Failed. Please try again later.");        
+    })
+    .finally(function() {
+      $(".right-side .dimmer").removeClass("active");
+    });
   }.bind(this));
 };
 
@@ -272,7 +320,14 @@ BioC.prototype.removePPI = function(id) {
     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
   }))
   .then(function(data) {
-    $(".ppi-list .item[data-id='" + id + "']").remove();
+    var $e = $(".ppi-list .item[data-id='" + id + "']");
+
+    $e.transition({
+      animation: 'slide down',
+      onComplete: function() {
+        $e.remove();
+      }
+    });
     toastr.success("PPI was successfully removed.");
     var ppiCnt = parseInt($(".ppi-cnt").text(), 10);
     $(".ppi-cnt").text(ppiCnt - 1);

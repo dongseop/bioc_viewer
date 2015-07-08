@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706150519) do
+ActiveRecord::Schema.define(version: 20150708155735) do
 
   create_table "documents", force: :cascade do |t|
     t.text     "xml",        limit: 4294967295
@@ -34,8 +34,11 @@ ActiveRecord::Schema.define(version: 20150706150519) do
     t.integer  "document_id", limit: 4
     t.string   "gene1",       limit: 255
     t.string   "gene2",       limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "itype",       limit: 255, default: "ppi"
+    t.string   "name1",       limit: 255
+    t.string   "name2",       limit: 255
   end
 
   add_index "ppis", ["document_id"], name: "index_ppis_on_document_id", using: :btree
