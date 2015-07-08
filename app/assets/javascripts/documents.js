@@ -244,19 +244,19 @@ BioC.prototype.addPPI = function() {
   }))
   .then(function(data) {
     $(".ppis .ppi-list").append(this.template.ppi(data));
-    toastr.success("PPI was successfully added.");
+    toastr.success("Interaction was successfully added.");
     var ppiCnt = parseInt($(".ppi-cnt").text(), 10);
     $(".ppi-cnt").text(ppiCnt + 1);
-    $("#gene1").val("");
-    $("#gene2").val("");
-    $("#name1").val("");
-    $("#name2").val("");
+    $("#gene1").val("").change();
+    $("#gene2").val("").change();
+    $("#name1").val("").change();
+    $("#name2").val("").change();
     this.bindPPIActions();
   }.bind(this))
   .catch(function(xhr) {
     console.log(xhr);
     if (xhr.status == 409) {
-      toastr.error("Cannot add a duplicated PPI item.");        
+      toastr.error("Cannot add a duplicated interaction item.");        
     } else {
       toastr.error("Failed. Please try again later.");        
     }
@@ -298,6 +298,7 @@ BioC.prototype.bindPPIActions = function() {
       data: {itype: type}
     }))
     .then(function(data) {
+      toastr.success("Interaction type was successfully changed.");        
       $parent.removeClass("ppi gi").addClass(data.itype);
       $e.transition('tada');
     }.bind(this))
@@ -328,7 +329,7 @@ BioC.prototype.removePPI = function(id) {
         $e.remove();
       }
     });
-    toastr.success("PPI was successfully removed.");
+    toastr.success("Interaction was successfully removed.");
     var ppiCnt = parseInt($(".ppi-cnt").text(), 10);
     $(".ppi-cnt").text(ppiCnt - 1);
   }.bind(this))
