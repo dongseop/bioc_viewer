@@ -322,6 +322,16 @@ body {
   -webkit-animation: flash-bg .5s 1;
 }
 
+.ui.label.outline-item {
+    &.E,
+    &.EP,
+    &.EM,
+    &.EG {
+      background: #B26DC8;
+      color: #fff;
+    }
+    margin: 2px 0;
+}
 
 @keyframes flash-scale {
   from { transform: none; }

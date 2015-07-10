@@ -168,7 +168,7 @@ BioC.prototype.initOutlineScroll = function() {
     e.preventDefault();
     $root.animate({
       scrollTop: ($( $.attr(this, 'href') ).offset().top - 100) + $root.scrollTop() 
-    }, 500);
+    }, 300);
 
     return false;
   });

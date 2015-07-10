@@ -55,22 +55,7 @@ ranges.each_with_index do |s_pos, index|
     a = p.annotations.select{|a| a.id == id}[0]
     
     type = a.infons['type']
-    cls_name = case type.downcase
-    when 'gene'
-      "G"
-    when 'organism'
-      "O"
-    when 'ppimention','ppievidence'
-      "EP"
-    when 'geneticinteractiontype', 'gievidence', 'gimention'
-      "EG"
-    when 'experimentalmethod'
-      "EM"
-    when 'none'
-      ""
-    else
-      "E"
-    end unless type.nil?
+    cls_name = @document.get_class_from_annotation(a)
 
     ret = []
     ret << "<div class='item popup-item #{cls_name}'>"

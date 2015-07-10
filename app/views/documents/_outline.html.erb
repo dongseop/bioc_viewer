@@ -2,7 +2,7 @@
   <% nodes.each do |item| %>
     <li> 
       <%=link_to "#passage-#{item[:id]}", class: "item outline-link" do %>
-        <span class="ui label small"><%=item[:text] %></span> <%=item[:description] %>
+        <span class="ui label small outline-item <%=item[:cls].join(" ")%>"><%=item[:text] %></span> <%=item[:description] %>
       <% end %>
       <% unless item[:children].blank? %>
         <%= render partial: "outline", locals: {nodes: item[:children]} %>
