@@ -53,10 +53,7 @@
   <div class="ui dimmer" id="uploadSpinner">
     <div class="ui text loader">Uploading</div>
   </div>
-  <button class="ui button primary" id="uploadBtn">Upload BioC Document</button>
-  <%= form_for(@project.documents.new, :url => project_documents_path(@project), html: {:multipart => true, id: "uploadForm", class: "ui form"}) do |f| %>
-    <input type="file" name="file" id="hiddenFileInput" placeholder="BioC file" class="hidden">
-  <% end %>
+  <div id="fileuploader">Upload BioC Documents</div>
 <% end %>
 
 <div class="ui divider"></div>
@@ -67,7 +64,21 @@
 <% end %>
 
 <script>
+
 $(function() {
+  $("#fileuploader").uploadFile({
+    url: "/projects/1/documents",
+    fileName: "file",
+    sequential: true,
+    sequentialCount: 1,
+    dragdropWidth: '100%',
+    allowedTypes: 'xml',
+    uploadStr: 'Upload Multiple BioC Documents',
+    afterUploadAll: function(obj) {
+      location.reload();
+    }
+  });
+
   $("#hiddenFileInput").change(function() {
     $("#uploadSpinner").addClass("active");
     $("#uploadForm").submit();
