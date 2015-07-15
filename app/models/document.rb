@@ -47,8 +47,10 @@ class Document < ActiveRecord::Base
       result = p.infons["type"].match(/title_(\d+)/)
       if result.present?
         level = result[1].strip.to_i
+        item_text = "title"
       elsif %w(front abstract title).include?(p.infons["type"])
         level = 1
+        item_text = p.infons["type"]
       else
         if !last_item.nil?
           last_item[:cls] = last_item[:cls] | get_class_from_passage(p)
@@ -57,7 +59,8 @@ class Document < ActiveRecord::Base
       end
 
       desc = if p.text.nil? then "" else p.text[0..30] end
-      item = {id: index, text: p.infons["type"], description: desc, children: [], level: level, cls: []}
+      item = {id: index, text: item_text, description: desc, children: [], level: level, cls: []}
+      
       last_item = item
       last_item[:cls] = last_item[:cls] | get_class_from_passage(p)
       last_in_levels[level] = item

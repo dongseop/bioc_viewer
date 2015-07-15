@@ -25,6 +25,7 @@ var BioC = function(id) {
     positionClass: "toast-top-center",
     newestOnTop: true
   };
+  $(".export-btn").popup();
 
   Mousetrap.bind('mod+s', function() {
     $(".ppi-form").submit();
@@ -59,14 +60,10 @@ BioC.prototype.initAnnotationPopup = function() {
       hide: 500
     },
     onShow: function(item) {
-      var enabled = _.reject(['G', 'O', 'E'], function(n) {
+      var enabled = _.reject(['G', 'O', 'EP', 'EG'], function(n) {
         return $("body").hasClass(n + "-disabled");
       });
       var acceptClasses = _.select(enabled, function(n) {
-        if (n == "E") {
-          return $(item).hasClass("EP") || $(item).hasClass("EG") ||
-                 $(item).hasClass("EM")  || $(item).hasClass("E");
-        }
         return $(item).hasClass(n);
       });
       return acceptClasses.length > 0
@@ -87,10 +84,11 @@ BioC.prototype.initAnnotationClick = function() {
     var $targetParent;
 
     if (!gene) {
-      return;
+      gene = "";
     }
 
-    if (!$geneField1.val() || ($geneField2.val() && this.lastModifiedGeneField != "g1")) {
+    if ((!$geneField1.val() && !$(".gene-field.name1").val()) || 
+            (($geneField2.val() || !$(".gene-field.name2").val()) && this.lastModifiedGeneField != "g1")) {
       $target = $geneField1;
       $targetName = $(".gene-field.name1");
       this.lastModifiedGeneField = "g1";
@@ -136,7 +134,8 @@ BioC.prototype.initAnnotationToggle = function() {
       return $(item).data("id") + "-disabled";
     });
 
-    $("body").removeClass("G-disabled O-disabled E-disabled").addClass(disabled.join(" "));
+    $("body").removeClass("G-disabled O-disabled EG-disabled EP-disabled")
+              .addClass(disabled.join(" "));
     return false;
   });
 
@@ -207,8 +206,17 @@ BioC.prototype.initPPI = function() {
     onSuccess: function() {
       $(".ui.modal.ppi-type").modal({
         onApprove: function($e) {
-          $(".ppi-form input[name='ppi[itype]']").val($e.data('value'));
-          this.addPPI();
+          var type = $e.data('value');
+          $(".ppi-form input[name='ppi[itype]']").val(type);
+          $(".ui.modal.ppi-exp").removeClass("show-ppi show-gi").addClass("show-" + type);
+          $(".ui.modal.ppi-exp").modal({
+            onApprove: function($e) {
+              var exp = $e.data('value');
+              $(".ppi-form input[name='ppi[exp]']").val(exp);
+              this.addPPI();
+              return true;
+            }.bind(this)
+          }).modal('show');
           return true;
         }.bind(this)
       }).modal('show');
@@ -277,7 +285,25 @@ BioC.prototype.bindPPIActions = function() {
           return true;
         }.bind(this)
       }).modal('show');
+    return false;
   }.bind(this));
+
+  $(".ppi-list .edit-button").off("click");
+  $(".ppi-list .edit-button").on("click", function(e) {
+    var $tr = $(e.currentTarget).parents("tr").prev();
+    var id = $tr.data("id");
+    var currentType = $tr.hasClass("ppi") ? "ppi" : "gi";
+    $(".ui.modal.ppi-exp").removeClass("show-ppi show-gi").addClass("show-" + currentType);
+    $(".ui.modal.ppi-exp").modal({
+        onApprove: function($e) {
+          var exp = $e.data('value');
+          this.updatePPI(id, exp);
+          return true;
+        }.bind(this)
+      }).modal('show');
+    return false;
+  }.bind(this));
+
   $('.gene .popup').popup({
     hoverable: true,
     position : 'left center',
@@ -341,3 +367,26 @@ BioC.prototype.removePPI = function(id) {
     $(".right-side .dimmer").removeClass("active");
   });
 };
+
+BioC.prototype.updatePPI = function(id, exp) {
+  $(".right-side .dimmer").addClass("active");
+  Q($.ajax({
+    url: "/ppis/" + id + ".json", 
+    type: "PUT",
+    dataType: 'json',
+    data: {exp: exp},
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+  }))
+  .then(function(data) {
+    var $e = $(".ppi-list .item[data-id='" + id + "']").last().find(".exp-name span");
+    $e.text(data.exp).transition('pulse');
+    toastr.success("Interaction was successfully updated.");
+  }.bind(this))
+  .catch(function(xhr) {
+    console.log(xhr);
+    toastr.error("Failed. Please try again later.");        
+  })
+  .finally(function() {
+    $(".right-side .dimmer").removeClass("active");
+  });
+}

@@ -1,0 +1,23 @@
+<div class="ui small basic modal ppi-exp" >
+  <i class="close icon"></i>
+  <div class="header">
+    <i class="large lab icon"></i>
+    Please choose an experimental system.
+  </div>
+  <div class="actions">
+    <div class="ppi-exp-list">
+      <% Ppi::PPI_EXP.each do |name| %>
+        <div class="ui blue approve inverted button" data-value='<%=name%>'>
+          <%=name %>
+        </div>
+      <% end %>
+    </div>
+    <div class="gi-exp-list">
+      <% Ppi::GI_EXP.each do |name| %>
+        <div class="ui green approve inverted button" data-value='<%=name%>'>
+          <%=name %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

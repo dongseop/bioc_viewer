@@ -5,9 +5,9 @@
   <button class="ui button small doc-info-btn" type="button">
     <i class="icon info circle"></i> Doc Info
   </button>
-  <div class="ui buttons small ">
+  <!--div class="ui buttons small ">
     <%=link_to "/documents/#{@document.id}/ppis.csv", class: "ui green button small ", target: "_blank" do %>
-      <i class="icon download"></i> Download PPI/GI Annotation
+      <i class="icon download"></i> Export
     <% end %>
     <div class="ui floating dropdown icon button green small ">
       <i class="dropdown icon"></i>
@@ -20,16 +20,19 @@
         <% end %>
       </div>
     </div>
-  </div>
+  </div-->
   <div class="ui buttons small annotation-toggles">
     <button class="ui button small yellow" data-id="G">
       <i class="icon checkmark"></i> Gene
     </button>
-    <button class="ui button small blue" data-id="O">
+    <button class="ui button small green" data-id="O">
       <i class="icon checkmark"></i> Organism
     </button>
-    <button class="ui button small purple" data-id="E">
-      <i class="icon checkmark"></i> Sentence
+    <button class="ui button small blue" data-id="EP">
+      <i class="icon checkmark"></i> PPI
+    </button>
+    <button class="ui button small red" data-id="EG">
+      <i class="icon checkmark"></i> GI
     </button>
   </div>
 </div>

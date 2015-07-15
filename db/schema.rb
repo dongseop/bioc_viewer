@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708155735) do
+ActiveRecord::Schema.define(version: 20150715024204) do
 
   create_table "documents", force: :cascade do |t|
     t.text     "xml",        limit: 4294967295
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150708155735) do
     t.string   "itype",       limit: 255, default: "ppi"
     t.string   "name1",       limit: 255
     t.string   "name2",       limit: 255
+    t.string   "exp",         limit: 255
   end
 
   add_index "ppis", ["document_id"], name: "index_ppis_on_document_id", using: :btree

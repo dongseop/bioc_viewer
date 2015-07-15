@@ -1,6 +1,20 @@
 // Place all the styles related to the documents controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$red: #db2828;
+$orange: #f2711c;
+$yellow: #fbbd08;
+$olive: #b5cc18;
+$greeen: #21ba45;
+$teal: #00b5ad;
+$purple: #a333c8;
+$blue: #2185d0;
+$violet: #6435c9;
+$pink: #e03997;
+$brown: #a5673f;
+$grey: #767676;
+$black: #1b1c1d;
+$link-color: #DC1644;
 
 
 .document {
@@ -52,13 +66,23 @@
     background-color: #ddd;
 
     .ppis {
+      position: relative;
+      h4 {
+        padding-left: 1em;
+      }
       margin-top: 192px;
       padding: 1em 0;
+      padding-bottom: 150px;
+      .export-btn {
+        position: absolute;
+        top: 9px;
+        right: 1em;
+      }
     }
 
     .ppi-list {
       .delete-button {
-        color: #DC1644;
+        color: $link-color;
       }
       tr.item {
         div.ppi,
@@ -66,9 +90,11 @@
           color: #ccc;
         }
 
-        &.ppi div.ppi ,
+        &.ppi div.ppi {
+          color: $blue;
+        }
         &.gi div.gi {
-          color: #2185d0;
+          color: $red;
         }
       }
       td{
@@ -112,7 +138,7 @@
     position: relative;
 
     .close.icon {
-      color: #DC1644;
+      color: $link-color;
       position: absolute;
       top: 8px;
       left: 112px;
@@ -206,23 +232,23 @@ h1.front {
     }
 
     &.E {
-      border-bottom: 2px solid #900;
+      border-bottom: 3px solid #900;
     }
     &.EP {
-      border-bottom: 2px solid #00f;
+      border-bottom: 3px solid $blue;
     }
     &.EM {
-      border-bottom: 2px solid #f00;
+      border-bottom: 3px solid $grey;
     }
     &.EG {
-      border-bottom: 2px solid #0a0;
+      border-bottom: 3px solid $red;
     }
   
     &.EP.EG {
-      border-bottom: 2px solid #0aa;
+      border-bottom: 3px solid $purple;
     }
     &.EP.EM {
-      border-bottom: 2px solid #a0a;
+      border-bottom: 3px solid $violet;
     }
 
     &.O {
@@ -274,22 +300,52 @@ body {
       }
     }
   }
-  &.E-disabled {
+  &.EP-disabled {
     span.annotation {
-      &.EP, &.EM, &.EG, &.E,
-      &.EP.EM, &.EP.EG, &.EM.EG
+      &.EP
+      {
+        border-bottom: 0;
+      }
+      &.EG.EP
+      {
+        border-bottom: 3px solid $purple;
+      }
+      &.EP.EM {
+        border-bottom: 3px solid $grey;
+      }
+    }
+    .popup-item.EP
+    {
+      display: none
+    }
+  }
+  &.EG-disabled {
+    span.annotation {
+      &.EG
+      {
+        border-bottom: 0;
+      }
+      &.EG.EP
+      {
+        border-bottom: 3px solid $purple;
+      }
+    }
+    .popup-item.EG,
+    {
+      display: none
+    }
+  }
+  &.EP-disabled.EG-disabled {
+    span.annotation {
+      &.EG.EP
       {
         border-bottom: 0;
       }
     }
-    .popup-item.EP,
-    .popup-item.EM,
     .popup-item.EG,
-    .popup-item.E
     {
       display: none
     }
-
   }
 }
 .annotation-item {
@@ -311,7 +367,11 @@ body {
   }
   margin: 2px 0
 }
-
+.ui.celled.table tr td.exp-name:first-child {
+  font-size: 9px;
+  paddding: 2px;
+  border-left: 1px solid rgba(34, 36, 38, 0.1);
+}
 .ui.form div.field.changed {
   animation: flash-scale .5s 1;
   -webkit-animation: flash-scale .5s 1;
@@ -333,6 +393,20 @@ body {
     margin: 2px 0;
 }
 
+.ui.modal.ppi-exp {
+  .ppi-exp-list { display: block;}
+  .gi-exp-list { display: none;}
+  .ui.inverted.button {
+    margin-bottom: 6px;
+  }
+  .actions {
+    text-align: left;
+  }
+  &.show-gi {
+    .ppi-exp-list { display: none;}
+    .gi-exp-list { display: block;}
+  }
+}
 @keyframes flash-scale {
   from { transform: none; }
   50% { transform: scale(1.2); }

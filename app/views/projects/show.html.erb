@@ -29,9 +29,9 @@
     <tr>
       <td><%=link_to d.id, d %></td>
       <td><%=link_to d.doc_id, d %></td>
-      <td><%=link_to d.source, d %></td>
-      <td><%=link_to d.d_date, d %></td>
-      <td><%=link_to d.key, d %></td>
+      <td><%= d.source %></td>
+      <td><%= d.d_date %></td>
+      <td><%= d.key %></td>
       <td><%=time_ago_in_words d.updated_at %> ago </td>
       <td>
         <div class="ui right pointing dropdown">

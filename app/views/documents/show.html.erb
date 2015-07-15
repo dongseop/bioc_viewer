@@ -42,10 +42,12 @@
     <div class="ppis">
       <h4>
         PPI/GI Annotation List 
-            <span class="ui label circular olive ppi-cnt tiny"></span>
-
+        <span class="ui label circular olive ppi-cnt tiny"></span>
+        <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export CSV", target: "_blank" do %>
+          <i class="icon download"></i>
+        <% end %>
       </h4>
-      <table class="ui small table striped celled blue very compact">
+      <table class="ui small table celled blue very compact">
         <thead>
           <th></th>
           <th>Gene 1</th>
@@ -59,10 +61,12 @@
   </div>
 </div>
 <%=render partial: "ppi_type_modal" %>
+<%=render partial: "ppi_exp_modal" %>
+
 <%=render partial: "delete_confirm_modal" %>
 <script id="ppi-template" type="text/x-handlebars-template">
   <tr data-id="{{id}}" class="{{itype}} item">
-    <td class="type type-toggle">
+    <td class="type type-toggle" rowspan="2">
       <div class="ppi">PPI</div>
       <div class="gi">GI</div>
     </div>
@@ -76,9 +80,17 @@
       <br>
       <span class='popup' title='{{name2}}'>{{name2}}</span>
     </td>
-    <td class='action'>
-      <a class="delete-button" rel="nofollow" href="#">
+    <td class='action' rowspan="2">
+      <a class="delete-button" rel="nofollow" href="#" title="Delete">
         <i class="delete icon"></i>
+      </a>
+    </td>
+  </tr>
+  <tr data-id="{{id}}" class="item">
+    <td colspan="2" class="exp-name">
+      <span>{{exp}}</span>
+      <a class="edit-button" rel="nofollow" href="#" title="Edit">
+        <i class="write icon"></i>
       </a>
     </td>
   </tr>

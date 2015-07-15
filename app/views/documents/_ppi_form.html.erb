@@ -1,6 +1,7 @@
   <form class="ui segment inverted small form grey ppi-form" action="/documents/<%=@document.id%>/ppis">
     PPI/GI Annotator
     <input name="ppi[itype]" type="hidden" value="ppi">
+    <input name="ppi[exp]" type="hidden" value="">
 
     <div class="ui divider"></div>
     <div class="two fields">
@@ -30,7 +31,7 @@
         (<% if browser.mac? %>
           &#8984; + S
         <% else %>
-          &#8963; + S
+          CTRL + S
         <% end %>)
     </button>
 
