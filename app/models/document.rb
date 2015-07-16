@@ -2,6 +2,7 @@ class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
   has_many :ppis, dependent: :destroy
+  paginates_per 20
   TYPE2COLOR = {
     "gene" => "yellow",
     "organism" => "orange",

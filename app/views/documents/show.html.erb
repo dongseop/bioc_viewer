@@ -43,9 +43,14 @@
       <h4>
         PPI/GI Annotation List 
         <span class="ui label circular olive ppi-cnt tiny"></span>
-        <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export CSV", target: "_blank" do %>
-          <i class="icon download"></i>
-        <% end %>
+        <div class="export-btn-section">
+          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export CSV", target: "_blank" do %>
+            <i class="icon download"></i> CSV
+          <% end %>
+          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "export-btn ui teal circular icon button small", title: "Export XLS", target: "_blank" do %>
+            <i class="icon download"></i> XLS
+          <% end %>
+        </div>
       </h4>
       <table class="ui small table celled blue very compact">
         <thead>

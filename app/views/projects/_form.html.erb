@@ -20,6 +20,11 @@
     <%= f.text_area :description %>
   </div>
   <div class="actions">
+    <% if params[:action] == 'new' %>
+      <%= link_to 'Back', projects_path, class: "ui button" %>
+    <% else %>
+      <%= link_to 'Back', @project, class: "ui button" %>
+    <% end %>
     <%= f.submit  class: "ui primary button" %>
   </div>
 <% end %>

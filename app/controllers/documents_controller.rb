@@ -66,9 +66,12 @@ class DocumentsController < ApplicationController
   # DELETE /documents/1
   # DELETE /documents/1.json
   def destroy
+    @project = Project.find(params[:project_id])
+
+    return_url = if @project.present? then url_for(@project) else documents_url end
     @document.destroy
     respond_to do |format|
-      format.html { redirect_to documents_url, notice: 'Document was successfully destroyed.' }
+      format.html { redirect_to return_url, notice: 'Document was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

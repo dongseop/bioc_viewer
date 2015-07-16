@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @documents = @project.documents.order("id DESC").page(params[:page])
   end
 
   # GET /projects/new

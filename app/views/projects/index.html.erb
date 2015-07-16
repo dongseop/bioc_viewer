@@ -1,6 +1,6 @@
 <h1 class="ui dividing header">Projects</h1>
 
-<table class="ui table">
+<table  class="ui table celled striped ">
   <thead>
     <tr>
       <th>Title</th>
@@ -17,6 +17,10 @@
         <td><%= project.owner.name %></td>
         <td><%= project.users.size %></td>
         <td>
+          <%= link_to project, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <i class="delete icon"></i> Remove
+          <% end %>
+
         </td>
       </tr>
     <% end %>

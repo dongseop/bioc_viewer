@@ -1,20 +1,6 @@
 // Place all the styles related to the documents controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-$red: #db2828;
-$orange: #f2711c;
-$yellow: #fbbd08;
-$olive: #b5cc18;
-$greeen: #21ba45;
-$teal: #00b5ad;
-$purple: #a333c8;
-$blue: #2185d0;
-$violet: #6435c9;
-$pink: #e03997;
-$brown: #a5673f;
-$grey: #767676;
-$black: #1b1c1d;
-$link-color: #DC1644;
 
 
 .document {
@@ -35,7 +21,7 @@ $link-color: #DC1644;
     // position: fixed;
     // top:0;
     // left: 0;
-    width: 250px;
+    width: 200px;
     white-space: nowrap;
     overflow-x: hidden;
 
@@ -53,7 +39,7 @@ $link-color: #DC1644;
     }
   }
   .main {
-    left: 250px;
+    left: 200px;
     width: 600px;
     background: #fff;
     border-left: 1px solid #ccc;
@@ -62,7 +48,7 @@ $link-color: #DC1644;
   .right-side {
     padding: 0;
     left: 850px;
-    width: 300px;
+    width: 350px;
     background-color: #ddd;
 
     .ppis {
@@ -73,9 +59,10 @@ $link-color: #DC1644;
       margin-top: 192px;
       padding: 1em 0;
       padding-bottom: 150px;
-      .export-btn {
+      .export-btn-section {
         position: absolute;
         top: 9px;
+        text-align: right;
         right: 1em;
       }
     }
@@ -131,7 +118,7 @@ $link-color: #DC1644;
   position: fixed;
   top: 92px;
   right: 0;
-  width: 300px;
+  width: 350px;
   z-index: 1000;
 
   .close-field {
@@ -141,7 +128,7 @@ $link-color: #DC1644;
       color: $link-color;
       position: absolute;
       top: 8px;
-      left: 112px;
+      left: 137px;
       cursor: pointer;
     }
 
@@ -394,13 +381,18 @@ body {
 }
 
 .ui.modal.ppi-exp {
+  .ppi-exp-list, .gi-exp-list {
+    .ui.button {
+      width: 45%;
+    }
+  }
   .ppi-exp-list { display: block;}
   .gi-exp-list { display: none;}
   .ui.inverted.button {
     margin-bottom: 6px;
   }
   .actions {
-    text-align: left;
+    text-align: center;
   }
   &.show-gi {
     .ppi-exp-list { display: none;}

@@ -25,7 +25,6 @@ var BioC = function(id) {
     positionClass: "toast-top-center",
     newestOnTop: true
   };
-  $(".export-btn").popup();
 
   Mousetrap.bind('mod+s', function() {
     $(".ppi-form").submit();
@@ -120,7 +119,7 @@ BioC.prototype.initPaneWidthHeight = function() {
   var width = parseInt($(".document").width(), 10);
   var mainWidth = width - 550;
   $(".main.pane").width((width - 550) + "px");
-  $(".right.pane").css('left', (($(".main.pane").outerWidth() + 250) + "px"));
+  $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
 };
 
 BioC.prototype.initAnnotationToggle = function() {
@@ -306,7 +305,8 @@ BioC.prototype.bindPPIActions = function() {
 
   $('.gene .popup').popup({
     hoverable: true,
-    position : 'left center',
+    inline   : true,
+    position : 'bottom center',
   });
   $(".ppi-list .type-toggle").off("click");
   $(".ppi-list .type-toggle").on("click", function(e) {

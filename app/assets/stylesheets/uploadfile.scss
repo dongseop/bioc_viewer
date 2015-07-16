@@ -1,5 +1,5 @@
 .ajax-file-upload-statusbar {
-border: 1px solid #0ba1b5;
+border: 1px solid $teal;
 margin-top: 10px;
 width: 420px;
 margin-right: 10px;
@@ -11,7 +11,7 @@ padding: 5px 5px 5px 15px
 }
 
 .ajax-file-upload-filename {
-width: 300px;
+width: 100%;
 height: auto;
 margin: 0 5px 5px 0px;
 
@@ -26,7 +26,7 @@ vertical-align:middle;
 .ajax-file-upload-progress {
 margin: 5px 10px 5px 0px;
 position: relative;
-width: 250px;
+width: 500px;
 border: 1px solid #ddd;
 padding: 1px;
 border-radius: 3px;
@@ -36,7 +36,7 @@ vertical-align:middle;
 
 }
 .ajax-file-upload-bar {
-background-color: #0ba1b5;
+background-color: $teal;
 width: 0;
 height: 20px;
 border-radius: 3px;

@@ -12,6 +12,7 @@
         <Cell><Data ss:Type="String">Gene2</Data></Cell>
         <Cell><Data ss:Type="String">Name2</Data></Cell>
         <Cell><Data ss:Type="String">Type</Data></Cell>
+        <Cell><Data ss:Type="String">Exp</Data></Cell>
       </Row>
     <% @ppis.each do |p| %>
       <Row>
@@ -20,6 +21,7 @@
         <Cell><Data ss:Type="String"><%= p.gene2 %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.name2 %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.itype %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.exp %></Data></Cell>
       </Row>
     <% end %>
     </Table>

@@ -1,6 +1,6 @@
-<h2 class="ui dividing header">
+<h1 class="ui dividing header">
   <%= @project.title %>
-</h2>
+</h1>
 
 <ul class="ui bulleted list">
   <li class="item">
@@ -13,6 +13,10 @@
   </li>
 </ul>
 
+<div class="page-info">
+  Total <b><%=@documents.total_count %></b> documents
+  (<b><%=@documents.current_page %></b> of <b><%=@documents.total_pages %></b> pages)
+</div>
 <table class="ui table celled striped ">
   <thead>
     <tr>
@@ -21,25 +25,41 @@
       <th>Source</th>
       <th>Date</th>
       <th>Key</th>
-      <th>Updated At</th>
+      <th>Created At</th>
       <th></th>
     </tr>
   </thead>
-  <% @project.documents.each do |d| %>
+  <% @documents.each do |d| %>
     <tr>
       <td><%=link_to d.id, d %></td>
       <td><%=link_to d.doc_id, d %></td>
       <td><%= d.source %></td>
       <td><%= d.d_date %></td>
       <td><%= d.key %></td>
-      <td><%=time_ago_in_words d.updated_at %> ago </td>
+      <td><%=time_ago_in_words d.created_at %> ago </td>
       <td>
         <div class="ui right pointing dropdown">
           <i class="setting icon"></i>
           <div class="menu">
+            <div class="item">
+              <%=link_to "/documents/#{d.id}.xml", target: "_blank" do %>
+                <i class="icon file"></i> Download BioC
+              <% end %>
+            </div>
             <div class="ui divider"></div>
             <div class="item">
-              <%= link_to d, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <%=link_to "/documents/#{d.id}/ppis.csv", target: "_blank" do %>
+                <i class="icon download"></i> Export Interactions as CSV
+              <% end %>
+            </div>
+            <div class="item">
+              <%=link_to "/documents/#{d.id}/ppis.xls", target: "_blank" do %>
+                <i class="icon download"></i> Export Interactions as XLS
+              <% end %>
+            </div>
+            <div class="ui divider"></div>
+            <div class="item">
+              <%= link_to [@project, d], method: :delete, data: { confirm: 'Are you sure?' } do %>
                 <i class="delete icon"></i> Remove
               <% end %>
             </div>
@@ -49,6 +69,9 @@
     </tr>
   <% end %>
 </table>
+<div class="pagination-section">
+  <%= paginate @documents %>
+</div>
 <% if @project.writable?(current_user) %>
   <div class="ui dimmer" id="uploadSpinner">
     <div class="ui text loader">Uploading</div>
@@ -67,7 +90,7 @@
 
 $(function() {
   $("#fileuploader").uploadFile({
-    url: "/projects/1/documents",
+    url: "/projects/<%=@project.id%>/documents",
     fileName: "file",
     sequential: true,
     sequentialCount: 1,
@@ -75,6 +98,10 @@ $(function() {
     allowedTypes: 'xml',
     uploadStr: 'Upload Multiple BioC Documents',
     afterUploadAll: function(obj) {
+      console.log(obj);
+      toastr.success(obj.selectedFiles + " files were uploaded successfully.", null,{
+        positionClass: "toast-bottom-full-width"
+      })
       location.reload();
     }
   });

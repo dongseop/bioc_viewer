@@ -10,11 +10,29 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
  *= require_self
+ *= require toastr.min
  */
+$red: #db2828;
+$orange: #f2711c;
+$yellow: #fbbd08;
+$olive: #b5cc18;
+$greeen: #21ba45;
+$teal: #00b5ad;
+$purple: #a333c8;
+$blue: #2185d0;
+$violet: #6435c9;
+$pink: #e03997;
+$brown: #a5673f;
+$grey: #767676;
+$black: #1b1c1d;
+$link-color: #DC1644;
+
 
 @import "home";
+@import "documents";
+@import "semantic";
+@import "uploadfile";
 
 body {
   background-color: #eee!important;
@@ -100,6 +118,10 @@ body {
   }
 }
 
+h1.ui.dividing.header {
+  color: $teal;
+  margin-top: 0.5em;
+}
 .fixed-buttons {
   position: fixed;
   top: 45px;
@@ -112,4 +134,15 @@ body {
   .annotation-toggles {
     float: right;
   }
+}
+.page-info {
+  text-align: right;
+  color: $olive;
+  b {
+    color: $teal;
+  }
+}
+.pagination-section {
+  text-align:center;
+  margin: 0 0 1em 0;
 }
