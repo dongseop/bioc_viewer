@@ -5,6 +5,10 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.json
   def index
+    unless current_user.super_admin?
+      redirect_to "/", error: "Cannot access the document"
+    end
+
     @documents = Document.all
   end
 
@@ -12,8 +16,9 @@ class DocumentsController < ApplicationController
   # GET /documents/1.json
   def show
     @project = @document.project
-
-    
+    unless @project.readable?(current_user)
+      redirect_to "/", error: "Cannot access the document"
+    end
     respond_to do |format|
       format.html
       format.json
@@ -23,17 +28,29 @@ class DocumentsController < ApplicationController
 
   # GET /documents/new
   def new
+    @project = Project.find(params[:project_id])
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the document"
+    end
     @document = Document.new
   end
 
   # GET /documents/1/edit
   def edit
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the document"
+    end
   end
 
   # POST /documents
   # POST /documents.json
   def create
     @project = Project.find(params[:project_id])
+
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the document"
+    end
+
     @document = Document.create_from_file(params[:file])
     @document.project_id = @project.id
     @document.user_id = current_user.id
@@ -67,6 +84,9 @@ class DocumentsController < ApplicationController
   # DELETE /documents/1.json
   def destroy
     @project = Project.find(params[:project_id])
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the document"
+    end
 
     return_url = if @project.present? then url_for(@project) else documents_url end
     @document.destroy

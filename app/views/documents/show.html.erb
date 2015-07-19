@@ -37,17 +37,19 @@
       </div>
     <% end %>
   </div>
-  <div class="ui right top right-side pane">
-    <%= render partial: "ppi_form" %>
+  <div class="ui right top right-side pane <%='readonly' unless @document.project.writable?(current_user)%>">
+    <% if @document.project.writable?(current_user) %>
+      <%= render partial: "ppi_form" %>
+      <% end%>
     <div class="ppis">
       <h4>
         PPI/GI Annotation List 
         <span class="ui label circular olive ppi-cnt tiny"></span>
         <div class="export-btn-section">
-          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export CSV", target: "_blank" do %>
+          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export to CSV", target: "_blank" do %>
             <i class="icon download"></i> CSV
           <% end %>
-          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "export-btn ui teal circular icon button small", title: "Export XLS", target: "_blank" do %>
+          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "export-btn ui teal circular icon button small", title: "Export to XLS", target: "_blank" do %>
             <i class="icon download"></i> XLS
           <% end %>
         </div>
@@ -57,7 +59,9 @@
           <th></th>
           <th>Gene 1</th>
           <th>Gene 2</th>
-          <th></th>
+          <% if @document.project.writable?(current_user) %>
+            <th></th>
+          <% end %>
         </thead>
         <tbody class="ppi-list">
         </tbody>
@@ -85,30 +89,35 @@
       <br>
       <span class='popup' title='{{name2}}'>{{name2}}</span>
     </td>
-    <td class='action' rowspan="2">
-      <a class="delete-button" rel="nofollow" href="#" title="Delete">
-        <i class="delete icon"></i>
-      </a>
-    </td>
+    <% if @document.project.writable?(current_user) %>
+      <td class='action' rowspan="2">
+        <a class="delete-button" rel="nofollow" href="#" title="Delete">
+          <i class="delete icon"></i>
+        </a>
+      </td>
+    <% end %>
   </tr>
   <tr data-id="{{id}}" class="item">
     <td colspan="2" class="exp-name">
       <span>{{exp}}</span>
-      <a class="edit-button" rel="nofollow" href="#" title="Edit">
-        <i class="write icon"></i>
-      </a>
+      <% if @document.project.writable?(current_user) %>
+        <a class="edit-button" rel="nofollow" href="#" title="Edit">
+          <i class="write icon"></i>
+        </a>
+      <% end %>
     </td>
   </tr>
 </script>
 
 <script>
-var doc = new BioC('<%=@document.id%>');
-// doc.load()
-// .then(function() {
-//   $("#documentSpinner").removeClass("active");
-// });
+$(document).on("page:change", function() {
+  var doc = new BioC('<%=@document.id%>', {
+    isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>'
+  });
+  // doc.load()
+  // .then(function() {
+  //   $("#documentSpinner").removeClass("active");
+  // });
   $("#documentSpinner").removeClass("active");
-
-
-
+});
 </script>

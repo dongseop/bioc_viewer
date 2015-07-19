@@ -5,13 +5,16 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    @projects = current_user.projects.all
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @documents = @project.documents.order("id DESC").page(params[:page])
+    unless @project.readable?(current_user)
+      redirect_to "/", error: "Cannot access the project"
+    end
+    @documents = @project.documents.order("id ASC").page(params[:page])
   end
 
   # GET /projects/new
@@ -21,6 +24,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the project"
+    end
   end
 
   # POST /projects
@@ -42,6 +48,9 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the project"
+    end
     respond_to do |format|
       if @project.update(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
@@ -56,6 +65,10 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the project"
+    end
+
     @project.destroy
     respond_to do |format|
       format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }

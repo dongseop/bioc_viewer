@@ -110,6 +110,16 @@
         text-align:center;
       }
     }
+
+    &.readonly {
+      .ppis {margin-top: 0}
+      .ppi-list {
+        td.type {
+          cursor: default;
+        }
+      } 
+    }
+
   }
 }
 

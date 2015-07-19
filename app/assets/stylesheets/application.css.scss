@@ -146,3 +146,29 @@ h1.ui.dividing.header {
   text-align:center;
   margin: 0 0 1em 0;
 }
+
+#error_explanation {
+  width: 100%;
+  border: 2px solid $red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  color: $red;
+  background-color: #f2dede;
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    margin: -7px;
+    font-size: 14px;
+    margin-bottom: 0px;
+    background-color: $red;
+    color: #fff;
+  }
+  ul {
+    padding: 5px 5px 5px 20px;
+  }
+  ul li {
+    list-style: square;
+  }
+}

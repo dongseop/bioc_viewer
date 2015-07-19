@@ -10,7 +10,8 @@ class PpisController < ApplicationController
       format.html
       format.json
       format.csv { send_data @ppis.to_csv, :filename => "#{@document.unique_id}_ppi.csv" }
-      format.xls # { send_data @products.to_csv(col_sep: "\t") }
+      format.xls { send_data render_to_string(:template => "ppis/index.xls.erb"),
+             :filename => "#{@document.unique_id}_ppi.xls" }
     end
   end
 

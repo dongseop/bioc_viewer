@@ -1,9 +1,12 @@
-var BioC = function(id) {
+var BioC = function(id, options) {
+  options = _.extend({
+    isReadOnly: false
+  }, options);
   this.id = id;
   this.url = "/documents/" + id;
   this.template = {};
   this.template.ppi = Handlebars.compile($("#ppi-template").html());
-
+  this.isReadOnly = options.isReadOnly;
   this.lastModifiedGeneField = "";
 
   this.initAnnotationPopup();
@@ -26,11 +29,12 @@ var BioC = function(id) {
     newestOnTop: true
   };
 
-  Mousetrap.bind('mod+s', function() {
-    $(".ppi-form").submit();
-    return false;
-  });
-
+  if (!this.isReadOnly) {
+    Mousetrap.bind('mod+s', function() {
+      $(".ppi-form").submit();
+      return false;
+    });
+  }
   return this;
 };
 
@@ -72,6 +76,10 @@ BioC.prototype.initAnnotationPopup = function() {
 
 
 BioC.prototype.initAnnotationClick = function() {
+  if (this.isReadOnly) {
+    return;
+  }
+
   $("span.annotation").click(function(e) {
     var $e = $(e.currentTarget);
     var gene = $e.data("gene");
@@ -173,6 +181,19 @@ BioC.prototype.initOutlineScroll = function() {
 };
 
 BioC.prototype.initPPI = function() {
+  Q($.getJSON(this.url + "/ppis.json"))
+  .then(function(arr) {
+    $(".ppi-cnt").text(arr.length);
+    _.each(arr, function(item) {
+      $(".ppis .ppi-list").append(this.template.ppi(item));
+    }.bind(this));
+    this.bindPPIActions();
+  }.bind(this));
+
+  if (this.isReadOnly) {
+    return;
+  }
+  
   $(".ppi-form .gene-field").on('keyup change', function(e) {
     var $e = $(e.currentTarget);
     if ($e.val().trim().length > 0) {
@@ -229,18 +250,12 @@ BioC.prototype.initPPI = function() {
       return false;
     }
   });
-
-  Q($.getJSON(this.url + "/ppis.json"))
-  .then(function(arr) {
-    $(".ppi-cnt").text(arr.length);
-    _.each(arr, function(item) {
-      $(".ppis .ppi-list").append(this.template.ppi(item));
-    }.bind(this));
-    this.bindPPIActions();
-  }.bind(this));
 };
 
 BioC.prototype.addPPI = function() {
+  if (this.isReadOnly) {
+    return;
+  }
   $(".right-side .dimmer").addClass("active");
   Q($.ajax({
     url: $(".ppi-form").attr("action"), 
@@ -274,6 +289,15 @@ BioC.prototype.addPPI = function() {
 }
 
 BioC.prototype.bindPPIActions = function() {
+  $('.gene .popup').popup({
+    hoverable: true,
+    inline   : true,
+    position : 'bottom center',
+  });
+
+  if (this.isReadOnly) {
+    return;
+  }
   $(".ppi-list .delete-button").off("click");
   $(".ppi-list .delete-button").on("click", function(e) {
     $(".ui.modal.delete-confirm").modal({
@@ -303,11 +327,6 @@ BioC.prototype.bindPPIActions = function() {
     return false;
   }.bind(this));
 
-  $('.gene .popup').popup({
-    hoverable: true,
-    inline   : true,
-    position : 'bottom center',
-  });
   $(".ppi-list .type-toggle").off("click");
   $(".ppi-list .type-toggle").on("click", function(e) {
     var $e = $(e.currentTarget);
@@ -339,6 +358,10 @@ BioC.prototype.bindPPIActions = function() {
 };
 
 BioC.prototype.removePPI = function(id) {
+  if (this.isReadOnly) {
+    return;
+  }
+
   $(".right-side .dimmer").addClass("active");
   Q($.ajax({
     url: "/ppis/" + id + ".json", 
@@ -369,6 +392,10 @@ BioC.prototype.removePPI = function(id) {
 };
 
 BioC.prototype.updatePPI = function(id, exp) {
+  if (this.isReadOnly) {
+    return;
+  }
+
   $(".right-side .dimmer").addClass("active");
   Q($.ajax({
     url: "/ppis/" + id + ".json", 

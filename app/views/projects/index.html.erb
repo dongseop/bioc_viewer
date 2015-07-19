@@ -17,9 +17,22 @@
         <td><%= project.owner.name %></td>
         <td><%= project.users.size %></td>
         <td>
-          <%= link_to project, method: :delete, data: { confirm: 'Are you sure?' } do %>
-            <i class="delete icon"></i> Remove
-          <% end %>
+          <div class="ui right pointing dropdown">
+            <i class="setting icon blue"></i>
+            <div class="menu">
+              <div class="item">
+                <%= link_to project_project_users_path(project) do %>
+                  <i class="icon users"></i> Manage Users
+                <% end %>
+              </div>
+              <div class="ui divider"></div>
+              <div class="item">
+                <%= link_to project, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <i class="delete icon"></i> Remove
+                <% end %>
+              </div>
+            </div>
+          </div>
 
         </td>
       </tr>
@@ -29,4 +42,6 @@
 
 <br>
 
-<%= link_to 'New Project', new_project_path, class: "ui primary button" %>
+<%= link_to new_project_path, class: "ui primary button" do %>
+  <i class="icon add"></i> New Project
+<% end %>

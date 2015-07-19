@@ -87,10 +87,12 @@
   </div>
 </div> 
 <script>
+$(document).on("page:change", function() {
   $('.message .close').on('click', function() {
     $(this).closest('.message').fadeOut();
   });
   $('.ui.dropdown').dropdown();
+});
 </script>
 </body>
 </html>

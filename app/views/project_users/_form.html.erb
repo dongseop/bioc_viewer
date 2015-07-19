@@ -1,7 +1,7 @@
-<%= form_for(@project_user) do |f| %>
+<%= form_for([@project, @project_user], html: {class: "ui form"}) do |f| %>
   <% if @project_user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@project_user.errors.count, "error") %> prohibited this project_user from being saved:</h2>
+      <h2><%= pluralize(@project_user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
       <% @project_user.errors.full_messages.each do |message| %>
@@ -11,19 +11,42 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id %>
+  <div class="field <%='disabled' unless @project_user.user.nil? %>">
+    <label>User Email</label>
+    <% if @project_user.user.nil? %>
+      <%= email_field_tag "email", '', placeholder: 'E-mail address (ex: john@test.com)' %>
+    <% else %>
+      <%= email_field_tag "email", @project_user.user.email, readonly: true, placeholder: 'E-mail address (ex: john@test.com)', class: "disbaled" %>
+    <% end %>
   </div>
   <div class="field">
-    <%= f.label :project_id %><br>
-    <%= f.text_field :project_id %>
+    <div class="ui checkbox">
+      <input type="checkbox" value="1" name="r" <%='checked' if @project_user.readable? %> tabindex="0" class="hidden">
+      <label>Read: able to read documents in this project</label>
+    </div>
   </div>
   <div class="field">
-    <%= f.label :priv %><br>
-    <%= f.text_field :priv %>
+    <div class="ui checkbox">
+      <input type="checkbox" value="1" name="w" <%='checked' if @project_user.writable? %> tabindex="0" class="hidden">
+      <label>Write: able to edit interactions in documents</label>
+    </div>
   </div>
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" value="1" name="a" <%='checked' if @project_user.admin? %> tabindex="0" class="hidden">
+      <label>Admin: able to add/remove documents/users in this project</label>
+    </div>
+  </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= link_to project_project_users_path(@project), class: "ui button" do %>
+      <i class="icon angle left"></i> Back
+    <% end %>
+    <%= f.submit class: "ui button primary" %>
   </div>
 <% end %>
+<script>
+$(document).on("page:change", function() {
+  $('.ui.checkbox').checkbox();
+});
+</script>

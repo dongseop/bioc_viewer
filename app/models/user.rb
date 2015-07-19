@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   has_many :owner_projects, class_name: "Project", foreign_key: 'user_id'
   has_many :project_users, dependent: :destroy
   has_many :projects, through: :project_users
+
+  def super_admin?
+    %w(dongseop@gmail.com).includes?(self.email)
+  end
 end

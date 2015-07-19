@@ -15,64 +15,73 @@
 
 <div class="page-info">
   Total <b><%=@documents.total_count %></b> documents
-  (<b><%=@documents.current_page %></b> of <b><%=@documents.total_pages %></b> pages)
+  <% unless @documents.empty? %>
+    (<b><%=@documents.current_page %></b> of <b><%=@documents.total_pages %></b> pages)
+  <% end %>
 </div>
-<table class="ui table celled striped ">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>Doc ID</th>
-      <th>Source</th>
-      <th>Date</th>
-      <th>Key</th>
-      <th>Created At</th>
-      <th></th>
-    </tr>
-  </thead>
-  <% @documents.each do |d| %>
-    <tr>
-      <td><%=link_to d.id, d %></td>
-      <td><%=link_to d.doc_id, d %></td>
-      <td><%= d.source %></td>
-      <td><%= d.d_date %></td>
-      <td><%= d.key %></td>
-      <td><%=time_ago_in_words d.created_at %> ago </td>
-      <td>
-        <div class="ui right pointing dropdown">
-          <i class="setting icon"></i>
-          <div class="menu">
-            <div class="item">
-              <%=link_to "/documents/#{d.id}.xml", target: "_blank" do %>
-                <i class="icon file"></i> Download BioC
-              <% end %>
-            </div>
-            <div class="ui divider"></div>
-            <div class="item">
-              <%=link_to "/documents/#{d.id}/ppis.csv", target: "_blank" do %>
-                <i class="icon download"></i> Export Interactions as CSV
-              <% end %>
-            </div>
-            <div class="item">
-              <%=link_to "/documents/#{d.id}/ppis.xls", target: "_blank" do %>
-                <i class="icon download"></i> Export Interactions as XLS
-              <% end %>
-            </div>
-            <div class="ui divider"></div>
-            <div class="item">
-              <%= link_to [@project, d], method: :delete, data: { confirm: 'Are you sure?' } do %>
-                <i class="delete icon"></i> Remove
+<% if @documents.empty? %>
+  <div class="ui message info">
+    No document yet. Please upload documents first.
+  </div>
+
+<% else %>
+  <table class="ui table celled striped ">
+    <thead>
+      <tr>
+        <th>Doc ID</th>
+        <th>Source</th>
+        <th>Date</th>
+        <th>Key</th>
+        <th>Created At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <% @documents.each do |d| %>
+      <tr>
+        <td><%=link_to d.doc_id, d %></td>
+        <td><%= d.source %></td>
+        <td><%= d.d_date %></td>
+        <td><%= d.key %></td>
+        <td><%=time_ago_in_words d.created_at %> ago </td>
+        <td>
+          <div class="ui right pointing dropdown">
+            <i class="setting icon blue"></i>
+            <div class="menu">
+              <div class="item">
+                <%=link_to "/documents/#{d.id}.xml", target: "_blank" do %>
+                  <i class="icon file"></i> Download BioC
+                <% end %>
+              </div>
+              <div class="ui divider"></div>
+              <div class="item">
+                <%=link_to "/documents/#{d.id}/ppis.csv", target: "_blank" do %>
+                  <i class="icon download"></i> Export Interactions to CSV
+                <% end %>
+              </div>
+              <div class="item">
+                <%=link_to "/documents/#{d.id}/ppis.xls", target: "_blank" do %>
+                  <i class="icon download"></i> Export Interactions to XLS
+                <% end %>
+              </div>
+              <% if @project.admin?(current_user) %>
+                <div class="ui divider"></div>
+                <div class="item">
+                  <%= link_to [@project, d], method: :delete, data: { confirm: 'Are you sure?' } do %>
+                    <i class="delete icon"></i> Remove
+                  <% end %>
+                </div>
               <% end %>
             </div>
           </div>
-        </div>
-      </td>
-    </tr>
-  <% end %>
-</table>
-<div class="pagination-section">
-  <%= paginate @documents %>
-</div>
-<% if @project.writable?(current_user) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="pagination-section">
+    <%= paginate @documents %>
+  </div>
+<% end %>
+<% if @project.admin?(current_user) %>
   <div class="ui dimmer" id="uploadSpinner">
     <div class="ui text loader">Uploading</div>
   </div>
@@ -80,15 +89,24 @@
 <% end %>
 
 <div class="ui divider"></div>
-<%= link_to 'Back', projects_path , class: "ui button"%>
+
+<%= link_to projects_path , class: "ui button" do %>
+  <i class="icon angle left"></i> Back
+<% end %>
 <% if @project.admin?(current_user) %>
-  <%= link_to 'Edit', edit_project_path(@project), class: "ui button" %>
-  <%= link_to 'Destroy', @project, method: :delete, data: { confirm: 'Are you sure?' }, class: "ui button red" %>
+  <%= link_to edit_project_path(@project), class: "ui button" do %>
+    <i class="icon write"></i> Edit
+  <% end %>
+  <%= link_to project_project_users_path(@project), class: "ui button teal" do %>
+    <i class="icon users"></i> Manage Users
+  <% end %>
+  <%= link_to @project, method: :delete, data: { confirm: 'Are you sure?' }, class: "ui button red" do %>
+    <i class="icon trash"></i> Remove Project
+  <% end %>
 <% end %>
 
 <script>
-
-$(function() {
+$(document).on("page:change", function() {
   $("#fileuploader").uploadFile({
     url: "/projects/<%=@project.id%>/documents",
     fileName: "file",

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   resources :projects do 
     resources :documents
+    resources :project_users
   end
 
   devise_for :users, :controllers => { registrations: 'registrations' }

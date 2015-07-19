@@ -19,16 +19,25 @@ class Project < ActiveRecord::Base
 
   def readable?(user)
     pu = self.project_users.where("user_id = ?", user.id).first
-    !pu.nil? && pu.priv.downcase.include?("r")
+    !pu.nil? && pu.readable?
   end
 
   def writable?(user)
     pu = self.project_users.where("user_id = ?", user.id).first
-    !pu.nil? && pu.priv.downcase.include?("w")
+    !pu.nil? && pu.writable?
   end
 
   def admin?(user)
     pu = self.project_users.where("user_id = ?", user.id).first
-    !pu.nil? && pu.priv.downcase.include?("a")
+    !pu.nil? && pu.admin?
+  end
+
+  def priv
+    pu = self.project_users.where("user_id = ?", user.id).first
+    if pu.nil?
+      ""
+    else
+      pu.priv
+    end
   end
 end

@@ -5,7 +5,13 @@ class ProjectUsersController < ApplicationController
   # GET /project_users
   # GET /project_users.json
   def index
-    @project_users = ProjectUser.all
+    @project = Project.where("id=?", params[:project_id]).first
+    if @project.nil?
+      redirect_to "/", error: 'Not exist project'
+      return
+    else
+      @project_users = @project.project_users
+    end
   end
 
   # GET /project_users/1
@@ -15,21 +21,35 @@ class ProjectUsersController < ApplicationController
 
   # GET /project_users/new
   def new
+    @project = Project.find(params[:project_id])
     @project_user = ProjectUser.new
   end
 
   # GET /project_users/1/edit
   def edit
+    @project = Project.find(params[:project_id])
   end
 
   # POST /project_users
   # POST /project_users.json
   def create
-    @project_user = ProjectUser.new(project_user_params)
+    @project = Project.find(params[:project_id])
+    @user = User.where("email = ?", params[:email]).first
+    pu = ProjectUser.where("")
+    privs = []
+    privs << "r" if params[:r] == "1"
+    privs << "w" if params[:w] == "1"
+    privs << "a" if params[:a] == "1"
+    @priv = privs.join("")
+    @project_user = ProjectUser.new
+    @project_user.project_id = @project.id
+    @project_user.user_id = @user.id unless @user.nil?
+    @project_user.priv = @priv
 
+    logger.debug("PRIV=#{@priv}, #{privs.inspect}")
     respond_to do |format|
       if @project_user.save
-        format.html { redirect_to @project_user, notice: 'Project user was successfully created.' }
+        format.html { redirect_to project_project_users_path(@project), notice: 'Project user was successfully created.' }
         format.json { render :show, status: :created, location: @project_user }
       else
         format.html { render :new }
@@ -70,6 +90,6 @@ class ProjectUsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_user_params
-      params.require(:project_user).permit(:user_id, :project_id, :priv)
+      params.require(:project_user).permit(:email, :project_id, :r, :w, :a)
     end
 end
