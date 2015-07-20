@@ -37,11 +37,31 @@ class Ppi < ActiveRecord::Base
     "N/A"
   ]
 
+  def pmc
+    if self.document.nil?
+      ""
+    else
+      self.document.article_id_pmc
+    end
+  end
+
+  def pmid
+    if self.document.nil?
+      ""
+    else
+      self.document.article_id_pmid
+    end
+  end
+
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << %w(gene1 name1 gene2 name2 type exp)
+      csv << %w(Gene1 Name1 Gene2 Name2 Type Exp PMC PMID)
       all.each do |ppi|
-        csv << [ppi.gene1, ppi.name1, ppi.gene2, ppi.name2, ppi.itype, ppi.exp]
+        
+
+        csv << [ppi.gene1, ppi.name1, ppi.gene2, ppi.name2, 
+            ppi.itype.upcase, ppi.exp,
+            ppi.pmc, ppi.pmid]
       end
     end
   end

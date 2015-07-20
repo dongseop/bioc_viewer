@@ -76,6 +76,28 @@ class Document < ActiveRecord::Base
     root[:children]
   end
 
+  def article_id_pmc
+    if @article_id_pmc.nil?
+      @article_id_pmc = self.find_value_for_infonkey("article-id_pmc") 
+    end
+    return @article_id_pmc
+  end
+
+  def article_id_pmid
+    if @article_id_pmid.nil?
+      @article_id_pmid = self.find_value_for_infonkey("article-id_pmid") 
+    end
+    return @article_id_pmid
+  end
+
+  def find_value_for_infonkey(key)
+    return self.bioc_doc.infons[key] unless self.bioc_doc.infons[key].nil?
+    self.bioc_doc.passages.each do |p|
+      return p.infons[key] unless p.infons[key].nil?
+    end
+    
+  end
+
   def get_class_from_passage(p)
     cls = []
     p.annotations.each do |a|

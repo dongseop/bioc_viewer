@@ -74,10 +74,10 @@
 
 <%=render partial: "delete_confirm_modal" %>
 <script id="ppi-template" type="text/x-handlebars-template">
-  <tr data-id="{{id}}" class="{{itype}} item">
+  <tr data-id="{{id}}" class="{{toUpperCase itype}} item">
     <td class="type type-toggle" rowspan="2">
-      <div class="ppi">PPI</div>
-      <div class="gi">GI</div>
+      <div class="PPI">PPI</div>
+      <div class="GI">GI</div>
     </div>
     <td class='gene'>
       <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene1}}' target='_blank'><i class='icon globe'></i>{{gene1}}</a>

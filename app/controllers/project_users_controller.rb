@@ -61,9 +61,16 @@ class ProjectUsersController < ApplicationController
   # PATCH/PUT /project_users/1
   # PATCH/PUT /project_users/1.json
   def update
+    privs = []
+    privs << "r" if params[:r] == "1"
+    privs << "w" if params[:w] == "1"
+    privs << "a" if params[:a] == "1"
+    @priv = privs.join("")
+    @project_user.priv = @priv
+    @project = @project_user.project
     respond_to do |format|
-      if @project_user.update(project_user_params)
-        format.html { redirect_to @project_user, notice: 'Project user was successfully updated.' }
+      if @project_user.save
+        format.html { redirect_to project_project_users_path(@project), notice: 'User setting was successfully updated.' }
         format.json { render :show, status: :ok, location: @project_user }
       else
         format.html { render :edit }
@@ -77,7 +84,7 @@ class ProjectUsersController < ApplicationController
   def destroy
     @project_user.destroy
     respond_to do |format|
-      format.html { redirect_to project_users_url, notice: 'Project user was successfully destroyed.' }
+      format.html { redirect_to project_users_url, notice: 'User setting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -13,6 +13,8 @@
         <Cell><Data ss:Type="String">Name2</Data></Cell>
         <Cell><Data ss:Type="String">Type</Data></Cell>
         <Cell><Data ss:Type="String">Exp</Data></Cell>
+        <Cell><Data ss:Type="String">PMC</Data></Cell>
+        <Cell><Data ss:Type="String">PMID</Data></Cell>
       </Row>
     <% @ppis.each do |p| %>
       <Row>
@@ -22,6 +24,8 @@
         <Cell><Data ss:Type="String"><%= p.name2 %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.itype %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.exp %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.pmc %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= p.pmid %></Data></Cell>
       </Row>
     <% end %>
     </Table>

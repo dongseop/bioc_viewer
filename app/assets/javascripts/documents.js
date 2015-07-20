@@ -13,7 +13,9 @@ var BioC = function(id, options) {
   this.initAnnotationClick();
   this.initAnnotationToggle();
   this.initPaneWidthHeight();
-
+  Handlebars.registerHelper('toUpperCase', function(str) {
+    return str.toUpperCase();
+  });
   $(window).on('resize', function() {
     this.initPaneWidthHeight();
   }.bind(this));
@@ -135,7 +137,7 @@ BioC.prototype.initAnnotationToggle = function() {
     e.preventDefault();
     e.stopPropagation();
     var $e = $(e.currentTarget);
-    $e.toggleClass("inactive");
+    $e.toggleClass("inactivte");
     console.log("toggle inactive!");
     var disabled = _.map($(".annotation-toggles button.inactive"), function(item) {
       return $(item).data("id") + "-disabled";
@@ -315,8 +317,8 @@ BioC.prototype.bindPPIActions = function() {
   $(".ppi-list .edit-button").on("click", function(e) {
     var $tr = $(e.currentTarget).parents("tr").prev();
     var id = $tr.data("id");
-    var currentType = $tr.hasClass("ppi") ? "ppi" : "gi";
-    $(".ui.modal.ppi-exp").removeClass("show-ppi show-gi").addClass("show-" + currentType);
+    var currentType = $tr.hasClass("PPI") ? "PPI" : "GI";
+    $(".ui.modal.ppi-exp").removeClass("show-PPI show-GI").addClass("show-" + currentType);
     $(".ui.modal.ppi-exp").modal({
         onApprove: function($e) {
           var exp = $e.data('value');
@@ -332,7 +334,7 @@ BioC.prototype.bindPPIActions = function() {
     var $e = $(e.currentTarget);
     var $parent = $e.parents("tr")
     var id = $parent.data("id");
-    var type = $parent.hasClass("ppi") ? "gi" : "ppi";
+    var type = $parent.hasClass("PPI") ? "GI" : "PPI";
 
     $(".right-side .dimmer").addClass("active");
     Q($.ajax({
@@ -344,7 +346,7 @@ BioC.prototype.bindPPIActions = function() {
     }))
     .then(function(data) {
       toastr.success("Interaction type was successfully changed.");        
-      $parent.removeClass("ppi gi").addClass(data.itype);
+      $parent.removeClass("PPI GI").addClass(data.itype);
       $e.transition('tada');
     }.bind(this))
     .catch(function(xhr) {

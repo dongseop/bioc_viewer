@@ -72,15 +72,15 @@
         color: $link-color;
       }
       tr.item {
-        div.ppi,
-        div.gi {
+        div.PPI,
+        div.GI {
           color: #ccc;
         }
 
-        &.ppi div.ppi {
+        &.PPI div.PPI {
           color: $blue;
         }
-        &.gi div.gi {
+        &.GI div.GI {
           color: $red;
         }
       }
@@ -404,7 +404,7 @@ body {
   .actions {
     text-align: center;
   }
-  &.show-gi {
+  &.show-GI {
     .ppi-exp-list { display: none;}
     .gi-exp-list { display: block;}
   }
