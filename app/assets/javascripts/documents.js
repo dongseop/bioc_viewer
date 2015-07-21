@@ -137,7 +137,7 @@ BioC.prototype.initAnnotationToggle = function() {
     e.preventDefault();
     e.stopPropagation();
     var $e = $(e.currentTarget);
-    $e.toggleClass("inactivte");
+    $e.toggleClass("inactive");
     console.log("toggle inactive!");
     var disabled = _.map($(".annotation-toggles button.inactive"), function(item) {
       return $(item).data("id") + "-disabled";

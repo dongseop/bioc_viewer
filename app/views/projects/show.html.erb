@@ -108,7 +108,7 @@
 <% end %>
 
 <script>
-$(document).on("page:change", function() {
+$(function() {
   $("#fileuploader").uploadFile({
     url: "/projects/<%=@project.id%>/documents",
     fileName: "file",

@@ -110,7 +110,7 @@
 </script>
 
 <script>
-$(document).on("page:change", function() {
+$(function() {
   var doc = new BioC('<%=@document.id%>', {
     isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>'
   });

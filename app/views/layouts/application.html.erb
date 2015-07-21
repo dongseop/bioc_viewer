@@ -10,8 +10,8 @@
 
 <meta name="description" content="BioC-Viewer: BioCreative V - Track 1- Collaborative Biocurator Assistant Task (BioC) - 8. Visual tool for displaying various annotations" />
 <meta name="keywords" content="BioC visul tool BioC-Viewer BioCurator Assistant Task" />
-<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag    'application', media: 'all' %>
+<%= javascript_include_tag 'application' %>
 <%= csrf_meta_tags %>
 </head>
 <body id="bioc" class="default-layout <%=params[:controller]%>-<%=params[:action]%>" ontouchstart="">
@@ -87,7 +87,7 @@
   </div>
 </div> 
 <script>
-$(document).on("page:change", function() {
+$(function() {
   $('.message .close').on('click', function() {
     $(this).closest('.message').fadeOut();
   });
