@@ -93,6 +93,9 @@ BioC.prototype.initAnnotationClick = function() {
     var $targetParent;
 
     if (!gene) {
+      if (!name) {
+        return;
+      }
       gene = "";
     }
 
@@ -182,6 +185,16 @@ BioC.prototype.initOutlineScroll = function() {
   });
 };
 
+BioC.prototype.checkSearchButton = function($e) {
+  var $name = $e.parents(".field").find(".for-name");
+  var $gene = $e.parents(".field").find(".for-gene");
+  if ($name.val().trim().length > 0 && $gene.val().trim().length == 0) {
+    $name.parent().addClass("enable-search");
+  } else {
+    $name.parent().removeClass("enable-search");
+  }
+}
+
 BioC.prototype.initPPI = function() {
   Q($.getJSON(this.url + "/ppis.json"))
   .then(function(arr) {
@@ -203,13 +216,20 @@ BioC.prototype.initPPI = function() {
     } else {
       $e.parent().addClass("empty");
     }
-  });
+    this.checkSearchButton($e);
+  }.bind(this));
 
+  $(".ppi-form .field .search.icon").click(function(e) {
+    var $e = $(e.currentTarget);
+    var q = $e.parent().find(".for-name").val().trim();
+    window.open("http://www.ncbi.nlm.nih.gov/gene/?term=" + encodeURIComponent(q), "ncbi-gene");
+  });
   $(".ppi-form .field .close.icon").click(function(e) {
     var $e = $(e.currentTarget).parent();
     $e.addClass("empty");
     $e.find(".gene-field").val("");
-  });
+    this.checkSearchButton($e);
+  }.bind(this));
   $(".ppi-form").form({
     fields: {
       gene1: {

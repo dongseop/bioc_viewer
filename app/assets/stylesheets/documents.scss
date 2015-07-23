@@ -134,12 +134,25 @@
   .close-field {
     position: relative;
 
-    .close.icon {
+    .close.icon,
+    .search.icon {
       color: $link-color;
       position: absolute;
       top: 8px;
       left: 137px;
       cursor: pointer;
+    }
+
+    .search.icon {
+      color: $teal;
+      left: 122px;
+      display: none;
+    }
+
+    &.enable-search {
+      .search.icon {
+        display: block;
+      }
     }
 
     &.empty {
