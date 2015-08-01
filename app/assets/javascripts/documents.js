@@ -113,9 +113,12 @@ BioC.prototype.initAnnotationClick = function() {
     $targetName.val(name);
     $targetParent = $target.parents(".field");
 
+    this.checkSearchButton($targetName);
     $targetParent.removeClass("changed empty");
     $targetName.parent().removeClass("empty");
-    $target.parent().removeClass("empty");
+    if ($target.val().length > 0) {
+      $target.parent().removeClass("empty");
+    }
     setTimeout(function() {
       $targetParent.addClass("changed");
     }, 100);
