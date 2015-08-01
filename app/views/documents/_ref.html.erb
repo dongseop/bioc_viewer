@@ -9,11 +9,15 @@
       name = infons["name_#{i}"]
       parts = name.split(";")
       sur = parts[0].split(":")
-      given = parts[1].split(":")
-      if (sur[0] == "surname" && given[0] == "given-names")
-        result_names << "#{sur[1]}, #{given[1]}#{'.' if given[1][-1] != "."}"
-      else 
-        result_names << name
+      if parts.size == 1
+        result_names << sur[1]  
+      else
+        given = parts[1].split(":")
+        if (sur[0] == "surname" && given[0] == "given-names")
+          result_names << "#{sur[1]}, #{given[1]}#{'.' if given[1][-1] != "."}"
+        else 
+          result_names << name
+        end
       end
       i = i + 1
     end 

@@ -131,8 +131,13 @@ BioC.prototype.initPaneWidthHeight = function() {
 
   var width = parseInt($(".document").width(), 10);
   var mainWidth = width - 550;
+  var height = parseInt($(window).height() - ($("#main-footer .container").outerHeight() + $("#main-nav").outerHeight() + $(".fixed-buttons").outerHeight()),10);
   $(".main.pane").width((width - 550) + "px");
   $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
+  $(".main.pane").css('height', height + "px");
+  $(".left-side.pane").css('height', height + "px");
+  console.log($(".main.pane").css("height"));
+  console.log(height);
 };
 
 BioC.prototype.initAnnotationToggle = function() {
@@ -187,8 +192,7 @@ BioC.prototype.initOutlineScroll = function() {
 
 BioC.prototype.checkSearchButton = function($e) {
   var $name = $e.parents(".field").find(".for-name");
-  var $gene = $e.parents(".field").find(".for-gene");
-  if ($name.val().trim().length > 0 && $gene.val().trim().length == 0) {
+  if ($name.val().trim().length > 0) {
     $name.parent().addClass("enable-search");
   } else {
     $name.parent().removeClass("enable-search");
