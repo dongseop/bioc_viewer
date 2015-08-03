@@ -257,7 +257,7 @@ BioC.prototype.initPPI = function() {
         onApprove: function($e) {
           var type = $e.data('value');
           $(".ppi-form input[name='ppi[itype]']").val(type);
-          $(".ui.modal.ppi-exp").removeClass("show-ppi show-gi").addClass("show-" + type);
+          $(".ui.modal.ppi-exp").removeClass("show-PPI show-GI").addClass("show-" + type);
           $(".ui.modal.ppi-exp").modal({
             onApprove: function($e) {
               var exp = $e.data('value');
@@ -378,7 +378,11 @@ BioC.prototype.bindPPIActions = function() {
     }.bind(this))
     .catch(function(xhr) {
       console.log(xhr);
-      toastr.error("Failed. Please try again later.");        
+      if (xhr.status == 409) {
+        toastr.error("Cannot add a duplicated interaction item.");        
+      } else {
+        toastr.error("Failed. Please try again later.");        
+      }
     })
     .finally(function() {
       $(".right-side .dimmer").removeClass("active");
@@ -440,7 +444,11 @@ BioC.prototype.updatePPI = function(id, exp) {
   }.bind(this))
   .catch(function(xhr) {
     console.log(xhr);
-    toastr.error("Failed. Please try again later.");        
+    if (xhr.status == 409) {
+      toastr.error("Cannot add a duplicated interaction item.");        
+    } else {
+      toastr.error("Failed. Please try again later.");        
+    }
   })
   .finally(function() {
     $(".right-side .dimmer").removeClass("active");

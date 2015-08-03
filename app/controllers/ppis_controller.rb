@@ -34,9 +34,10 @@ class PpisController < ApplicationController
   def create
     @ppi = Ppi.new(ppi_params)
     @document = Document.find(params[:document_id])
-    dup = @document.ppis.where("(gene1 = ? and gene2 = ?) or (gene2 = ? and gene1 = ?)",
+    dup = @document.ppis.where("((gene1 = ? and gene2 = ?) or (gene2 = ? and gene1 = ?)) and (exp = ?) and (itype = ?)",
         params[:ppi][:gene1], params[:ppi][:gene2], 
-        params[:ppi][:gene1], params[:ppi][:gene2]
+        params[:ppi][:gene1], params[:ppi][:gene2],
+        params[:ppi][:exp], params[:ppi][:itype]
       ).first
 
     unless dup.nil?
@@ -61,6 +62,18 @@ class PpisController < ApplicationController
   def update
     @ppi.itype = params[:itype] if params[:itype].present?
     @ppi.exp = params[:exp] if params[:exp].present?
+
+    dup = @ppi.document.ppis.where("((gene1 = ? and gene2 = ?) or (gene2 = ? and gene1 = ?)) and (exp = ?) and (itype = ?)",
+        @ppi.gene1, @ppi.gene2, 
+        @ppi.gene2, @ppi.gene1, 
+        @ppi.exp, @ppi.itype 
+      ).first
+
+    if !dup.nil? && dup.id != @ppi.id
+      render :nothing => true, :status => :conflict
+      return
+    end
+
     respond_to do |format|
       if @ppi.save
         format.html { redirect_to @ppi, notice: 'Ppi was successfully updated.' }
