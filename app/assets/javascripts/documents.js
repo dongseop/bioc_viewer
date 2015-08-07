@@ -1,9 +1,11 @@
 var BioC = function(id, options) {
   options = _.extend({
-    isReadOnly: false
+    isReadOnly: false,
+    root: '/'
   }, options);
   this.id = id;
-  this.url = "/documents/" + id;
+  this.url = options.root + "/documents/" + id;
+  this.ppi_root = options.root + "/ppis/" ;
   this.template = {};
   this.template.ppi = Handlebars.compile($("#ppi-template").html());
   this.isReadOnly = options.isReadOnly;
@@ -365,7 +367,7 @@ BioC.prototype.bindPPIActions = function() {
 
     $(".right-side .dimmer").addClass("active");
     Q($.ajax({
-      url: '/ppis/' + id + '.json', 
+      url: this.ppi_root + id + '.json', 
       type: "PUT",
       dataType: 'json',
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
@@ -397,7 +399,7 @@ BioC.prototype.removePPI = function(id) {
 
   $(".right-side .dimmer").addClass("active");
   Q($.ajax({
-    url: "/ppis/" + id + ".json", 
+    url: this.ppi_root + id + ".json", 
     type: "DELETE",
     dataType: 'json',
     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
@@ -431,7 +433,7 @@ BioC.prototype.updatePPI = function(id, exp) {
 
   $(".right-side .dimmer").addClass("active");
   Q($.ajax({
-    url: "/ppis/" + id + ".json", 
+    url: this.ppi_root + id + ".json", 
     type: "PUT",
     dataType: 'json',
     data: {exp: exp},

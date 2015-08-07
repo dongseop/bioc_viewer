@@ -112,6 +112,7 @@
 <script>
 $(function() {
   var doc = new BioC('<%=@document.id%>', {
+    root: '<%=root_path%>',
     isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>'
   });
   // doc.load()

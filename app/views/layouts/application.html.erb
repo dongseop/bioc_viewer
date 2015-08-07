@@ -18,13 +18,13 @@
 
 <nav class="ui fixed menu inverted navbar" id="main-nav">
   <div class="ui container clearing">
-    <a href="/" class="brand item">
+    <%= link_to root_path, class:"brand item" do %>
       <i class="icon home"></i>
       BioC-Viewer
-    </a>
+    <% end %>
     <% if user_signed_in? %>
       <div class="item">
-        <a href="/" class="section">Projects</a>
+        <%= link_to "Project", root_path, class:"section"%>
         <% if !@project.nil? && !@project.id.nil?%>
           <i class="right chevron icon divider"></i>
           <%=link_to @project.title, @project %>
@@ -45,7 +45,7 @@
           <i class="dropdown icon"></i>
           <div class="menu">
             <div class="item">
-              <%=link_to edit_user_registration_path(current_user) do %>
+              <%=link_to edit_user_registration_path do %>
                 <i class="icon edit"></i> Edit Profile
               <% end %>
             </div>
@@ -58,8 +58,8 @@
           </div>
         </div>
       <% else %>
-        <a href="/users/sign_in" class="ui item"><i class="icon sign in"></i> Log-in</a>
-        <a href="/users/sign_up" class="ui item"><i class="icon add user"></i> Sign up</a>
+        <%=link_to new_user_session_path, class:"ui item" do %><i class="icon sign in"></i> Log-in<% end %>
+        <%=link_to new_user_registration_path, class:"ui item" do %><i class="icon add user"></i> Sign up<% end %>
       <% end %>
     </div>
   </div>
@@ -83,7 +83,7 @@
 </div>
 <div class="footer" id="main-footer">
   <div class="ui container">
-    Copyright © 2015 BioC-Viewer: http://kauai.mju.ac.kr, Contact us: dongseop@gmail.com
+    Copyright © 2015 BioC-Viewer, Contact us: dongseop@gmail.com
   </div>
 </div> 
 <script>
