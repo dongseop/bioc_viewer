@@ -3,9 +3,12 @@ var BioC = function(id, options) {
     isReadOnly: false,
     root: '/'
   }, options);
+  if (options.root.slice(-1) != "/") {
+    options.root = options.root + "/";
+  }
   this.id = id;
-  this.url = options.root + "/documents/" + id;
-  this.ppi_root = options.root + "/ppis/" ;
+  this.url = options.root + "documents/" + id;
+  this.ppi_root = options.root + "ppis/" ;
   this.template = {};
   this.template.ppi = Handlebars.compile($("#ppi-template").html());
   this.isReadOnly = options.isReadOnly;

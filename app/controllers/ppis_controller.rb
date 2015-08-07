@@ -34,9 +34,8 @@ class PpisController < ApplicationController
   def create
     @ppi = Ppi.new(ppi_params)
     @document = Document.find(params[:document_id])
-    dup = @document.ppis.where("((gene1 = ? and gene2 = ?) or (gene2 = ? and gene1 = ?)) and (exp = ?) and (itype = ?)",
+    dup = @document.ppis.where("(gene1 = ? and gene2 = ?) and (exp = ?) and (itype = ?)",
         params[:ppi][:gene1], params[:ppi][:gene2], 
-        params[:ppi][:gene1], params[:ppi][:gene2],
         params[:ppi][:exp], params[:ppi][:itype]
       ).first
 
@@ -63,9 +62,8 @@ class PpisController < ApplicationController
     @ppi.itype = params[:itype] if params[:itype].present?
     @ppi.exp = params[:exp] if params[:exp].present?
 
-    dup = @ppi.document.ppis.where("((gene1 = ? and gene2 = ?) or (gene2 = ? and gene1 = ?)) and (exp = ?) and (itype = ?)",
+    dup = @ppi.document.ppis.where("(gene1 = ? and gene2 = ?) and (exp = ?) and (itype = ?)",
         @ppi.gene1, @ppi.gene2, 
-        @ppi.gene2, @ppi.gene1, 
         @ppi.exp, @ppi.itype 
       ).first
 
