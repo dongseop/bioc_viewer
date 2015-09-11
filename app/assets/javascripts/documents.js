@@ -61,7 +61,7 @@ BioC.prototype.render = function() {
 
 
 BioC.prototype.initAnnotationPopup = function() {
-  $("span.annotation").popup({
+  var option = {
     inline   : true,
     hoverable: true,
     position : 'bottom left',
@@ -78,7 +78,8 @@ BioC.prototype.initAnnotationPopup = function() {
       });
       return acceptClasses.length > 0
     }
-  });
+  };
+  $("span.annotation").popup(option);
 };
 
 
@@ -209,9 +210,13 @@ BioC.prototype.checkSearchButton = function($e) {
 
 BioC.prototype.initPPI = function(arr) {
   $(".ppi-cnt").text(arr.length);
-  _.each(arr, function(item) {
-    $(".ppis .ppi-list").append(this.template.ppi(item));
-  }.bind(this));
+  var $dom = $("");
+  
+  $(".ppis .ppi-list").append(
+    _.map(arr, function(item) {
+      return this.template.ppi(item);
+    }.bind(this)).join("")
+  );
   this.bindPPIActions();
 
   if (this.isReadOnly) {
@@ -320,11 +325,12 @@ BioC.prototype.addPPI = function() {
 }
 
 BioC.prototype.bindPPIActions = function() {
-  $('.gene .popup').popup({
+  var option = {
     hoverable: true,
     inline   : true,
     position : 'bottom center',
-  });
+  };
+  $('.gene .popup').popup(option);
 
   if (this.isReadOnly) {
     return;

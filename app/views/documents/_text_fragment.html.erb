@@ -80,5 +80,5 @@ ranges.each_with_index do |s_pos, index|
   cls = cls.uniq
   cls << "annotation" unless cls.blank?
 
-  -%><span data-gene="<%=gene_id%>" data-name="<%=gene_name%>" data-html="<%=content.join(" ")%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%-
-end -%>
+  -%><span data-gene="<%=gene_id%>" data-name="<%=gene_name%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%- unless cls.blank? -%><div class="ui popup" style="display:none"><%=content.join.html_safe%></div><%-end 
+  end -%>

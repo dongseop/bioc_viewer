@@ -83,11 +83,13 @@
       <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene1}}' target='_blank'><i class='icon globe'></i>{{gene1}}</a>
       <br>
       <span class='popup' title='{{name1}}'>{{name1}}</span>
+      <div class='ui popup' style='display:none'>{{name1}}</div>
     </td>
     <td class='gene'>
       <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene2}}' target='_blank'><i class='icon globe'></i>{{gene2}}</a>
       <br>
       <span class='popup' title='{{name2}}'>{{name2}}</span>
+      <div class='ui popup' style='display:none'>{{name2}}</div>
     </td>
     <% if @document.project.writable?(current_user) %>
       <td class='action' rowspan="2">
