@@ -26,7 +26,7 @@ var BioC = function(id, options) {
   }.bind(this));
   this.initModal();
   this.initOutlineScroll();
-  this.initPPI();
+  this.initPPI(options.ppiArray);
 
   toastr.options = {
     closeButton: true,
@@ -207,15 +207,12 @@ BioC.prototype.checkSearchButton = function($e) {
   }
 }
 
-BioC.prototype.initPPI = function() {
-  Q($.getJSON(this.url + "/ppis.json"))
-  .then(function(arr) {
-    $(".ppi-cnt").text(arr.length);
-    _.each(arr, function(item) {
-      $(".ppis .ppi-list").append(this.template.ppi(item));
-    }.bind(this));
-    this.bindPPIActions();
+BioC.prototype.initPPI = function(arr) {
+  $(".ppi-cnt").text(arr.length);
+  _.each(arr, function(item) {
+    $(".ppis .ppi-list").append(this.template.ppi(item));
   }.bind(this));
+  this.bindPPIActions();
 
   if (this.isReadOnly) {
     return;

@@ -1,5 +1,5 @@
 <%= render partial: "buttons" %>
-<div class="ui dimmer active" id="documentSpinner">
+<div class="ui dimmer" id="documentSpinner">
   <div class="ui text loader">Loading</div>
 </div>
 <%= render partial: "doc_info" %>
@@ -113,12 +113,23 @@
 $(function() {
   var doc = new BioC('<%=@document.id%>', {
     root: '<%=root_path%>',
-    isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>'
+    isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>',
+    ppiArray: [
+     <% @document.ppis.each do |p| %>
+        {
+          id: <%=p.id%>,
+          document_id: <%=p.document_id %>,
+          itype: '<%=p.itype %>',
+          exp: '<%=p.exp %>',
+          gene1: '<%=p.gene1 %>',
+          name1: '<%=p.name1 %>',
+          gene2: '<%=p.gene2 %>',
+          name2: '<%=p.name2 %>',
+          url: '<%=ppi_url(p, format: :json) %>'
+        },
+      <% end %>
+    ]
   });
-  // doc.load()
-  // .then(function() {
-  //   $("#documentSpinner").removeClass("active");
-  // });
   $("#documentSpinner").removeClass("active");
 });
 </script>
