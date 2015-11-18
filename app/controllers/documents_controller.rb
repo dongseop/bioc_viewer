@@ -37,6 +37,7 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1/edit
   def edit
+    @project = @document.project
     unless @project.admin?(current_user)
       redirect_to "/", error: "Cannot access the document"
     end
@@ -69,9 +70,10 @@ class DocumentsController < ApplicationController
   # PATCH/PUT /documents/1
   # PATCH/PUT /documents/1.json
   def update
+    @project = @document.project
     respond_to do |format|
       if @document.update(document_params)
-        format.html { redirect_to @document, notice: 'Document was successfully updated.' }
+        format.html { redirect_to @project, notice: 'Document was successfully updated.' }
         format.json { render :show, status: :ok, location: @document }
       else
         format.html { render :edit }
@@ -104,6 +106,6 @@ class DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:file)
+      params.require(:document).permit(:file, :doc_id, :d_date, :key, :source, :filename)
     end
 end

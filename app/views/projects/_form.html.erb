@@ -19,6 +19,17 @@
     <%= f.label :description %>
     <%= f.text_area :description %>
   </div>
+  <div class="field">
+    <%= f.label :mode %>
+    <div class="ui radio checkbox" style='margin-right: 2em;'>
+      <%= f.radio_button(:mode, 'Normal') %>
+      <label>Normal</label>
+    </div>
+    <div class="ui radio checkbox">
+      <%= f.radio_button(:mode, 'BioGrid') %>
+      <label>BioGrid</label>
+    </div>
+  </div>
   <div class="actions">
     <% if params[:action] == 'new' %>
       <%= link_to 'Back', projects_path, class: "ui button" %>
@@ -28,3 +39,9 @@
     <%= f.submit  class: "ui primary button" %>
   </div>
 <% end %>
+
+<script>
+$(function() {
+  $('select.dropdown').dropdown();
+});
+</script>

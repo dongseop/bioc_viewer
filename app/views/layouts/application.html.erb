@@ -24,7 +24,7 @@
     <% end %>
     <% if user_signed_in? %>
       <div class="item">
-        <%= link_to "Project", root_path, class:"section"%>
+        <%= link_to "Projects", root_path, class:"section"%>
         <% if !@project.nil? && !@project.id.nil?%>
           <i class="right chevron icon divider"></i>
           <%=link_to @project.title, @project %>

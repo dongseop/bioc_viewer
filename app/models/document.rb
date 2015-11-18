@@ -13,14 +13,15 @@ class Document < ActiveRecord::Base
     "ppievidence" => "blue",
     "ppimention" => "blue"
   }
-  
+  before_save :overwrite_xml
+
   def unique_id
     self.doc_id || "D#{self.id}"
   end
 
   def self.create_from_file(file)
     doc = Document.new
-  
+    doc.filename = file.original_filename
     if file.respond_to?(:read)
       doc.xml = file.read
     elsif file.respond_to?(:path)
@@ -36,6 +37,18 @@ class Document < ActiveRecord::Base
       doc.doc_id = doc.bioc.documents[0].id
     end
     return doc
+  end
+
+  def get_psize(p)
+    self.get_ptext(p).size
+  end
+
+  def get_ptext(p)
+    if p.text.blank?
+      p.sentences.map{|s| s.text}.join(" ")
+    else
+      p.text
+    end
   end
 
   def outline
@@ -59,7 +72,7 @@ class Document < ActiveRecord::Base
         end
       end
 
-      desc = if p.text.nil? then "" else p.text[0..30] end
+      desc = self.get_ptext(p)[0..30] 
       item = {id: index, text: item_text, description: desc, children: [], level: level, cls: []}
       
       last_item = item
@@ -103,6 +116,16 @@ class Document < ActiveRecord::Base
     p.annotations.each do |a|
       cls = cls | [get_class_from_annotation(a)]
     end
+    logger.debug("P SENTENCE #{p.sentences.size}")
+    p.sentences.each do |s|
+      logger.debug("S ANNNOTATION #{s.annotations.size}")
+      s.annotations.each do |a|
+        cls = cls | [get_class_from_annotation(a)]
+        logger.debug("Annotation Type #{cls.inspect}")
+      end
+    end
+    logger.debug("Annotation Type #{cls.inspect}")
+
     return cls.uniq
   end
 
@@ -133,6 +156,14 @@ class Document < ActiveRecord::Base
       @bioc = SimpleBioC.from_xml_string(self.xml)
     end
     @bioc
+  end
+
+  def overwrite_xml
+    self.bioc.source = self.source
+    self.bioc.date = self.d_date
+    self.bioc.key = self.key
+    self.bioc.documents[0].id = self.doc_id
+    self.xml = SimpleBioC::to_xml(self.bioc)
   end
 
   def bioc_doc

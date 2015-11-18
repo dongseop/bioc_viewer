@@ -1,8 +1,7 @@
-<%= form_for(@document, :multipart => true, html: {class: "ui form"}) do |f| %>
+<%= form_for(@document, html: {class: "ui form"}) do |f| %>
   <% if @document.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@document.errors.count, "error") %> prohibited this document from being saved:</h2>
-
       <ul>
       <% @document.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,10 +11,26 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :file %>
-    <input type="file" name="upload" placeholder="BioC file">
+    <%= f.label :doc_id, 'Doc ID' %>
+    <%= f.text_field :doc_id %>
+  </div>
+  <div class="field">
+    <%= f.label :d_date, 'Date' %>
+    <%= f.text_field :d_date %>
+  </div>
+  <div class="field">
+    <%= f.label :key %>
+    <%= f.text_field :key %>
+  </div>
+  <div class="field">
+    <%= f.label :source %>
+    <%= f.text_field :source %>
+  </div>
+  <div class="field">
+    <%= f.label :filename %>
+    <%= f.text_field :filename %>
   </div>
   <div class="actions">
-    <button class="ui button primary" Upload BioC File", class: "ui button primary" %>
+    <button class="ui button primary">Update</button>
   </div>
 <% end %>

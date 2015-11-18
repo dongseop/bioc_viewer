@@ -1,5 +1,6 @@
 <h1 class="ui dividing header">
   <%= @project.title %>
+  <div class="sub header"><%= @project.mode %> Project</div>
 </h1>
 
 <ul class="ui bulleted list">
@@ -7,10 +8,12 @@
     <strong>Owner:</strong>
     <%= @project.owner.name %>
   </li>
-  <li class="item">
-    <strong>Description:</strong>
-    <%=simple_format @project.description %>
-  </li>
+  <% unless @project.description.blank? %>
+    <li class="item">
+      <strong>Description:</strong>
+      <%=simple_format @project.description %>
+    </li>
+  <% end %>
 </ul>
 
 <div class="page-info">
@@ -29,6 +32,7 @@
     <thead>
       <tr>
         <th>Doc ID</th>
+        <th>Original Filename</th>
         <th>Source</th>
         <th>Date</th>
         <th>Key</th>
@@ -40,6 +44,7 @@
     <% @documents.each do |d| %>
       <tr>
         <td><%=link_to d.doc_id, d %></td>
+        <td><%= d.filename %></td>
         <td><%= d.source %></td>
         <td><%= d.d_date %></td>
         <td><%= d.key %></td>
@@ -54,17 +59,24 @@
                   <i class="icon file"></i> Download BioC
                 <% end %>
               </div>
-              <div class="ui divider"></div>
               <div class="item">
-                <%=link_to "/documents/#{d.id}/ppis.csv", target: "_blank" do %>
-                  <i class="icon download"></i> Export Interactions to CSV
+                <%=link_to "/documents/#{d.id}/edit" do %>
+                  <i class="icon pencil"></i> Edit Document Info.
                 <% end %>
               </div>
-              <div class="item">
-                <%=link_to "/documents/#{d.id}/ppis.xls", target: "_blank" do %>
-                  <i class="icon download"></i> Export Interactions to XLS
-                <% end %>
-              </div>
+              <% if @project.mode == "BioGrid" %>
+                <div class="ui divider"></div>
+                <div class="item">
+                  <%=link_to "/documents/#{d.id}/ppis.csv", target: "_blank" do %>
+                    <i class="icon download"></i> Export Interactions to CSV
+                  <% end %>
+                </div>
+                <div class="item">
+                  <%=link_to "/documents/#{d.id}/ppis.xls", target: "_blank" do %>
+                    <i class="icon download"></i> Export Interactions to XLS
+                  <% end %>
+                </div>
+              <% end %>
               <% if @project.admin?(current_user) %>
                 <div class="ui divider"></div>
                 <div class="item">

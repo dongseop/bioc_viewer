@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715024204) do
+ActiveRecord::Schema.define(version: 20151118153521) do
 
   create_table "documents", force: :cascade do |t|
     t.text     "xml",        limit: 4294967295
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150715024204) do
     t.string   "key",        limit: 255
     t.string   "doc_id",     limit: 255
     t.integer  "ppis_count", limit: 4,          default: 0
+    t.string   "filename",   limit: 255
   end
 
   add_index "documents", ["project_id"], name: "index_documents_on_project_id", using: :btree
@@ -56,12 +57,13 @@ ActiveRecord::Schema.define(version: 20150715024204) do
   add_index "project_users", ["user_id"], name: "index_project_users_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
-    t.string   "title",           limit: 255,               null: false
+    t.string   "title",           limit: 255,                      null: false
     t.integer  "user_id",         limit: 4
     t.text     "description",     limit: 65535
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.integer  "documents_count", limit: 4,     default: 0
+    t.string   "mode",            limit: 255,   default: "Normal"
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree

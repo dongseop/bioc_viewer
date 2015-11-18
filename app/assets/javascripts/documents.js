@@ -141,7 +141,11 @@ BioC.prototype.initPaneWidthHeight = function() {
   var width = parseInt($(".document").width(), 10);
   var mainWidth = width - 550;
   var height = parseInt($(window).height() - ($("#main-footer .container").outerHeight() + $("#main-nav").outerHeight() + $(".fixed-buttons").outerHeight()),10);
-  $(".main.pane").width((width - 550) + "px");
+  if ($('.document').hasClass('Normal')) {
+    $(".main.pane").width((width - 300) + "px");
+  } else {
+    $(".main.pane").width((width - 550) + "px");
+  }
   $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
   $(".main.pane").css('height', height + "px");
   $(".left-side.pane").css('height', height + "px");
