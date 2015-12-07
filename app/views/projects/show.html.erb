@@ -36,7 +36,9 @@
         <th>Source</th>
         <th>Date</th>
         <th>Key</th>
-        <th># Interactions</th>
+        <% if @project.mode == "BioGrid" %>
+          <th># Interactions</th>
+        <% end %>
         <th>Created At</th>
         <th></th>
       </tr>
@@ -48,7 +50,9 @@
         <td><%= d.source %></td>
         <td><%= d.d_date %></td>
         <td><%= d.key %></td>
-        <td><%= d.ppis.size %></td>
+        <% if @project.mode == "BioGrid" %>
+          <td><%= d.ppis.size %></td>
+        <% end %>
         <td><%=time_ago_in_words d.created_at %> ago </td>
         <td>
           <div class="ui right pointing dropdown">
@@ -131,11 +135,30 @@ $(function() {
     uploadStr: 'Upload Multiple BioC Documents',
     afterUploadAll: function(obj) {
       console.log(obj);
-      toastr.success(obj.selectedFiles + " files were uploaded successfully.", null,{
+    },
+    onError: function(files,status,errMsg,pd) {
+      //files: list of files
+      //status: error status
+      //errMsg: error message
+      if (errMsg === 'Unprocessable Entity') {
+        toastr.error(files[0] + ": Invalid document to BioC DTD", null,{
+          positionClass: "toast-bottom-full-width"
+        });
+      } else {
+        toastr.error(errMsg);
+      }
+      // location.reload();
+    }, 
+    onSuccess:function(files,data,xhr,pd) {
+      //files: list of files
+      //data: response from server
+      //xhr : jquer xhr object
+      toastr.success(files + " files were uploaded successfully.", null,{
         positionClass: "toast-bottom-full-width"
-      })
+      });
       location.reload();
     }
+
   });
 
   $("#hiddenFileInput").change(function() {

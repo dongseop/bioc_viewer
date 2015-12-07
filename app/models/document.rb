@@ -1,3 +1,5 @@
+require 'nokogiri'
+require 'libxml'
 class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
@@ -15,8 +17,26 @@ class Document < ActiveRecord::Base
   }
   before_save :overwrite_xml
 
+  validate :validate_xml
+
   def unique_id
     self.doc_id || "D#{self.id}"
+  end
+
+  def annotation_types
+    types = []
+    self.bioc_doc.passages.each do |p|
+      p.annotations.each do |a|
+        types << a.infons['type'] unless a.infons['type'].nil?
+      end
+      p.sentences.each do |s|
+        s.annotations.each do |a|
+          types << a.infons['type'] unless a.infons['type'].nil?
+        end
+      end
+    end
+
+    return types.uniq.sort
   end
 
   def self.create_from_file(file)
@@ -29,13 +49,39 @@ class Document < ActiveRecord::Base
     else
       logger.error "Bad file: #{file.class.name}: #{file.inspect}"
     end
-
+    begin
+      doc.validate_xml
+    rescue Exception => e
+      logger.error e.inspect
+      return nil
+    end
     unless doc.bioc.nil?
       doc.source = doc.bioc.source
       doc.d_date = doc.bioc.date
       doc.key = doc.bioc.key
       doc.doc_id = doc.bioc.documents[0].id
     end
+    return doc
+  end
+
+  def self.create_by_merge(org_doc, xml)
+    doc = Document.new
+    doc.filename = org_doc.filename 
+    doc.xml = org_doc.xml
+    doc.source = org_doc.source
+    doc.d_date = org_doc.d_date
+    doc.key = org_doc.key
+    doc.doc_id = org_doc.doc_id
+    doc.project_id = org_doc.project_id
+    doc.user_id = org_doc.user_id
+
+    logger.debug(doc.xml)
+    logger.debug("=================")
+    logger.debug(xml)
+    dest = SimpleBioC.from_xml_string(doc.xml)
+    src = SimpleBioC.from_xml_string(xml)
+    SimpleBioC.merge(dest, src)
+    doc.xml = SimpleBioC::to_xml(dest)
     return doc
   end
 
@@ -156,6 +202,14 @@ class Document < ActiveRecord::Base
       @bioc = SimpleBioC.from_xml_string(self.xml)
     end
     @bioc
+  end
+
+  def validate_xml
+    dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
+    xml = LibXML::XML::Document.string(self.xml)
+    unless xml.validate(dtd)
+      errors.add(:xml, "invalide BioC document")
+    end
   end
 
   def overwrite_xml

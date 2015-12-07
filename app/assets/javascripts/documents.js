@@ -136,7 +136,7 @@ BioC.prototype.initPaneWidthHeight = function() {
           $(".pane"), 
           function(item) {return $(item).height()}
         ));
-  $(".document").css("height", (maxContentHeight) + 200 + "px");
+  $(".document").css("height", (maxContentHeight) + "px");
 
   var width = parseInt($(".document").width(), 10);
   var mainWidth = width - 550;
@@ -174,6 +174,13 @@ BioC.prototype.initAnnotationToggle = function() {
 BioC.prototype.initModal = function() {
   $(".doc-info-btn").click(function() {
     $(".modal.doc-info").modal({
+      blurring: true
+    })
+    .modal('show');
+  });
+
+  $(".merge-btn").click(function() {
+    $(".modal.merge-dialog").modal({
       blurring: true
     })
     .modal('show');

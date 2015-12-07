@@ -1,18 +1,23 @@
 // Place all the styles related to the documents controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
+.hidden-file {
+  display: none;
+}
 
 .document {
   width: 100%;
   height: 2000px;
+  padding: 0;
+  position: relative;
+  margin: 0 -1em;
   .pane {
     height: 100%;
     overflow-y: auto;
     float: left;
-    position: fixed;
+    position: absolute;
     left: 0;
-    top: 92px;
+    top: 0px;
     padding: 1em;
     padding-bottom: 200px;
     box-sizing: border-box;
@@ -126,13 +131,15 @@
 .document.Normal {
   width: 100%;
   height: 2000px;
+  position: relative;
+  margin: 0 -1em;
   .pane {
     height: 100%;
     overflow-y: auto;
     float: left;
-    position: fixed;
+    position: absolute;
     left: 0;
-    top: 92px;
+    top: 0px;
     padding: 1em;
     padding-bottom: 200px;
     box-sizing: border-box;

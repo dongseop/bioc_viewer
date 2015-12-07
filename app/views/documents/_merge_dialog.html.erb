@@ -1,0 +1,40 @@
+<div class="ui modal merge-dialog">
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="header">Merge file to this document</div>
+  </div>
+  <div class="content">
+    <p>
+    <button class='ui button primary merge-file-select' type='button'>Select file for merge</button>
+    <span class='file-path'></span>
+    </p>
+    <%= form_tag("/documents/#{@document.id}/merge", method: 'POST', multipart: true, class: 'ui form') do %>
+      <input type='file' name='file' placeholder='please select file' class='hidden-file for-merge'>
+    <% end %>
+  </div>
+  <div class="actions">
+    <button class='ui button teal disabled'>Merge</button>
+    <div class="ui cancel button">
+      Close
+    </div>
+  </div>
+  </form>
+</div>
+<script>
+  $('.merge-file-select').click(function() {
+    $('.hidden-file.for-merge').click();
+  });
+  $('.merge-dialog button.teal.disabled').click(function() {
+    $('.merge-dialog form').submit();
+  });
+  $('input.hidden-file').change(function(e) {
+    var file = $(e.currentTarget)[0].files[0];
+    if (file.type !== 'text/xml') {
+      alert('XML files only. Please select again');
+      return;
+    }
+    console.log(file);
+    $('.merge-dialog .file-path').html(file.name);
+    $('.merge-dialog button.teal.disabled').removeClass('disabled');
+  });
+</script>

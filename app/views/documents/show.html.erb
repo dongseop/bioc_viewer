@@ -3,6 +3,7 @@
   <div class="ui text loader">Loading</div>
 </div>
 <%= render partial: "doc_info" %>
+<%= render partial: "merge_dialog" %>
 <div class="document clearfix <%=@project.mode%>">
   <div class="left-side pane">
     <h4>Outline</h4>
@@ -50,35 +51,41 @@
     <% end %>
   </div>
   <div class="ui right top right-side pane <%='readonly' unless @document.project.writable?(current_user)%>">
-    <% if @document.project.writable?(current_user) %>
-      <%= render partial: "ppi_form" %>
-      <% end%>
-    <div class="ppis">
-      <h4>
-        PPI/GI Annotation List 
-        <span class="ui label circular olive ppi-cnt tiny"></span>
-        <div class="export-btn-section">
-          <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export to CSV", target: "_blank" do %>
-            <i class="icon download"></i> CSV
-          <% end %>
-          <%=link_to "/documents/#{@document.id}/ppis.xls", class: "export-btn ui teal circular icon button small", title: "Export to XLS", target: "_blank" do %>
-            <i class="icon download"></i> XLS
-          <% end %>
-        </div>
-      </h4>
-      <table class="ui small table celled blue very compact">
-        <thead>
-          <th></th>
-          <th>Gene 1</th>
-          <th>Gene 2</th>
-          <% if @document.project.writable?(current_user) %>
+    <% if @document.project.mode == "BioGrid" %>
+      <% if @document.project.writable?(current_user) %>
+        <%= render partial: "ppi_form" %>
+        <% end%>
+      <div class="ppis">
+        <h4>
+          PPI/GI Annotation List 
+          <span class="ui label circular olive ppi-cnt tiny"></span>
+          <div class="export-btn-section">
+            <%=link_to "/documents/#{@document.id}/ppis.csv", class: "export-btn ui teal circular icon button small", title: "Export to CSV", target: "_blank" do %>
+              <i class="icon download"></i> CSV
+            <% end %>
+            <%=link_to "/documents/#{@document.id}/ppis.xls", class: "export-btn ui teal circular icon button small", title: "Export to XLS", target: "_blank" do %>
+              <i class="icon download"></i> XLS
+            <% end %>
+          </div>
+        </h4>
+        <table class="ui small table celled blue very compact">
+          <thead>
             <th></th>
-          <% end %>
-        </thead>
-        <tbody class="ppi-list">
-        </tbody>
-      </table>
-    </div>
+            <th>Gene 1</th>
+            <th>Gene 2</th>
+            <% if @document.project.writable?(current_user) %>
+              <th></th>
+            <% end %>
+          </thead>
+          <tbody class="ppi-list">
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <% @document.annotation_types.each do |type| %>
+        <div><%=type%></div>
+      <% end %>
+    <% end %>
   </div>
 </div>
 <%=render partial: "ppi_type_modal" %>

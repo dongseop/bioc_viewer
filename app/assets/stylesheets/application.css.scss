@@ -97,12 +97,17 @@ body {
   width: 100%;
 }
 
-.documents-show .main.container,
- {
-  margin-top: 80px;
-  background: #eee;
-}
 
+.documents-show {
+  .main.container {
+    margin-top: 78px;
+    background: #eee;
+  }
+
+  .ui.message {
+    margin: 0.5em 0;
+  }
+}
 .annotation-toggles {
   .ui.button {
     i.icon {

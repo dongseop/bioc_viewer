@@ -27,6 +27,7 @@ ranges.each_with_index do |s_pos, index|
       end
     end
   end
+  logger.debug(ids.inspect)
   ids = ids.uniq.sort
 
   # cls = ids.map{|i| "#{i.split("_")[0]}"}.uniq
@@ -53,7 +54,6 @@ ranges.each_with_index do |s_pos, index|
   gene_name = ""
   content = ids.map do |id| 
     a = p.annotations.select{|a| a.id == id}[0]
-    
     type = a.infons['type']
     cls_name = @document.get_class_from_annotation(a)
 

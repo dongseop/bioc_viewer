@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   resources :revisions
 
   resources :documents do
+    member do
+      post 'merge'
+    end
     resources :ppis
   end
 

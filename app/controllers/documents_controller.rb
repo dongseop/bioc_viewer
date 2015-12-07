@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_document, only: [:show, :edit, :update, :destroy, :merge]
   before_action :authenticate_user!
   
   # GET /documents
@@ -51,8 +51,13 @@ class DocumentsController < ApplicationController
     unless @project.admin?(current_user)
       redirect_to "/", error: "Cannot access the document"
     end
-
     @document = Document.create_from_file(params[:file])
+    if @document.nil?
+      respond_to do |format|
+        format.html { render status: :unprocessable_entity, text: "Invalid document by BioC DTD"}
+      end
+      return 
+    end
     @document.project_id = @project.id
     @document.user_id = current_user.id
 
@@ -95,6 +100,47 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to return_url, notice: 'Document was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def merge
+    file = params[:file]
+    if file.respond_to?(:read)
+      @xml = file.read
+    elsif file.respond_to?(:path)
+      @xml = File.read(file.path)
+    else
+      logger.error "Bad file: #{file.class.name}: #{file.inspect}"
+    end
+    dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
+    xml = LibXML::XML::Document.string(@xml)
+    begin
+      unless xml.validate(dtd)
+        errors.add(:xml, "invalide BioC document")
+      end
+    rescue Exception => e
+      logger.error "WHAAATTTT===========>"
+      logger.error e.inspect
+
+      redirect_to @document, flash: {error: "Cannot merge: failed to validate the file against BioC DTD. Please select a BioC file."}
+      return
+    end
+    @document = Document.create_by_merge(@document, @xml)
+    if @document.nil?
+      respond_to do |format|
+        format.html { render status: :unprocessable_entity, text: "Invalid document by BioC DTD"}
+      end
+      return 
+    end
+
+    respond_to do |format|
+      if @document.save
+        format.html { redirect_to @document, notice: 'Merged document was successfully created.' }
+        format.json { render :show, status: :created, location: @document }
+      else
+        format.html { render :new }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
     end
   end
 
