@@ -2,6 +2,7 @@
 ranges = [p.offset]
 max = p.offset + if ptext.nil? then 0 else ptext.size end
 p.annotations.each do |a|
+  next if a.locations.nil?
   a.locations.each do |l|
     n_pos = l.offset.to_i + l.length.to_i 
     ranges << l.offset.to_i
@@ -19,6 +20,7 @@ ranges.each_with_index do |s_pos, index|
 
   ids = []
   p.annotations.each do |a|
+    next if a.locations.nil?
     a.locations.each do |l|
       ss = l.offset.to_i
       ee = l.offset.to_i + l.length.to_i

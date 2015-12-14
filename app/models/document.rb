@@ -28,11 +28,11 @@ class Document < ActiveRecord::Base
     types = []
     self.bioc_doc.passages.each do |p|
       p.annotations.each do |a|
-        types << a.infons['type'] unless a.infons['type'].nil?
+        types << a.infons['type'] if !a.infons.nil? && !a.infons['type'].nil?
       end
       p.sentences.each do |s|
         s.annotations.each do |a|
-          types << a.infons['type'] unless a.infons['type'].nil?
+          types << a.infons['type'] if !a.infons.nil? && !a.infons['type'].nil?
         end
       end
     end
