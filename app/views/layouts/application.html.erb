@@ -71,7 +71,7 @@
     notice: "positive",
     error: "negative"
   }
-  Rails.logger.debug(flash.inspect)
+  # Rails.logger.debug(flash.inspect)
   flash.each do |name, msg|
    -%>
     <div class="ui <%=name%> <%=flash_types[name.to_sym]%> message">

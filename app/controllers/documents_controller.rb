@@ -111,7 +111,7 @@ class DocumentsController < ApplicationController
       redirect_to "/", error: "Cannot access the document"
     end
    
-    logger.debug(params[:files].inspect)
+    # logger.debug(params[:files].inspect)
     errors = []
     @document = Document.merge_documents(@project, current_user, params[:files], errors)
     if @document.nil?

@@ -46,7 +46,7 @@ class ProjectUsersController < ApplicationController
     @project_user.user_id = @user.id unless @user.nil?
     @project_user.priv = @priv
 
-    logger.debug("PRIV=#{@priv}, #{privs.inspect}")
+    # logger.debug("PRIV=#{@priv}, #{privs.inspect}")
     respond_to do |format|
       if @project_user.save
         format.html { redirect_to project_project_users_path(@project), notice: 'Project user was successfully created.' }

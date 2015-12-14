@@ -105,9 +105,9 @@ class Document < ActiveRecord::Base
     doc.project_id = org_doc.project_id
     doc.user_id = org_doc.user_id
 
-    logger.debug(doc.xml)
-    logger.debug("=================")
-    logger.debug(xml)
+    # logger.debug(doc.xml)
+    # logger.debug("=================")
+    # logger.debug(xml)
     dest = SimpleBioC.from_xml_string(doc.xml)
     src = SimpleBioC.from_xml_string(xml)
     SimpleBioC.merge(dest, src)
@@ -141,7 +141,7 @@ class Document < ActiveRecord::Base
       end
 
       names << file.original_filename
-      logger.debug(idx)
+      # logger.debug(idx)
       if idx == 0
         dest = SimpleBioC.from_xml_string(xml)
         logger.debug(dest.documents.size)
@@ -240,15 +240,15 @@ class Document < ActiveRecord::Base
     p.annotations.each do |a|
       cls = cls | [get_class_from_annotation(a)]
     end
-    logger.debug("P SENTENCE #{p.sentences.size}")
+    # logger.debug("P SENTENCE #{p.sentences.size}")
     p.sentences.each do |s|
-      logger.debug("S ANNNOTATION #{s.annotations.size}")
+      # logger.debug("S ANNNOTATION #{s.annotations.size}")
       s.annotations.each do |a|
         cls = cls | [get_class_from_annotation(a)]
-        logger.debug("Annotation Type #{cls.inspect}")
+        # logger.debug("Annotation Type #{cls.inspect}")
       end
     end
-    logger.debug("Annotation Type #{cls.inspect}")
+    # logger.debug("Annotation Type #{cls.inspect}")
 
     return cls.uniq
   end

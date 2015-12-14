@@ -29,7 +29,7 @@ ranges.each_with_index do |s_pos, index|
       end
     end
   end
-  logger.debug(ids.inspect)
+  # logger.debug(ids.inspect)
   ids = ids.uniq.sort
 
   # cls = ids.map{|i| "#{i.split("_")[0]}"}.uniq
@@ -71,7 +71,7 @@ ranges.each_with_index do |s_pos, index|
         ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
       end
       tid = a.infons['OrganismID'] || a.infons['Organism'] || a.infons['NCBI Taxonomy']
-      logger.debug("============#{tid}=#{tid.blank?}============")
+      # logger.debug("============#{tid}=#{tid.blank?}============")
       unless tid.blank?
         ret << "<a href='http://www.ncbi.nlm.nih.gov/taxonomy/?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
       end
