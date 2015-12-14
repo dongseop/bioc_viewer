@@ -32,31 +32,13 @@ ranges.each_with_index do |s_pos, index|
   # logger.debug(ids.inspect)
   ids = ids.uniq.sort
 
-  # cls = ids.map{|i| "#{i.split("_")[0]}"}.uniq
-  # cls2 = ids.map{|i| "#{i[0]}"}.uniq
-  # if cls.blank?
-#   cls = []
-  # else 
-  #   cls = cls + cls2
-  #   cls << "annotation"
-  # end
-
-  type2color = {
-    "gene" => "yellow",
-    "organism" => "green",
-    "experimentalmethod" => "grey",
-    "geneticinteractiontype" => "red",
-    "gievidence" => "red",
-    "gimention" => "red",
-    "ppievidence" => "blue",
-    "ppimention" => "blue"
-  }
   cls = []
   gene_id = ""
   gene_name = ""
   content = ids.map do |id| 
     a = p.annotations.select{|a| a.id == id}[0]
     type = a.infons['type']
+    next if type.nil?
     atype = @document.atype(type.downcase)
     cls_name = atype.cname
 
@@ -71,7 +53,6 @@ ranges.each_with_index do |s_pos, index|
         ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
       end
       tid = a.infons['OrganismID'] || a.infons['Organism'] || a.infons['NCBI Taxonomy']
-      # logger.debug("============#{tid}=#{tid.blank?}============")
       unless tid.blank?
         ret << "<a href='http://www.ncbi.nlm.nih.gov/taxonomy/?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
       end

@@ -8,25 +8,33 @@ var BioC = function(id, options) {
   }
   this.id = id;
   this.url = options.root + "documents/" + id;
-  this.ppi_root = options.root + "ppis/" ;
-  this.template = {};
-  this.template.ppi = Handlebars.compile($("#ppi-template").html());
-  this.isReadOnly = options.isReadOnly;
-  this.lastModifiedGeneField = "";
+  if (options.mode !== 'Normal') {
+    this.ppi_root = options.root + "ppis/" ;
+
+    this.template = {};
+    this.template.ppi = Handlebars.compile($("#ppi-template").html());
+    this.isReadOnly = options.isReadOnly;
+    this.lastModifiedGeneField = "";
+  }
 
   this.initAnnotationPopup();
-  this.initAnnotationClick();
-  this.initAnnotationToggle();
-  this.initPaneWidthHeight();
-  Handlebars.registerHelper('toUpperCase', function(str) {
-    return str.toUpperCase();
-  });
+  if (options.mode !== 'Normal') {
+    this.initAnnotationClick();
+    this.initAnnotationToggle();
+    this.initPaneWidthHeight();
+    Handlebars.registerHelper('toUpperCase', function(str) {
+      return str.toUpperCase();
+    });
+  }
+
   $(window).on('resize', function() {
     this.initPaneWidthHeight();
   }.bind(this));
   this.initModal();
   this.initOutlineScroll();
-  this.initPPI(options.ppiArray);
+  if (options.mode !== 'Normal') {
+    this.initPPI(options.ppiArray);
+  }
 
   toastr.options = {
     closeButton: true,
@@ -36,11 +44,13 @@ var BioC = function(id, options) {
     newestOnTop: true
   };
 
-  if (!this.isReadOnly) {
-    Mousetrap.bind('mod+s', function() {
-      $(".ppi-form").submit();
-      return false;
-    });
+  if (options.mode !== 'Normal') {
+    if (!this.isReadOnly) {
+      Mousetrap.bind('mod+s', function() {
+        $(".ppi-form").submit();
+        return false;
+      });
+    }
   }
   return this;
 };
@@ -70,12 +80,11 @@ BioC.prototype.initAnnotationPopup = function() {
       hide: 500
     },
     onShow: function(item) {
-      return true;
-      var enabled = _.reject(['G', 'O', 'EP', 'EG'], function(n) {
-        return $("body").hasClass(n + "-disabled");
+      var enabled = _.select($('.main.pane').attr('class').split(/\s+/), function(n) {
+        return n.match(/A\d+-enabled/);
       });
       var acceptClasses = _.select(enabled, function(n) {
-        return $(item).hasClass(n);
+        return $(item).hasClass(n.split('-')[0]);
       });
       return acceptClasses.length > 0
     }

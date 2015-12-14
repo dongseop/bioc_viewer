@@ -5,28 +5,9 @@
   <button class="ui button small doc-info-btn" type="button">
     <i class="icon info circle"></i> Doc Info
   </button>
-  <!-- <button class="ui button small merge-btn" type="button">
-    <i class="icon plus"></i> Merge
-  </button> -->
-  <!--div class="ui buttons small ">
-    <%=link_to "/documents/#{@document.id}/ppis.csv", class: "ui green button small ", target: "_blank" do %>
-      <i class="icon download"></i> Export
-    <% end %>
-    <div class="ui floating dropdown icon button green small ">
-      <i class="dropdown icon"></i>
-      <div class="menu">
-        <%=link_to "/documents/#{@document.id}/ppis.csv", class: "item", target: "_blank" do %>
-          <i class="icon file text outline"></i> CSV
-        <% end %>
-        <%=link_to "/documents/#{@document.id}/ppis.xls", class: "item", target: "_blank" do %>
-          <i class="icon file excel outline"></i> Excel
-        <% end %>
-      </div>
-    </div>
-  </div-->
-<!--   <div class="ui buttons small annotation-toggles">
-  </div>
- -->
+  <%= link_to "/documents/#{@document.id}.xml", class: 'ui button teal small' do %>
+    <i class='icon download'></i> XML 
+  <% end %>
 
   <div class="ui teal buttons annotation-toggles">
     <div class="ui button">Annotation Types</div>
@@ -45,20 +26,12 @@
               <label><div class="ui A<%=type.id%> empty circular <%='thin' if type.border? %> label" data-type='A<%=type.id%>'></div>
             <%=type.name %></label>
             </div>
-            <!-- <input type="checkbox" class='checkbox' name="example"> -->
-            
           </div>
         <% end %>
       </div>
     </div>
   </div>
 
-<!--   <div class="ui floating olive labeled icon dropdown button annotation-toggles">
-    <i class="check icon"></i>
-    <span class="text">Annotation Types</span>
-    <div class="menu">
-    </div>
-  </div> -->
 </div>
 <style type='text/css'>
   <% @document.atypes.each do |type| %>

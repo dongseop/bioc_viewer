@@ -141,10 +141,10 @@ class Document < ActiveRecord::Base
       end
 
       names << file.original_filename
-      # logger.debug(idx)
+      logger.debug("#{idx} : #{file.original_filename}")
       if idx == 0
         dest = SimpleBioC.from_xml_string(xml)
-        logger.debug(dest.documents.size)
+        # logger.debug(dest.documents.size)
         doc.source = dest.source
         doc.d_date = dest.date
         doc.key = dest.key
@@ -159,6 +159,9 @@ class Document < ActiveRecord::Base
       end
     end
     doc.filename = names.join('+')
+    if doc.filename.size > 100
+      doc.filename = doc.filename[0..99] + '...'
+    end
     doc.xml = SimpleBioC::to_xml(dest)
     return doc
   end

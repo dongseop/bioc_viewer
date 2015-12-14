@@ -102,58 +102,56 @@
         </table>
       </div>
     <% else %>
-      <% @document.annotation_types.each do |type| %>
-        <div><%=type%></div>
-      <% end %>
     <% end %>
   </div>
 </div>
-<%=render partial: "ppi_type_modal" %>
-<%=render partial: "ppi_exp_modal" %>
-
-<%=render partial: "delete_confirm_modal" %>
-<script id="ppi-template" type="text/x-handlebars-template">
-  <tr data-id="{{id}}" class="{{toUpperCase itype}} item">
-    <td class="type type-toggle" rowspan="2">
-      <div class="PPI">PPI</div>
-      <div class="GI">GI</div>
-    </div>
-    <td class='gene'>
-      <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene1}}' target='_blank'><i class='icon globe'></i>{{gene1}}</a>
-      <br>
-      <span class='popup' title='{{name1}}'>{{name1}}</span>
-      <div class='ui popup' style='display:none'>{{name1}}</div>
-    </td>
-    <td class='gene'>
-      <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene2}}' target='_blank'><i class='icon globe'></i>{{gene2}}</a>
-      <br>
-      <span class='popup' title='{{name2}}'>{{name2}}</span>
-      <div class='ui popup' style='display:none'>{{name2}}</div>
-    </td>
-    <% if @document.project.writable?(current_user) %>
-      <td class='action' rowspan="2">
-        <a class="delete-button" rel="nofollow" href="#" title="Delete">
-          <i class="delete icon"></i>
-        </a>
+<% if @document.project.mode == "BioGrid" %>
+  <%=render partial: "ppi_type_modal" %>
+  <%=render partial: "ppi_exp_modal" %>
+  <%=render partial: "delete_confirm_modal" %>
+  <script id="ppi-template" type="text/x-handlebars-template">
+    <tr data-id="{{id}}" class="{{toUpperCase itype}} item">
+      <td class="type type-toggle" rowspan="2">
+        <div class="PPI">PPI</div>
+        <div class="GI">GI</div>
+      </div>
+      <td class='gene'>
+        <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene1}}' target='_blank'><i class='icon globe'></i>{{gene1}}</a>
+        <br>
+        <span class='popup' title='{{name1}}'>{{name1}}</span>
+        <div class='ui popup' style='display:none'>{{name1}}</div>
       </td>
-    <% end %>
-  </tr>
-  <tr data-id="{{id}}" class="item">
-    <td colspan="2" class="exp-name">
-      <span>{{exp}}</span>
+      <td class='gene'>
+        <a href='http://www.ncbi.nlm.nih.gov/gene?term={{gene2}}' target='_blank'><i class='icon globe'></i>{{gene2}}</a>
+        <br>
+        <span class='popup' title='{{name2}}'>{{name2}}</span>
+        <div class='ui popup' style='display:none'>{{name2}}</div>
+      </td>
       <% if @document.project.writable?(current_user) %>
-        <a class="edit-button" rel="nofollow" href="#" title="Edit">
-          <i class="write icon"></i>
-        </a>
+        <td class='action' rowspan="2">
+          <a class="delete-button" rel="nofollow" href="#" title="Delete">
+            <i class="delete icon"></i>
+          </a>
+        </td>
       <% end %>
-    </td>
-  </tr>
-</script>
-
+    </tr>
+    <tr data-id="{{id}}" class="item">
+      <td colspan="2" class="exp-name">
+        <span>{{exp}}</span>
+        <% if @document.project.writable?(current_user) %>
+          <a class="edit-button" rel="nofollow" href="#" title="Edit">
+            <i class="write icon"></i>
+          </a>
+        <% end %>
+      </td>
+    </tr>
+  </script>
+<% end %>
 <script>
 $(function() {
   var doc = new BioC('<%=@document.id%>', {
     root: '<%=root_path%>',
+    mode: '<%=@document.project.mode %>',
     isReadOnly: '<%='true' unless @document.project.writable?(current_user)%>',
     ppiArray: [
      <% @document.ppis.each do |p| %>
