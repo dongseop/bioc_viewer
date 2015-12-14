@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118153521) do
+ActiveRecord::Schema.define(version: 20151214065713) do
+
+  create_table "atypes", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "cls",         limit: 255
+    t.string   "desc",        limit: 255
+    t.integer  "project_id",  limit: 4
+    t.integer  "document_id", limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "atypes", ["document_id"], name: "index_atypes_on_document_id", using: :btree
+  add_index "atypes", ["project_id"], name: "index_atypes_on_project_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.text     "xml",        limit: 4294967295
@@ -113,6 +126,8 @@ ActiveRecord::Schema.define(version: 20151118153521) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "atypes", "documents"
+  add_foreign_key "atypes", "projects"
   add_foreign_key "documents", "projects"
   add_foreign_key "documents", "users"
   add_foreign_key "ppis", "documents"

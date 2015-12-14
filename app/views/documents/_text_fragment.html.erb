@@ -55,21 +55,22 @@ ranges.each_with_index do |s_pos, index|
   content = ids.map do |id| 
     a = p.annotations.select{|a| a.id == id}[0]
     type = a.infons['type']
-    cls_name = @document.get_class_from_annotation(a)
+    atype = @document.atype(type.downcase)
+    cls_name = atype.cname
 
     ret = []
     ret << "<div class='item popup-item #{cls_name}'>"
     ret << "<strong class='annotation-id'>#{id}</strong>"
     cls << cls_name
     unless type.nil?
-      ret << "<span class='ui label mini #{type2color[type.downcase]}'>#{type}</span>"
-      case type.downcase
-      when 'gene'
-        gene_id = a.infons['GeneID']
-        gene_name = a.text
+      ret << "<span class='ui label mini #{atype.cname}'>#{type}</span>"
+      gene_id = a.infons['GeneID'] || a.infons['Gene'] || a.infons['NCBI Gene']
+      unless gene_id.blank?
         ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
-      when 'organism'
-        tid = a.infons['OrganismID']
+      end
+      tid = a.infons['OrganismID'] || a.infons['Organism'] || a.infons['NCBI Taxonomy']
+      logger.debug("============#{tid}=#{tid.blank?}============")
+      unless tid.blank?
         ret << "<a href='http://www.ncbi.nlm.nih.gov/taxonomy/?term=#{tid}' target='_blank'><i class='icon globe'></i>#{tid}</a>"
       end
     end

@@ -4,6 +4,7 @@ class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
   has_many :ppis, dependent: :destroy
+  has_many :atypes, dependent: :destroy
   paginates_per 20
   TYPE2COLOR = {
     "gene" => "yellow",
@@ -37,6 +38,35 @@ class Document < ActiveRecord::Base
     end
 
     return types.uniq.sort
+  end
+
+  def adjust_atypes 
+    typemap = {}
+    self.atypes.each do |t|
+      typemap[t.name] = t
+    end
+    self.annotation_types.each do |t|
+      atype = typemap[t.downcase] 
+      if atype.nil?
+        self.atypes.create({
+          name: t.downcase, document_id: self.id, 
+          project_id: self.project_id, cls: Atype.recommend(t.downcase)
+        })
+      elsif !Atype::CLASSES.include?(atype.cls)
+        atype.cls = Atype.recommend(atype.name)
+        atype.save
+      end
+    end
+  end
+
+  def atype(name)
+    if @atype_map.nil?
+      @atype_map = {}
+      self.atypes.each do |t|
+        @atype_map[t.name] = t
+      end
+    end
+    @atype_map[name]
   end
 
   def self.create_from_file(file)
@@ -81,6 +111,54 @@ class Document < ActiveRecord::Base
     dest = SimpleBioC.from_xml_string(doc.xml)
     src = SimpleBioC.from_xml_string(xml)
     SimpleBioC.merge(dest, src)
+    doc.xml = SimpleBioC::to_xml(dest)
+    return doc
+  end
+
+  def self.merge_documents(project, user, files, errors)
+    doc = Document.new
+    names = []
+    dest = nil
+    files.each_with_index do |file, idx|
+      if file.respond_to?(:read)
+        xml = file.read
+      elsif file.respond_to?(:path)
+        xml = File.read(file.path)
+      else
+        logger.error "Bad file: #{file.class.name}: #{file.inspect}"
+      end
+      dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
+      libxml = LibXML::XML::Document.string(xml)
+      begin
+        unless libxml.validate(dtd)
+          errors << "Failed to validate #{file.original_filename} against BioC DTD"
+          return nil
+        end
+      rescue Exception => e
+        logger.error("Failed to validate #{file.original_filename} against BioC DTD")
+        errors << "Failed to validate #{file.original_filename} against BioC DTD"
+        return nil
+      end
+
+      names << file.original_filename
+      logger.debug(idx)
+      if idx == 0
+        dest = SimpleBioC.from_xml_string(xml)
+        logger.debug(dest.documents.size)
+        doc.source = dest.source
+        doc.d_date = dest.date
+        doc.key = dest.key
+        doc.doc_id = dest.documents[0].id
+        doc.project_id = project.id
+        doc.user_id = user.id
+      else
+        src = SimpleBioC.from_xml_string(xml)
+        logger.debug(dest.documents.size)
+        logger.debug(src.documents.size)
+        SimpleBioC.merge(dest, src)
+      end
+    end
+    doc.filename = names.join('+')
     doc.xml = SimpleBioC::to_xml(dest)
     return doc
   end

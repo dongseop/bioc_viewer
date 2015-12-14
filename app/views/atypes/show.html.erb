@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @atype.name %>
+</p>
+
+<p>
+  <strong>Cls:</strong>
+  <%= @atype.cls %>
+</p>
+
+<p>
+  <strong>Desc:</strong>
+  <%= @atype.desc %>
+</p>
+
+<p>
+  <strong>Document:</strong>
+  <%= @atype.document_id %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @atype.project_id %>
+</p>
+
+<%= link_to 'Edit', edit_atype_path(@atype) %> |
+<%= link_to 'Back', atypes_path %>

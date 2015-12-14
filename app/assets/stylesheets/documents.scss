@@ -19,7 +19,7 @@
     left: 0;
     top: 0px;
     padding: 1em;
-    padding-bottom: 200px;
+    // padding-bottom: 200px;
     box-sizing: border-box;
   }
   .left-side {
@@ -45,7 +45,7 @@
   }
   .main {
     left: 200px;
-    width: 600px;
+    width: 80%;
     background: #fff;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -167,7 +167,7 @@
   }
   .main {
     left: 300px;
-    width: 600px;
+    width: 80%;
     background: #fff;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;

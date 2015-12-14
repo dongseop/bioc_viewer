@@ -1,0 +1,51 @@
+<h1 class="ui dividing header">
+  Settings for Annotation Types
+  <div class="sub header"><%= @document.doc_id %> : <%= @document.filename %> </div>
+</h1>
+<style type='text/css'>
+  form span.c {
+    display: inline-block;
+    padding: 0.5em 1em 0.5em 0;
+  }
+  <% Atype::CLASSES.each do |cls| %>
+    .sample.<%=cls%> {
+      background: #eee;
+      padding: 0.2em 0.5em;
+      margin: 0.5em;
+      <%if Atype.border?(cls) %>
+        border-bottom: 3px solid <%=Atype.color(cls) %>;
+      <% else %>
+        background-color: <%=Atype.color(cls) %>;
+      <% end %>
+    }
+  <% end %>
+    
+</style>
+<%= form_tag("/documents/#{@document.id}/atypes", method: 'POST', class: 'ui form') do %>
+  <table class='ui table'>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>How to Disaply</th>
+        <th></th>
+      </tr>
+    </thead>
+    <% @atypes.each do |type| %>
+      <tr>
+        <td><%= type.name %>
+        <td>
+          <% Atype::CLASSES.each do |cls| %>
+            <span class='c'>
+              <input type='radio' name='C<%=type.id%>' value='<%=cls%>' <%='checked' if type.cls==cls %>>
+              <span class='<%=cls%> sample'>T</span>
+            </span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <button class='ui button primary'>Update</button>
+<% end %>
+
+<br>

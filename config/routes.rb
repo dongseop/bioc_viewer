@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
     
+  resources :atypes
   resources :ppis
 
   authenticated :user do
@@ -16,15 +17,20 @@ Rails.application.routes.draw do
 
   resources :documents do
     member do
-      post 'merge'
+      get 'settings'
     end
     resources :ppis
+    resources :atypes
   end
 
   resources :project_users
 
   resources :projects do 
-    resources :documents
+    resources :documents do
+      collection do 
+        post 'merge'
+      end
+    end
     resources :project_users
   end
 

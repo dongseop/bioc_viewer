@@ -1,15 +1,35 @@
 <%= render partial: "buttons" %>
+<style type='text/css'>
+  <% enabled = [] %>
+  <% @document.atypes.each do |type| %>
+    .A<%=type.id%>-enabled span.annotation.A<%=type.id%> {
+      <% if type.border? %>
+        border-bottom: 3px solid <%=type.color%> !important;
+      <% else %>
+        background-color: <%=type.color%> !important;
+      <% end %>
+    }
+
+    .A<%=type.id%>-disabled span.annotation.A<%=type.id%> {
+      <% if type.border? %>
+        border: 3px solid transparent;
+      <% else %>
+        background-color: transparent;
+      <% end %>      
+    }
+    <% enabled << "A#{type.id}-enabled" %>
+  <% end %>
+</style>
 <div class="ui dimmer" id="documentSpinner">
   <div class="ui text loader">Loading</div>
 </div>
 <%= render partial: "doc_info" %>
-<%= render partial: "merge_dialog" %>
 <div class="document clearfix <%=@project.mode%>">
   <div class="left-side pane">
     <h4>Outline</h4>
     <%= render partial: "outline", locals: {nodes: @document.outline} %>
   </div>
-  <div class="main pane" id="main-document">
+  <div class="main pane <%=enabled.join(' ')%>" id="main-document">
     <% @document.bioc_doc.passages.each_with_index do |p, index| %>
       <div class="ui basic segment passage" data-id="<%=index%>" id="passage-<%=index%>" >
         <div class="ui top right attached label mini passage-sub-info">

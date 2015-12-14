@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: [:show, :edit, :update, :destroy, :merge]
+  before_action :set_document, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   
   # GET /documents
@@ -16,6 +16,8 @@ class DocumentsController < ApplicationController
   # GET /documents/1.json
   def show
     @project = @document.project
+    @document.adjust_atypes
+
     unless @project.readable?(current_user)
       redirect_to "/", error: "Cannot access the document"
     end
@@ -104,31 +106,17 @@ class DocumentsController < ApplicationController
   end
 
   def merge
-    file = params[:file]
-    if file.respond_to?(:read)
-      @xml = file.read
-    elsif file.respond_to?(:path)
-      @xml = File.read(file.path)
-    else
-      logger.error "Bad file: #{file.class.name}: #{file.inspect}"
+    @project = Project.find(params[:project_id])
+    unless @project.admin?(current_user)
+      redirect_to "/", error: "Cannot access the document"
     end
-    dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
-    xml = LibXML::XML::Document.string(@xml)
-    begin
-      unless xml.validate(dtd)
-        errors.add(:xml, "invalide BioC document")
-      end
-    rescue Exception => e
-      logger.error "WHAAATTTT===========>"
-      logger.error e.inspect
-
-      redirect_to @document, flash: {error: "Cannot merge: failed to validate the file against BioC DTD. Please select a BioC file."}
-      return
-    end
-    @document = Document.create_by_merge(@document, @xml)
+   
+    logger.debug(params[:files].inspect)
+    errors = []
+    @document = Document.merge_documents(@project, current_user, params[:files], errors)
     if @document.nil?
       respond_to do |format|
-        format.html { render status: :unprocessable_entity, text: "Invalid document by BioC DTD"}
+        format.html { redirect_to @project, error: errors.join(",")}
       end
       return 
     end

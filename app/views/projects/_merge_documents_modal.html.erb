@@ -1,0 +1,40 @@
+<div class="ui modal small merge-dialog">
+  <i class="close icon"></i>
+  <div class="header">
+    Choose BioC documents to merge
+  </div>
+  <div class="content">
+    <ul class='file-path' style='padding: 0; margin: 0 2em 1em;'></ul>
+    <%= form_tag("/projects/#{@project.id}/documents/merge", method: 'POST', multipart: true, class: 'ui form') do %>
+      <input type='file' name='files[]' multiple class='files'>
+    <% end %>
+  </div>
+  <div class="actions">
+    <button class='ui button primary disabled'>Merge</button>
+    <div class="ui cancel button">
+      Close
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+  $('.merge-dialog button.primary').click(function() {
+    $('.merge-dialog form').submit();
+  });
+  $('input.files').change(function(e) {
+    var files = $(e.currentTarget)[0].files;
+    $('.merge-dialog .file-path').html("");
+    for(var i = 0; i < files.length; i++) {
+      if (files[i].type !== 'text/xml') {
+        alert('XML files only. Please select again');
+        return;
+      }
+      $('.merge-dialog .file-path').append("<li>" + files[i].name+ "</li>");
+    }
+    var height = parseInt($('.merge-dialog').height() / 2, 10);
+    $('.merge-dialog').css('margin-top', (-1 * height) + 'px');
+    $('.merge-dialog button.primary').toggleClass('disabled', (files.length === 0));
+  });
+});
+</script>
