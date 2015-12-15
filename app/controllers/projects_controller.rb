@@ -6,6 +6,11 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = current_user.projects.all
+
+    logger.debug("ALLOWED? #{current_user.email} #{allowed_user?}")
+    # unless allowed_user?
+    #   render 'home/index', notice: 'BioC-Viewer is not available for service upgrade.'
+    # end
   end
 
   # GET /projects/1
