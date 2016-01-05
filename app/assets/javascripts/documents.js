@@ -1,4 +1,6 @@
 var BioC = function(id, options) {
+  this.initPaneWidthHeight();
+    
   options = _.extend({
     isReadOnly: false,
     root: '/'
@@ -150,6 +152,7 @@ BioC.prototype.initPaneWidthHeight = function() {
     $(".main.pane").width((width - 550) + "px");
   }
   $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
+  $(".right.pane").show();
   // var maxContentHeight = _.max(_.map(
   //         $(".pane"), 
   //         function(item) {return $(item).height()}

@@ -70,7 +70,7 @@
       </div>
     <% end %>
   </div>
-  <div class="ui right top right-side pane <%='readonly' unless @document.project.writable?(current_user)%>">
+  <div class="ui right top right-side pane <%='readonly' unless @document.project.writable?(current_user)%>" style='display:none'>
     <% if @document.project.mode == "BioGrid" %>
       <% if @document.project.writable?(current_user) %>
         <%= render partial: "ppi_form" %>

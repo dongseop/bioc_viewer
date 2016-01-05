@@ -109,6 +109,7 @@ body {
   }
 }
 .annotation-toggles {
+  z-index:9999;
   .ui.button {
     i.icon {
       display: inline;
@@ -137,6 +138,7 @@ h1.ui.dividing.header {
   z-index:1000;
   color: #fff;
   .annotation-toggles {
+    z-index: 9999;
     float: right;
   }
 }

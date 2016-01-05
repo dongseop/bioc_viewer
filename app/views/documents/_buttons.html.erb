@@ -13,12 +13,17 @@
     <div class="ui button">Annotation Types</div>
     <div class="ui floating dropdown icon button">
       <i class="dropdown icon"></i>
-      <div class="menu">
+      <div class="menu" style='z-index:9999'>
         <div class="header">
           <i class="setting icon"></i>
           <%=link_to 'Settings', document_atypes_path(@document) %>
         </div>
         <div class="divider"></div>
+        <% if @document.atypes.blank? %>
+          <div class="item">
+            <label>No annotation type found</label>
+          </div>
+        <% end %>
         <% @document.atypes.each do |type| %>
           <div class="item" data-type='A<%=type.id%>'>
             <div class="ui checkbox">
