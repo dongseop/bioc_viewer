@@ -104,6 +104,29 @@
     <div class="ui text loader">Uploading</div>
   </div>
   <div id="fileuploader">Upload BioC Documents</div>
+
+  <div class='ui message blue merge-recommender'>
+    <i class="close icon"></i>
+    <div class="ui dimmer" id="reloadSpinner">
+      <div class="ui text loader">Reloading</div>
+    </div>
+    <div class='header'>
+      Found documents possible to merge
+    </div>
+    <table class='ui small compact selectable inverted teal table'>
+      <thead>
+        <tr>
+          <th>Doc ID</th>
+          <th>Source</th>
+          <th>Key</th>
+          <th>Date</th>
+          <th># Documents</th>
+          <th></th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 <% end %>
 
 <div class="ui divider"></div>
@@ -118,23 +141,37 @@
   <%= link_to project_project_users_path(@project), class: "ui button teal" do %>
     <i class="icon users"></i> Manage Users
   <% end %>
-  <a class='ui button olive btn-merge'>
-    <i class='icon copy'></i> Merge Documents
-  </a>
   <%= link_to @project, method: :delete, data: { confirm: 'Are you sure?' }, class: "ui button red" do %>
     <i class="icon trash"></i> Remove Project
   <% end %>
 <% end %>
 <%=render partial: 'merge_documents_modal' %>
+<script id="merge-row-template" type="text/x-handlebars-template">
+  <tr data-source="{{source}}" data-id="{{doc_id}}" data-doc="{{documents}}" 
+      data-key="{{key}}" data-date="{{d_date}}">
+    <td>{{doc_id}}</td>
+    <td>{{source}}</td>
+    <td>{{key}}</td>
+    <td>{{d_date}}</td>
+    <td>{{cnt}}</td>
+    <td><button class='ui button olive mini btn-merge'>Merge</button></td>
+  </tr>
+</script>
+<script id="merge-dialog-template" type="text/x-handlebars-template">
+  <h3>{{cnt}} files to be merged</h3>
+  <ul class="doc-for-merge" data-doc="{{documents}}">
+    <li>ID: {{id}}</li>
+    <li>Source: {{source}}</li>
+    <li>Key: {{key}}</li>
+    <li>Date: {{date}}</li>
+  </ul>
+</script>
 
 <script>
 $(function() {
-  $('.btn-merge').click(function() {
-    $('.merge-dialog').modal({
-      blurring: true
-    })
-    .modal('show');
-  });
+  var mergeTemplate = Handlebars.compile($("#merge-row-template").html())
+  var mergeDialogTemplate = Handlebars.compile($("#merge-dialog-template").html())
+
   $("#fileuploader").uploadFile({
     url: "/projects/<%=@project.id%>/documents",
     fileName: "file",
@@ -179,5 +216,41 @@ $(function() {
   $("#uploadBtn").click(function() {
     $("#hiddenFileInput").click();
   });
+<% if @project.admin?(current_user) %>
+  $.getJSON("<%=url_for check_same_documents_project_path(@project)%>", function(data) {
+    if (data && data.length > 0) {
+      _.each(data, function(item) {
+        $('.merge-recommender table tbody').append(mergeTemplate(item));
+      });
+      $('.merge-recommender').addClass('has-same');
+
+      $('.btn-merge').click(function(e) {
+        var $tr = $(e.currentTarget).closest('tr');
+        var documents = $tr.data('doc').split(',');
+        var item = {
+          source: $tr.data('source'),
+          id: $tr.data('id'),
+          date: $tr.data('date'),
+          key: $tr.data('key'),
+          cnt: documents.length,
+          documents: documents
+        };
+        $('.merge-dialog .info').html(mergeDialogTemplate(item));
+        $('#mergeProgress').progress({
+          value: 0, 
+          total: documents.length,
+          text: {
+            active  : 'Merging {value} of {total} files',
+            success : '{total} files merged!'
+          }
+        });
+        $('.merge-dialog').modal({
+          blurring: true
+        })
+        .modal('show');
+      });
+    }
+  });
+<% end %>
 });
 </script>

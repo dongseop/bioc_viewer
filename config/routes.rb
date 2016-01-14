@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :documents do
     member do
-      get 'settings'
+      post 'merge'
     end
     resources :ppis
     resources :atypes
@@ -27,9 +27,9 @@ Rails.application.routes.draw do
 
   resources :projects do 
     resources :documents do
-      collection do 
-        post 'merge'
-      end
+    end
+    member do 
+      get 'check_same_documents'
     end
     resources :project_users
   end

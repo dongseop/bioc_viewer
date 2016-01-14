@@ -13,6 +13,12 @@ class Project < ActiveRecord::Base
     self.project_users.create({user_id: self.user_id, priv: "rwa"})
   end
 
+  def get_documents(source, doc_id, key, d_date)
+    rows = self.documents.where(["source = ? and doc_id = ? and `key` = ? and d_date = ?", 
+        source, doc_id, key, d_date]).select("id")
+    rows.map{|r| r.id}
+  end
+
   def owner?(user)
     self.owner.id == user.id
   end

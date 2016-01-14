@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_document, only: [:show, :edit, :update, :destroy, :merge]
   before_action :authenticate_user!
   
   # GET /documents
@@ -106,25 +106,30 @@ class DocumentsController < ApplicationController
   end
 
   def merge
-    @project = Project.find(params[:project_id])
+    @project = @document.project
     unless @project.admin?(current_user)
       redirect_to "/", error: "Cannot access the document"
     end
    
-    # logger.debug(params[:files].inspect)
-    errors = []
-    @document = Document.merge_documents(@project, current_user, params[:files], errors)
-    if @document.nil?
-      respond_to do |format|
-        format.html { redirect_to @project, error: errors.join(",")}
-      end
-      return 
+    @dest = Document.find(params[:with])
+    @document.merge_with(@dest)
+    unless params[:nodelete]
+      @dest.destroy
     end
+    # logger.debug(params[:files].inspect)
+    # errors = []
+    # @document = Document.merge_documents(@project, current_user, params[:files], errors)
+    # if @document.nil?
+    #   respond_to do |format|
+    #     format.html { redirect_to @project, error: errors.join(",")}
+    #   end
+    #   return 
+    # end
 
     respond_to do |format|
       if @document.save
         format.html { redirect_to @document, notice: 'Merged document was successfully created.' }
-        format.json { render :show, status: :created, location: @document }
+        format.json { render json: {code: "ok"}, status: :created, location: @document }
       else
         format.html { render :new }
         format.json { render json: @document.errors, status: :unprocessable_entity }

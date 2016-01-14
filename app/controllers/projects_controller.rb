@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :check_same_documents]
   before_action :authenticate_user!
   
   # GET /projects
@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     unless @project.readable?(current_user)
       redirect_to "/", error: "Cannot access the project"
     end
-    @documents = @project.documents.order("id ASC").page(params[:page])
+    @documents = @project.documents.order("id ASC").page(params[:page]).per(10)
   end
 
   # GET /projects/new
@@ -31,6 +31,18 @@ class ProjectsController < ApplicationController
   def edit
     unless @project.admin?(current_user)
       redirect_to "/", error: "Cannot access the project"
+    end
+  end
+
+  def check_same_documents
+    @rows = Document.find_by_sql(["
+      select source, d_date, `key`, doc_id, count(*) as cnt from documents
+      where project_id = ? and source is not null and `key` is not null and doc_id is not null and d_date is not null
+      group by source, d_date, `key`, doc_id
+      having cnt >= 2
+      order by source, d_date, `key`, doc_id", params[:id]])
+    respond_to do |format|
+      format.json {render :check_same_documents}
     end
   end
 

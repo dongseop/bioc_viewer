@@ -1,40 +1,57 @@
-<div class="ui modal small merge-dialog">
+<div class="ui modal merge-dialog">
   <i class="close icon"></i>
   <div class="header">
-    Choose BioC documents to merge
+    <div class="header">Merge files</div>
   </div>
   <div class="content">
-    <ul class='file-path' style='padding: 0; margin: 0 2em 1em;'></ul>
-    <%= form_tag("/projects/#{@project.id}/documents/merge", method: 'POST', multipart: true, class: 'ui form') do %>
-      <input type='file' name='files[]' multiple class='files'>
-    <% end %>
+    <div class='info'>
+    </div>
+    <div id="mergeProgress" class="ui progress blue">
+      <div class="bar">
+        <div class="progress"></div>
+      </div>
+      <div class="label">Ready to upload</div>
+    </div>
   </div>
   <div class="actions">
-    <button class='ui button primary disabled'>Merge</button>
-    <div class="ui cancel button">
+    <button class='ui button blue btn-start-merge'>Start</button>
+    <div class="ui cancel button btn-close-merge">
       Close
     </div>
   </div>
+  </form>
 </div>
-
 <script>
-$(function() {
-  $('.merge-dialog button.primary').click(function() {
-    $('.merge-dialog form').submit();
-  });
-  $('input.files').change(function(e) {
-    var files = $(e.currentTarget)[0].files;
-    $('.merge-dialog .file-path').html("");
-    for(var i = 0; i < files.length; i++) {
-      if (files[i].type !== 'text/xml') {
-        alert('XML files only. Please select again');
-        return;
-      }
-      $('.merge-dialog .file-path').append("<li>" + files[i].name+ "</li>");
+var mergeIdx = 0;
+var mergeDocs = [];
+var mergeUrl = "";
+function postMerge(data) {
+  $('#mergeProgress').progress('increment');
+  mergeIdx++;
+  var doc = mergeDocs[mergeIdx];
+  if (doc !== undefined) {
+    $.post(mergeUrl, {with: doc}, function(data) {
+      postMerge(data);
+    });
+  } else {
+    $('.btn-close-merge').text('Done').removeClass('disabled').addClass('blue');
+    $('.btn-start-merge').hide();
+  }
+}
+
+$('.btn-start-merge').click(function() {
+  mergeDocs = $('.merge-dialog .doc-for-merge').data("doc").split(",");
+  mergeIdx = 0;
+  mergeUrl = "/documents/" + mergeDocs[0] + "/merge.json";
+  $('.btn-start-merge').addClass('disabled');
+  $('.btn-close-merge').addClass('disabled');
+
+  $('.merge-dialog').modal({
+    onHidden: function() {
+      $('#reloadSpinner').addClass('active');
+      location.reload();
     }
-    var height = parseInt($('.merge-dialog').height() / 2, 10);
-    $('.merge-dialog').css('margin-top', (-1 * height) + 'px');
-    $('.merge-dialog button.primary').toggleClass('disabled', (files.length === 0));
   });
+  postMerge();
 });
 </script>

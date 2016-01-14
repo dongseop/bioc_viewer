@@ -115,6 +115,13 @@ class Document < ActiveRecord::Base
     return doc
   end
 
+  def merge_with(doc) 
+    dest = self.bioc
+    src = doc.bioc
+    SimpleBioC.merge(dest, src)
+    self.xml = SimpleBioC::to_xml(dest)
+  end
+   
   def self.merge_documents(project, user, files, errors)
     doc = Document.new
     names = []
