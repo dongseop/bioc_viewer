@@ -182,6 +182,7 @@ $(function() {
     uploadStr: 'Upload Multiple BioC Documents',
     afterUploadAll: function(obj) {
       console.log(obj);
+      location.reload();
     },
     onError: function(files,status,errMsg,pd) {
       //files: list of files
@@ -203,7 +204,7 @@ $(function() {
       toastr.success(files + " files were uploaded successfully.", null,{
         positionClass: "toast-bottom-full-width"
       });
-      location.reload();
+      
     }
 
   });
