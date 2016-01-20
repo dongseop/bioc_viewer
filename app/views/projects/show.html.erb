@@ -136,7 +136,7 @@
 <% end %>
 <% if @project.admin?(current_user) %>
   <%= link_to edit_project_path(@project), class: "ui button" do %>
-    <i class="icon write"></i> Edit
+    <i class="icon setting"></i> Project Settings
   <% end %>
   <%= link_to project_project_users_path(@project), class: "ui button teal" do %>
     <i class="icon users"></i> Manage Users
