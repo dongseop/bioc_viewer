@@ -151,8 +151,10 @@ BioC.prototype.initPaneWidthHeight = function() {
   } else {
     $(".main.pane").width((width - 550) + "px");
   }
-  $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
-  $(".right.pane").show();
+  if (!$('.document').hasClass('Normal')) {
+    $(".right.pane").css('left', (($(".main.pane").outerWidth() + 200) + "px"));
+    $(".right.pane").show();
+  }
   // var maxContentHeight = _.max(_.map(
   //         $(".pane"), 
   //         function(item) {return $(item).height()}
