@@ -311,4 +311,62 @@ class Document < ActiveRecord::Base
   def bioc_doc
     self.bioc.documents[0]
   end
+
+  def verify
+    result = []
+    id_map = {}
+
+    doc = self.bioc_doc
+    doc.passages.each do |p|
+      p.sentences.each do |s|
+        check_duplicated_id(s.annotations, result, 'annotation', id_map)
+        check_duplicated_id(s.relations, result, 'annotation', id_map)
+      end
+      check_duplicated_id(p.annotations, result, 'annotation', id_map)
+      check_duplicated_id(p.relations, result, 'annotation', id_map)
+    end
+    doc.passages.each do |p|
+      p.sentences.each do |s|
+        check_annotation_location(s, result)
+        check_relation_ref(s, result, id_map)
+      end
+      check_annotation_location(p, result)
+      check_relation_ref(p, result, id_map)
+    end
+
+    result
+  end
+
+  def check_duplicated_id(coll, result, type, id_map)
+    coll.each do |n|
+      if id_map[n.id].nil?
+        id_map[n.id] = 1
+      else
+        result << "#{n.id}: the #{type} ID is duplicated"
+      end
+    end
+  end
+
+  def check_annotation_location(obj, result)
+    obj.annotations.each do |a|
+      a.locations.each do |l|
+        start_pos = l.offset.to_i - obj.offset
+        end_pos = start_pos + l.length.to_i
+        text = obj.text[start_pos...end_pos]
+        if text != a.text
+          result << "The position of the annotation #{a.id} does not match [#{l.offset}:#{l.length}]"
+        end
+      end
+    end
+  end
+
+  def check_relation_ref(obj, result, id_map) 
+    obj.relations.each do |r|
+      r.nodes.each do |n|
+        if id_map[n.refid].nil?
+          result << "The relation #{r.id} refers not-existing nodes (refid: #{n.refid})"
+        end
+      end
+    end
+  end
 end

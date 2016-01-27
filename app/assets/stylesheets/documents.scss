@@ -5,6 +5,24 @@
   display: none;
 }
 
+.error-checker {
+  display: inline-block;
+
+  .ui.inline.loader.active, .ui.button {
+    display: none;
+  }
+
+  &.loading .ui.inline.loader.active {
+    display: inline-block;
+  }
+
+  &.error .ui.button.yellow {
+    display: inline-block;
+  }
+  &.no-error .ui.button.green {
+    display: inline-block;
+  }
+}
 .document {
   width: 100%;
   height: 2000px;

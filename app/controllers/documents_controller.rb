@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: [:show, :edit, :update, :destroy, :merge]
+  before_action :set_document, only: [:show, :edit, :update, :destroy, :merge, :verify]
   before_action :authenticate_user!
   
   # GET /documents
@@ -28,6 +28,11 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def verify
+    @project = @document.project
+    render json: @document.verify
+  end
+  
   # GET /documents/new
   def new
     @project = Project.find(params[:project_id])

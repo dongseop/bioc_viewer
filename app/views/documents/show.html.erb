@@ -105,6 +105,8 @@
     <% end %>
   </div>
 </div>
+<%=render partial: "errors_modal" %>
+
 <% if @document.project.mode == "BioGrid" %>
   <%=render partial: "ppi_type_modal" %>
   <%=render partial: "ppi_exp_modal" %>
@@ -148,6 +150,24 @@
   </script>
 <% end %>
 <script>
+setTimeout(function() {
+  $('.error-checker').addClass('loading');
+  $.getJSON("/documents/<%=@document.id%>/verify", function(data) {
+    $('.error-checker').removeClass('loading');
+    if (data.length > 0) {
+      $('.error-checker').addClass('error');
+      var items = _.map(data, function(str) {
+        return "<li>" + str + "</li>";
+      });
+      $('.error-modal .content ol').html(items.join('\n'));
+    } else {
+      /*$('.error-checker').addClass('no-error');*/
+    }
+  });
+}, 0);
+$('.btn-errors').click(function() {
+  $('.error-modal').modal('show');
+});
 $(function() {
   var doc = new BioC('<%=@document.id%>', {
     root: '<%=root_path%>',

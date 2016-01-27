@@ -8,10 +8,20 @@
   <%= link_to "/documents/#{@document.id}.xml", class: 'ui button teal small' do %>
     <i class='icon download'></i> BioC 
   <% end %>
-
-  <div class="ui teal buttons annotation-toggles">
-    <div class="ui button">Annotation Types</div>
-    <div class="ui floating dropdown icon button">
+  <div class='error-checker'>
+    <div class='ui active small inverted inline loader'></div>
+    <button class="ui button small yellow btn-errors">
+      <i class='icon warning sign'></i> 
+      Error
+    </button>
+    <div class="ui button small green">
+      <i class='icon checkmark'></i> 
+      No error
+    </div>
+  </div>
+  <div class="ui teal buttons small annotation-toggles">
+    <div class="ui button small">Annotation Types</div>
+    <div class="ui floating dropdown icon button small">
       <i class="dropdown icon"></i>
       <div class="menu" style='z-index:9999'>
         <div class="header">

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :documents do
     member do
       post 'merge'
+      get 'verify'
     end
     resources :ppis
     resources :atypes
