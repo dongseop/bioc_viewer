@@ -342,7 +342,7 @@ class Document < ActiveRecord::Base
       if id_map[n.id].nil?
         id_map[n.id] = 1
       else
-        result << "#{n.id}: the #{type} ID is duplicated"
+        result << "#{n.id}: this #{type} ID is duplicated"
       end
     end
   end
@@ -354,7 +354,7 @@ class Document < ActiveRecord::Base
         end_pos = start_pos + l.length.to_i
         text = obj.text[start_pos...end_pos]
         if text != a.text
-          result << "The position of the annotation #{a.id} does not match [#{l.offset}:#{l.length}]"
+          result <<  "The annotation #{a.id} is misaligned [#{l.offset}:#{l.length}]"
         end
       end
     end
@@ -364,7 +364,7 @@ class Document < ActiveRecord::Base
     obj.relations.each do |r|
       r.nodes.each do |n|
         if id_map[n.refid].nil?
-          result << "The relation #{r.id} refers not-existing nodes (refid: #{n.refid})"
+          result << "The relation #{r.id} refers non-existing nodes (refid: #{n.refid})"
         end
       end
     end
