@@ -354,7 +354,10 @@ class Document < ActiveRecord::Base
         end_pos = start_pos + l.length.to_i
         text = obj.text[start_pos...end_pos]
         if text != a.text
-          result <<  "The annotation #{a.id} is misaligned [#{l.offset}:#{l.length}]"
+          result <<  "The annotation #{a.id} is misaligned [#{l.offset}:#{l.length}] (the text in annotation '<b>#{a.text}</b>' is different from the one at the location '<b>#{text}</b>')"
+        end
+        if l.original_offset.to_i != l.offset.to_i
+          result << "The annotation #{a.id} is misaligned [#{l.original_offset}:#{l.length}] (auto-fixed to [#{l.offset}:#{l.length}])"
         end
       end
     end
