@@ -118,7 +118,7 @@ class Document < ActiveRecord::Base
   def merge_with(doc) 
     dest = self.bioc
     src = doc.bioc
-    SimpleBioC.merge(dest, src)
+    BioCMerger.merge(dest, src)
     self.xml = SimpleBioC::to_xml(dest)
   end
    
@@ -348,6 +348,10 @@ class Document < ActiveRecord::Base
   end
 
   def check_annotation_location(obj, result)
+    misaligned = adjust_annotation_offsets(obj, true)
+    misaligned.each do |item|
+      result << "The annotation #{item[0]} is misaligned [#{item[1]}:#{item[2]}] (auto-fixed to [#{item[3]}:#{item[2]}])"
+    end
     obj.annotations.each do |a|
       a.locations.each do |l|
         start_pos = l.offset.to_i - obj.offset
@@ -355,9 +359,6 @@ class Document < ActiveRecord::Base
         text = obj.text[start_pos...end_pos]
         if text != a.text
           result <<  "The annotation #{a.id} is misaligned [#{l.offset}:#{l.length}] (the text in annotation '<b>#{a.text}</b>' is different from the one at the location '<b>#{text}</b>')"
-        end
-        if l.original_offset.to_i != l.offset.to_i
-          result << "The annotation #{a.id} is misaligned [#{l.original_offset}:#{l.length}] (auto-fixed to [#{l.offset}:#{l.length}])"
         end
       end
     end
@@ -371,5 +372,70 @@ class Document < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def adjust_offset(needFix)
+    doc = self.bioc_doc
+    doc.passages.each do |p|
+      adjust_annotation_offsets(p, needFix)
+      p.sentences.each do |s|
+        adjust_annotation_offsets(s, needFix)
+      end
+    end
+  end
+
+  def adjust_annotation_offsets(obj, needFix)
+    Rails.logger.debug("HERE in ADJUST ANNOTATION #{obj.nil?} #{obj.annotations.nil?}, #{needFix}")
+    return if obj.nil? || obj.annotations.nil?
+    ret = []
+    obj.annotations.each do |a|
+      Rails.logger.debug("CHECK #{a.id} #{a.text} #{a.locations.size}")
+      positions = find_all_locations(obj, a.text)
+      next if a.locations.nil?
+      a.locations.each do |l|
+        Rails.logger.debug("   CHECK #{l.offset}")
+        next if l.nil? || l == false
+        # l.original_offset = l.offset.to_i if l.original_offset.nil?
+        candidate = choose_offset_candidate(l.offset, positions)
+        Rails.logger.debug("#{candidate}? == #{l.offset}")
+        if candidate.to_i != l.offset.to_i
+          val = a.infons["error:misaligned:#{a.id}"] || ""
+          arr = val.split(",")
+          arr << "#{l.offset}->#{candidate}"
+          a.infons["error:misaligned:#{a.id}"] = arr.join(",")
+          ret << [a.id, l.offset, l.length, candidate]
+          if needFix
+            l.offset = candidate
+          end
+        end
+      end
+    end
+    return ret
+  end
+
+  def find_all_locations(obj, text)
+    positions = []
+    return positions if obj.nil? || obj.text.nil?
+    pos = obj.text.index(text)
+    until pos.nil? 
+      positions << (pos + obj.offset)
+      pos = obj.text.index(text, pos + 1)
+    end
+    return positions
+  end
+
+  def choose_offset_candidate(offset, positions)
+    return offset if positions.nil?
+    min_diff = 99999
+    offset = offset.to_i
+    ret = offset
+    positions.each do |p|
+      diff = (offset - p).abs
+      if diff < min_diff
+        ret = p 
+        min_diff = diff
+      end
+    end
+    return ret
   end
 end

@@ -17,7 +17,7 @@ class DocumentsController < ApplicationController
   def show
     @project = @document.project
     @document.adjust_atypes
-
+    @document.adjust_offset(true)
     unless @project.readable?(current_user)
       redirect_to "/", error: "Cannot access the document"
     end
