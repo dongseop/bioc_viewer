@@ -169,7 +169,6 @@ class BiocMerger
     annotation.locations.each do |l|
       found = false
       new_a.locations.each do |old_l|
-        Rails.logger.debug("#{l.inspect} =? #{old_l.inspect}")
         if l.offset == old_l.offset && l.length == old_l.length
           found = true
           break
