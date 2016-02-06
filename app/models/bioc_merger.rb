@@ -76,7 +76,7 @@ class BioCMerger
     puts warnings
   end
 
-  def adjust_relation_refids(doc, id_map)
+  def self.adjust_relation_refids(doc, id_map)
     adjust_relation_refid(doc, id_map)
     doc.passages.each do |p|
       adjust_relation_refid(p, id_map)
@@ -86,7 +86,7 @@ class BioCMerger
     end
   end
 
-  def adjust_relation_refid(obj, id_map) 
+  def self.adjust_relation_refid(obj, id_map) 
     return if obj.nil?
     obj.relations.each do |r|
       next if r.original.nil?
@@ -98,20 +98,20 @@ class BioCMerger
     end
   end
 
-  def copy_relations(doc, dest, src, id_map)
+  def self.copy_relations(doc, dest, src, id_map)
     return if src.nil?
     src.relations.each do |r|
       copy_relation(doc, dest, r, id_map)
     end
   end
 
-  def copy_annotations(doc, dest, src, id_map)
+  def self.copy_annotations(doc, dest, src, id_map)
     return if src.nil?
     src.annotations.each do |a|
       copy_annotation(doc, dest, a, id_map)
     end
   end
-  def copy_relation(doc, dest, relation, id_map)
+  def self.copy_relation(doc, dest, relation, id_map)
     new_r = nil
     need_add = true
     dest.relations.each do |r|
@@ -148,7 +148,7 @@ class BioCMerger
     end
   end
 
-  def copy_annotation(doc, dest, annotation, id_map)
+  def self.copy_annotation(doc, dest, annotation, id_map)
     new_a = nil
     need_add = true
     dest.annotations.each do |a|
@@ -186,7 +186,7 @@ class BioCMerger
     end
   end
 
-  def choose_id(doc, id, id_map) 
+  def self.choose_id(doc, id, id_map) 
     new_id = id || "id"
     node = doc.find_node(new_id)
 
@@ -201,17 +201,17 @@ class BioCMerger
     return new_id
   end
 
-  def copy_text(dest, src)
+  def self.copy_text(dest, src)
     if blank?(dest.text) && !blank?(src.text)
       dest.text = src.text
     end
   end
 
-  def blank?(text)
+  def self.blank?(text)
     return text.nil? || text.empty?
   end
 
-  def copy_infons(dest, src)
+  def self.copy_infons(dest, src)
     src.infons.each do |k, v|
       if dest.infons[k].nil?
         dest.infons[k] = v
