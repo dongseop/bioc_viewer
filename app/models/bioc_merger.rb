@@ -157,13 +157,14 @@ class BiocMerger
         need_add = false
         break
       end
-    end
+    end unless dest.annotations.nil?
     if new_a.nil?
       new_a = SimpleBioC::Annotation.new(dest)
       new_a.id = choose_id(doc, annotation.id, id_map)
       new_a.text = annotation.text
       new_a.locations = []
-    end
+    end 
+
 
     annotation.locations.each do |l|
       found = false
@@ -179,7 +180,7 @@ class BiocMerger
         new_l.length = l.length 
         new_a.locations << new_l
       end
-    end
+    end unless annotation.locations.nil?
     copy_infons(new_a, annotation)
     if need_add
       dest.annotations << new_a
