@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 class BioCMerger
-  def merge(dest_collection, src_collection)
+  def self.merge(dest_collection, src_collection)
     errors = []
     warnings = []
     id_map = {}
