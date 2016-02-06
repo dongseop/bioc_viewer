@@ -12,6 +12,17 @@
       </div>
       <div class="label">Ready to upload</div>
     </div>
+    <div id="mergeError" style="display:none" class="ui icon message error">
+      <i class="icon warning sign"></i>
+      <div class="content">
+        <div class="header">
+          Sorry. Please try again later.
+        </div>
+        <p class='message'>
+
+        </p>
+      </div>
+    </div>
   </div>
   <div class="actions">
     <button class='ui button blue btn-start-merge'>Start</button>
@@ -30,8 +41,18 @@ function postMerge(data) {
   mergeIdx++;
   var doc = mergeDocs[mergeIdx];
   if (doc !== undefined) {
-    $.post(mergeUrl, {with: doc}, function(data) {
-      postMerge(data);
+    $.ajax({
+      method: 'POST',
+      url: mergeUrl, 
+      data: {with: doc}, 
+      success: function(data) {
+        $("#mergeError").hide();
+        postMerge(data);
+      }, 
+      error: function(xhr, status, error) {
+        $("#mergeError p").html((xhr.status || status) + " : " + error);
+        $("#mergeError").show();
+      }
     });
   } else {
     $('.btn-close-merge').text('Done').removeClass('disabled').addClass('blue');

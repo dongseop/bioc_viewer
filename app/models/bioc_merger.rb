@@ -1,6 +1,6 @@
 require 'nokogiri'
 
-class BioCMerger
+class BiocMerger
   def self.merge(dest_collection, src_collection)
     errors = []
     warnings = []

@@ -118,7 +118,7 @@ class Document < ActiveRecord::Base
   def merge_with(doc) 
     dest = self.bioc
     src = doc.bioc
-    BioCMerger.merge(dest, src)
+    BiocMerger.merge(dest, src)
     self.xml = SimpleBioC::to_xml(dest)
   end
    

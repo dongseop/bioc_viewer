@@ -237,6 +237,7 @@ $(function() {
           cnt: documents.length,
           documents: documents
         };
+        $("#mergeError").hide();
         $('.merge-dialog .info').html(mergeDialogTemplate(item));
         $('#mergeProgress').progress({
           value: 0, 
