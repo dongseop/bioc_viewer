@@ -118,6 +118,7 @@ class DocumentsController < ApplicationController
    
     @dest = Document.find(params[:with])
     @document.merge_with(@dest)
+    @document.adjust_offset(true)
     unless params[:nodelete]
       @dest.destroy
     end
