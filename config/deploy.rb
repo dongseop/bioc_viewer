@@ -5,7 +5,7 @@ set :application, 'bioc-viewer'
 set :repo_url, 'git@bitbucket.org:dongseop/bioc-viewer.git'
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.3.0'
+set :rbenv_ruby, '2.2.3'
 
 # in case you want to set ruby version from the file:
 # set :rbenv_ruby, File.read('.ruby-version').strip
