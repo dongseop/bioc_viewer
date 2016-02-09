@@ -1,5 +1,5 @@
 require 'nokogiri'
-require 'libxml'
+# require 'libxml'
 class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
@@ -122,56 +122,56 @@ class Document < ActiveRecord::Base
     self.xml = SimpleBioC::to_xml(dest)
   end
    
-  def self.merge_documents(project, user, files, errors)
-    doc = Document.new
-    names = []
-    dest = nil
-    files.each_with_index do |file, idx|
-      if file.respond_to?(:read)
-        xml = file.read
-      elsif file.respond_to?(:path)
-        xml = File.read(file.path)
-      else
-        logger.error "Bad file: #{file.class.name}: #{file.inspect}"
-      end
-      dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
-      libxml = LibXML::XML::Document.string(xml)
-      begin
-        unless libxml.validate(dtd)
-          errors << "Failed to validate #{file.original_filename} against BioC DTD"
-          return nil
-        end
-      rescue Exception => e
-        logger.error("Failed to validate #{file.original_filename} against BioC DTD")
-        errors << "Failed to validate #{file.original_filename} against BioC DTD"
-        return nil
-      end
+  # def self.merge_documents(project, user, files, errors)
+  #   doc = Document.new
+  #   names = []
+  #   dest = nil
+  #   files.each_with_index do |file, idx|
+  #     if file.respond_to?(:read)
+  #       xml = file.read
+  #     elsif file.respond_to?(:path)
+  #       xml = File.read(file.path)
+  #     else
+  #       logger.error "Bad file: #{file.class.name}: #{file.inspect}"
+  #     end
+  #     dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
+  #     libxml = LibXML::XML::Document.string(xml)
+  #     begin
+  #       unless libxml.validate(dtd)
+  #         errors << "Failed to validate #{file.original_filename} against BioC DTD"
+  #         return nil
+  #       end
+  #     rescue Exception => e
+  #       logger.error("Failed to validate #{file.original_filename} against BioC DTD")
+  #       errors << "Failed to validate #{file.original_filename} against BioC DTD"
+  #       return nil
+  #     end
 
-      names << file.original_filename
-      logger.debug("#{idx} : #{file.original_filename}")
-      if idx == 0
-        dest = SimpleBioC.from_xml_string(xml)
-        # logger.debug(dest.documents.size)
-        doc.source = dest.source
-        doc.d_date = dest.date
-        doc.key = dest.key
-        doc.doc_id = dest.documents[0].id
-        doc.project_id = project.id
-        doc.user_id = user.id
-      else
-        src = SimpleBioC.from_xml_string(xml)
-        logger.debug(dest.documents.size)
-        logger.debug(src.documents.size)
-        SimpleBioC.merge(dest, src)
-      end
-    end
-    doc.filename = names.join('+')
-    if doc.filename.size > 100
-      doc.filename = doc.filename[0..99] + '...'
-    end
-    doc.xml = SimpleBioC::to_xml(dest)
-    return doc
-  end
+  #     names << file.original_filename
+  #     logger.debug("#{idx} : #{file.original_filename}")
+  #     if idx == 0
+  #       dest = SimpleBioC.from_xml_string(xml)
+  #       # logger.debug(dest.documents.size)
+  #       doc.source = dest.source
+  #       doc.d_date = dest.date
+  #       doc.key = dest.key
+  #       doc.doc_id = dest.documents[0].id
+  #       doc.project_id = project.id
+  #       doc.user_id = user.id
+  #     else
+  #       src = SimpleBioC.from_xml_string(xml)
+  #       logger.debug(dest.documents.size)
+  #       logger.debug(src.documents.size)
+  #       SimpleBioC.merge(dest, src)
+  #     end
+  #   end
+  #   doc.filename = names.join('+')
+  #   if doc.filename.size > 100
+  #     doc.filename = doc.filename[0..99] + '...'
+  #   end
+  #   doc.xml = SimpleBioC::to_xml(dest)
+  #   return doc
+  # end
 
   def get_psize(p)
     self.get_ptext(p).size

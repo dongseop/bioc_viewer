@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'net-ssh', '~> 2.0'
 gem "nokogiri", '~>1.6.1.0'
-gem "libxml-ruby"
+# gem "libxml-ruby"
 gem 'devise'
 # gem "paperclip"
 # gem "paperclip-meta"

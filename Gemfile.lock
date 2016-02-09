@@ -101,7 +101,6 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    libxml-ruby (2.8.0)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -208,7 +207,6 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
-  libxml-ruby
   mysql2
   net-ssh (~> 2.0)
   nokogiri (~> 1.6.1.0)
