@@ -1,5 +1,5 @@
 require 'nokogiri'
-require 'libxml'
+# require 'libxml'
 class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
@@ -293,11 +293,11 @@ class Document < ActiveRecord::Base
   end
 
   def validate_xml
-    dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
-    xml = LibXML::XML::Document.string(self.xml)
-    unless xml.validate(dtd)
-      errors.add(:xml, "invalide BioC document")
-    end
+    # dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
+    # xml = LibXML::XML::Document.string(self.xml)
+    # unless xml.validate(dtd)
+    #   errors.add(:xml, "invalide BioC document")
+    # end
   end
 
   def overwrite_xml

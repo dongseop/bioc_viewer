@@ -7,9 +7,9 @@
 # role :app, %w{deploy@45.79.162.35}
 # role :web, %w{deploy@45.79.162.35}
 # role :db,  %w{deploy@45.79.162.35}
-role :app, %w{deploy@45.79.187.241}
-role :web, %w{deploy@45.79.187.241}
-role :db,  %w{deploy@45.79.187.241}
+role :app, %w{deploy@45.79.187.7}
+role :web, %w{deploy@45.79.187.7}
+role :db,  %w{deploy@45.79.187.7}
 
 
 # Extended Server Syntax
@@ -19,7 +19,7 @@ role :db,  %w{deploy@45.79.187.241}
 # used to set extended properties on the server.
 
 # server '45.79.162.35', user: 'deploy', roles: %w{web app}, my_property: :my_value
-server '45.79.187.241', user: 'deploy', roles: %w{web app}, my_property: :my_value
+server '45.79.187.7', user: 'deploy', roles: %w{web app}, my_property: :my_value
 
 
 # Custom SSH Options
@@ -37,7 +37,7 @@ server '45.79.187.241', user: 'deploy', roles: %w{web app}, my_property: :my_val
 #
 # And/or per server (overrides global)
 # ------------------------------------
-server '45.79.187.241',
+server '45.79.187.7',
   user: 'deploy',
   roles: %w{web app},
   ssh_options: {
