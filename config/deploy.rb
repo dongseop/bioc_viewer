@@ -5,7 +5,7 @@ set :application, 'bioc-viewer'
 set :repo_url, 'git@bitbucket.org:dongseop/bioc-viewer.git'
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '1.9.3-p551'
+set :rbenv_ruby, '2.3.0'
 
 # in case you want to set ruby version from the file:
 # set :rbenv_ruby, File.read('.ruby-version').strip
@@ -18,7 +18,7 @@ set :rbenv_ruby, '1.9.3-p551'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/tango
-set :deploy_to, '/home/deploy/bioc-viewer'
+# set :deploy_to, '/home/deploy/bioc-viewer'
 
 # Default value for :scm is :git
 # set :scm, :git
