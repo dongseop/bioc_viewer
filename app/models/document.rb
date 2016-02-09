@@ -1,5 +1,5 @@
 require 'nokogiri'
-# require 'libxml'
+require 'libxml'
 class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
