@@ -26,8 +26,8 @@ gem 'net-ssh', '~> 2.0'
 gem "nokogiri", '~>1.6.1.0'
 gem "libxml-ruby"
 gem 'devise'
-gem "paperclip"
-gem "paperclip-meta"
+# gem "paperclip"
+# gem "paperclip-meta"
 gem "bourbon"
 gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-rbenv'
