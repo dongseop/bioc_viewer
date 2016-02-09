@@ -19,7 +19,7 @@ role :db,  %w{deploy@45.79.187.241}
 # used to set extended properties on the server.
 
 # server '45.79.162.35', user: 'deploy', roles: %w{web app}, my_property: :my_value
-server ' 45.79.187.241', user: 'deploy', roles: %w{web app}, my_property: :my_value
+server '45.79.187.241', user: 'deploy', roles: %w{web app}, my_property: :my_value
 
 
 # Custom SSH Options
