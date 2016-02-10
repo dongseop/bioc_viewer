@@ -51,6 +51,7 @@ ranges.each_with_index do |s_pos, index|
       ret << "<span class='ui label mini #{atype.cname}'>#{type}</span>"
       gene_id = a.infons['GeneID'] || a.infons['Gene'] || a.infons['NCBI Gene']
       unless gene_id.blank?
+        gene_name = a.text
         ret << "<a href='http://www.ncbi.nlm.nih.gov/gene?term=#{gene_id}' target='_blank'><i class='icon globe'></i>#{gene_id}</a>"
       end
       tid = a.infons['OrganismID'] || a.infons['Organism'] || a.infons['NCBI Taxonomy']
@@ -65,5 +66,5 @@ ranges.each_with_index do |s_pos, index|
   cls = cls.uniq
   cls << "annotation" unless cls.blank?
 
-  -%><span data-gene="<%=gene_id%>" data-name="<%=gene_name%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%- unless cls.blank? -%><div class="ui popup" style="display:none"><%=content.join.html_safe%></div><%-end 
+  -%><span data-gene="<%=j gene_id%>" data-name="<%=j gene_name%>" class="<%=cls.join(" ") %>"><%=ptext[s_pos - p.offset, e_pos - s_pos]%></span><%- unless cls.blank? -%><div class="ui popup" style="display:none"><%=content.join.html_safe%></div><%-end 
   end -%>

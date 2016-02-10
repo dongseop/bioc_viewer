@@ -385,19 +385,19 @@ class Document < ActiveRecord::Base
   end
 
   def adjust_annotation_offsets(obj, needFix)
-    Rails.logger.debug("HERE in ADJUST ANNOTATION #{obj.nil?} #{obj.annotations.nil?}, #{needFix}")
+    # Rails.logger.debug("HERE in ADJUST ANNOTATION #{obj.nil?} #{obj.annotations.nil?}, #{needFix}")
     return if obj.nil? || obj.annotations.nil?
     ret = []
     obj.annotations.each do |a|
-      Rails.logger.debug("CHECK #{a.id} #{a.text} #{a.locations.size}")
+      # Rails.logger.debug("CHECK #{a.id} #{a.text} #{a.locations.size}")
       positions = find_all_locations(obj, a.text)
       next if a.locations.nil?
       a.locations.each do |l|
-        Rails.logger.debug("   CHECK #{l.offset}")
+        # Rails.logger.debug("   CHECK #{l.offset}")
         next if l.nil? || l == false
         # l.original_offset = l.offset.to_i if l.original_offset.nil?
         candidate = choose_offset_candidate(l.offset, positions)
-        Rails.logger.debug("#{candidate}? == #{l.offset}")
+        # Rails.logger.debug("#{candidate}? == #{l.offset}")
         if candidate.to_i != l.offset.to_i
           val = a.infons["error:misaligned:#{a.id}"] || ""
           arr = val.split(",")
