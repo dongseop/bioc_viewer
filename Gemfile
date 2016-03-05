@@ -29,6 +29,7 @@ gem 'devise'
 # gem "paperclip"
 # gem "paperclip-meta"
 gem "bourbon"
+gem 'rollbar'
 gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-rbenv'
 gem 'capistrano-passenger'
