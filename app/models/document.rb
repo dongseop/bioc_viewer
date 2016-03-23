@@ -1,5 +1,4 @@
 require 'nokogiri'
-# require 'libxml'
 class Document < ActiveRecord::Base
   belongs_to :user
   belongs_to :project, counter_cache: true
@@ -122,57 +121,6 @@ class Document < ActiveRecord::Base
     self.xml = SimpleBioC::to_xml(dest)
   end
    
-  # def self.merge_documents(project, user, files, errors)
-  #   doc = Document.new
-  #   names = []
-  #   dest = nil
-  #   files.each_with_index do |file, idx|
-  #     if file.respond_to?(:read)
-  #       xml = file.read
-  #     elsif file.respond_to?(:path)
-  #       xml = File.read(file.path)
-  #     else
-  #       logger.error "Bad file: #{file.class.name}: #{file.inspect}"
-  #     end
-  #     dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
-  #     libxml = LibXML::XML::Document.string(xml)
-  #     begin
-  #       unless libxml.validate(dtd)
-  #         errors << "Failed to validate #{file.original_filename} against BioC DTD"
-  #         return nil
-  #       end
-  #     rescue Exception => e
-  #       logger.error("Failed to validate #{file.original_filename} against BioC DTD")
-  #       errors << "Failed to validate #{file.original_filename} against BioC DTD"
-  #       return nil
-  #     end
-
-  #     names << file.original_filename
-  #     logger.debug("#{idx} : #{file.original_filename}")
-  #     if idx == 0
-  #       dest = SimpleBioC.from_xml_string(xml)
-  #       # logger.debug(dest.documents.size)
-  #       doc.source = dest.source
-  #       doc.d_date = dest.date
-  #       doc.key = dest.key
-  #       doc.doc_id = dest.documents[0].id
-  #       doc.project_id = project.id
-  #       doc.user_id = user.id
-  #     else
-  #       src = SimpleBioC.from_xml_string(xml)
-  #       logger.debug(dest.documents.size)
-  #       logger.debug(src.documents.size)
-  #       SimpleBioC.merge(dest, src)
-  #     end
-  #   end
-  #   doc.filename = names.join('+')
-  #   if doc.filename.size > 100
-  #     doc.filename = doc.filename[0..99] + '...'
-  #   end
-  #   doc.xml = SimpleBioC::to_xml(dest)
-  #   return doc
-  # end
-
   def get_psize(p)
     self.get_ptext(p).size
   end
@@ -293,11 +241,6 @@ class Document < ActiveRecord::Base
   end
 
   def validate_xml
-    # dtd = LibXML::XML::Dtd.new(File.read(Rails.root.join('public', 'bioc.dtd')))
-    # xml = LibXML::XML::Document.string(self.xml)
-    # unless xml.validate(dtd)
-    #   errors.add(:xml, "invalide BioC document")
-    # end
   end
 
   def overwrite_xml
@@ -385,19 +328,14 @@ class Document < ActiveRecord::Base
   end
 
   def adjust_annotation_offsets(obj, needFix)
-    # Rails.logger.debug("HERE in ADJUST ANNOTATION #{obj.nil?} #{obj.annotations.nil?}, #{needFix}")
     return if obj.nil? || obj.annotations.nil?
     ret = []
     obj.annotations.each do |a|
-      # Rails.logger.debug("CHECK #{a.id} #{a.text} #{a.locations.size}")
       positions = find_all_locations(obj, a.text)
       next if a.locations.nil?
       a.locations.each do |l|
-        # Rails.logger.debug("   CHECK #{l.offset}")
         next if l.nil? || l == false
-        # l.original_offset = l.offset.to_i if l.original_offset.nil?
         candidate = choose_offset_candidate(l.offset, positions)
-        # Rails.logger.debug("#{candidate}? == #{l.offset}")
         if candidate.to_i != l.offset.to_i
           val = a.infons["error:misaligned:#{a.id}"] || ""
           arr = val.split(",")

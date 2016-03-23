@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def restrict_use
-    logger.debug("#{params[:controller] == 'projects'} #{params[:controller] == 'documents'} #{current_user.nil?} #{allowed_user?}")
     if (params[:controller] == 'projects' || params[:controller] == 'documents') &&
           (!current_user.nil? && !allowed_user?)
       redirect_to '/home/index', notice: 'BioC-Viewer is not available for service upgrade.'
