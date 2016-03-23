@@ -18,6 +18,7 @@ BioC is an XML-based format designed to provide interoperability for text mining
 2. Clone this repository: `git clone git@github.com:dongseop/bioc_viewer.git`
 2. `cd bioc-viewer`
 3. `bundle install`
+4. You need to create your own 'database.yml' and 'secrets.yml' in 'config' directory. You may refer sample files in the config directory.
 4. `rake db:create`
 5. `rake db:migrate`
 6. `rails s`
