@@ -24,7 +24,7 @@
     <% end %>
     <% if user_signed_in? %>
       <div class="item">
-        <%= link_to "Projects", root_path, class:"section"%>
+        <%= link_to "Projects", "/projects", class:"section"%>
         <% if !@project.nil? && !@project.id.nil?%>
           <i class="right chevron icon divider"></i>
           <%=link_to @project.title, @project %>
@@ -82,11 +82,6 @@
 
   <%= yield %>
 </div>
-<div class="footer" id="main-footer">
-  <div class="ui container">
-    Copyright © 2015-2016 BioC-Viewer, Contact us: dongseop@gmail.com
-  </div>
-</div> 
 <script>
 $(function() {
   $('.message .close').on('click', function() {

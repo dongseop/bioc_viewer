@@ -1,4 +1,19 @@
 .starter {
   padding: 100px 0;
+  p {
+    font-size: 1.3em;
+  }
 }
 
+.home.grid {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 1em 0em;
+
+  .ui.bulleted.list {
+    .item {
+      line-height: 160%;
+      margin-bottom: 0.5em;
+    }
+  }
+}

@@ -64,17 +64,14 @@ body {
   }
 }
 
-#main-footer {
+.footer {
+  width: 100%;
+  margin: 5em 0 1em;
   .container {
-    background-color: #1b1c1d!important;
-    padding: 0.5em 1em;
-    font-size: 0.9em;
-    font-weight: lighter;
+    padding: 0.5em;
     color: #aaa;
-    position:fixed;
-    bottom: 0;
+    font-size: 0.9em;
   }
-
 }
 
 #hiddenFileInput {
@@ -90,7 +87,6 @@ body {
   background-color: #fff;
   margin-top: 40px;
   width: 100%;
-  margin-bottom: 2em;
 }
 
 .menu .container,
