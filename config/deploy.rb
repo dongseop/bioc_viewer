@@ -2,7 +2,7 @@
 lock '3.3.5'
 
 set :application, 'bioc-viewer'
-set :repo_url, 'git@bitbucket.org:dongseop/bioc-viewer.git'
+set :repo_url, 'git@github.com:dongseop/bioc_viewer.git'
 
 set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, '2.3.0'
