@@ -6,32 +6,59 @@
         Web interface for displaying and merging annotations in <a href="http://bioc.sourceforge.net/">BioC</a>
         
       </p>
-      <p>
-        Available on <%=link_to "GitHub", "https://github.com/dongseop/bioc_viewer" %>.
-        Licensed <%=link_to "Apache License 2.0", "http://www.apache.org/licenses/LICENSE-2.0" %>
-      </p>
     </div>
   </div>
 </main>
 
 <div class="home stackable very relaxed ui grid container">
   <h3 class="ui header">Features</h3>
+  
+  <div class="row">
+    <div class="seven wide column">
+      <%=image_tag "screen1.png", class: "fluid"%>
+    </div>
+    <div class="nine wide column">
+      <div class="ui bulleted list">
+        <div class="item">
+          <b>Multiple projects &amp; collaborators:</b>
+          A project is a collection of a BioC documents. Users can create a project and share it with other collaborators. An owner can assign "Read", "Write", and "Admin" privileges to collaborators. 
+        </div>
+        <div class="item">
+          <b>Support BioGRID tasks:</b>
+          A project can be used in one of two modes, "Normal" or "BioGRID". In addition to a general BioC viewer as "Normal" mode, PPI/GI manual curation tool is visible in the document viewer in "BioGRID" mode. 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+  <div class="row">
+    <div class="seven wide column">
+      <%=image_tag "screen2.png", class: "fluid"%>
+    </div>
+    <div class="nine wide column">
+      <div class="ui bulleted list">
+        <div class="item">
+          <b>Merge multiple BioC files:</b>
+          the viewer automatically checks whether there are multiple compatible files for the same underlying text document, i.e. files with the same source, date, key and document ID. If such compatible files are found, the interface asks users permission to merge those BioC files. 
+        </div>
+        <div class="item">
+          <b>Correct misaligned annotations:</b>
+          if misaligned offsets are identified, the viewer automatically correct them by finding a match within the same paragraph. Users can download the corrected files.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui divider"></div>
   <div class="row">
     <div class="seven wide column">
       <%=image_tag "screen3.png", class: "fluid"%>
-      <p>
-      The document viewer consists of four main parts: the annotation toggle bar (top), the outline viewer (left side), the text viewer (center) and the PPI/GI curator (right side). The PPI/GI curation tool is only available in the “BioGRID” mode.
-      </p>
     </div>
     <div class="nine wide column">
       <div class="ui bulleted list">
         <div class="item">
           <b>Full-text articles with highlighted annotations: </b>
           The BioC Viewer highlights annotations using colors predefined in the annotation toggle bar.
-        </div>
-        <div class="item">
-          <b>Support overlaps or nested annotation regions:</b>
-          Some annotations from text mining tasks may overlap each other or occur nested in other annotations. The BioC viewer visullay represents these overlapped or nested regions for users to easily recognize them. 
         </div>
         <div class="item">
           <b>Outline viewer for easy browsing:</b>
@@ -48,58 +75,7 @@
       </div>
     </div>
   </div>
-  <div class="ui divider"></div>
-  <div class="row">
-    <div class="seven wide column">
-      <%=image_tag "screen2.png", class: "fluid"%>
-      <p>
-      A project is a collection of BioC documents. In this page, a user can upload, download or delete BioC documents. Sharing with other users or removing a project can be done using buttons at the bottom of the page.
-      </p>
-    </div>
-    <div class="nine wide column">
-      <div class="ui bulleted list">
-        <div class="item">
-          <b>Merge multiple BioC files:</b>
-          the viewer automatically checks whether there are multiple compatible files for the same underlying text document, i.e. files with the same source, date, key and document ID. If such compatible files are found, the interface asks users permission to merge those BioC files. 
-        </div>
-        <div class="item">
-          <b>Correct misaligned annotations:</b>
-          if misaligned offsets are identified, the viewer automatically correct them by finding a match within the same paragraph. Users can download the corrected files.
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="ui divider"></div>
 
-  <div class="row">
-    <div class="seven wide column">
-      <%=image_tag "screen1.png", class: "fluid"%>
-      <p>
-      A project is a basic unit of the viewer, and each project consists of a set of documents. When a user creates a new project, one of two modes, “Normal” or “BioGRID”, can be chosen. In “BioGRID” mode the PPI/GI curation tool is visible in the document viewer.
-      </p>
-    </div>
-    <div class="nine wide column">
-      <div class="ui bulleted list">
-        <div class="item">
-          <b>Multiple projects &amp; collaborators:</b>
-          A project is a collection of a BioC documents. Users can create a project and share it with other collaborators. An owner can assign "Read", "Write", and "Admin" privileges to collaborators. 
-        </div>
-        <div class="item">
-          <b>Support BioGRID tasks:</b>
-          A project can be used in one of two modes, "Normal" or "BioGRID". In addition to a general BioC viewer as "Normal" mode, PPI/GI manual curation tool is visible in the document viewer in "BioGRID" mode. 
-      </div>
-    </div>
-  </div>
 </div>
 
-<div class="footer">
-  <div class="ui divider"></div>
-  <div class="ui container">
-    Copyright © 2015-2016 BioC-Viewer, Contact us: dongseop@gmail.com
-    <p>
-    Publication: Soo-Yong Shin and Dongseop Kwon, "<%= link_to "A Visual Tool for Displaying Annotations in BioC", "http://www.biocreative.org/media/store/files/2015/BCV2015_paper_17.pdf"%> ," Proceedings of the Fifth BioCreative Challenge Evaluation Workshop, pp. 57-62, Sept. 2015
-
-    </p>
-  </div>
-</div> 
 

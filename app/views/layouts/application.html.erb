@@ -81,6 +81,25 @@
   <%- end -%>
 
   <%= yield %>
+<div class="footer">
+  <div class="ui divider"></div>
+  <div class="ui container">
+    Copyright © 2015-2016 BioC-Viewer, Contact us: dongseop@gmail.com
+    <p>
+      Available on <%=link_to "GitHub", "https://github.com/dongseop/bioc_viewer" %>.
+      Licensed <%=link_to "Apache License 2.0", "http://www.apache.org/licenses/LICENSE-2.0" %>
+    </p>
+    <div class="ui header">Publication</div>
+    <ul class="ui list bulleted">
+      <div class="item">
+        Soo-Yong Shin and Dongseop Kwon, "<%= link_to "A Visual Tool for Displaying Annotations in BioC", "http://www.biocreative.org/media/store/files/2015/BCV2015_paper_17.pdf"%> ," Proceedings of the Fifth BioCreative Challenge Evaluation Workshop, pp. 57-62, Sept. 2015
+      </div>
+      <div class="item">
+        Soo-Yong Shin, Sun Kim, W. John Wilbur, and Dongseop Kwon, "BioC Viewer: a web-based tool for displaying and merging annotations in BioC," Database (in revision)
+      </div>
+    </ul>
+  </div>
+</div> 
 </div>
 <script>
 $(function() {

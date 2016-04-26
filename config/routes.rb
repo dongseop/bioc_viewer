@@ -3,8 +3,13 @@ Rails.application.routes.draw do
   resources :atypes
   resources :ppis
 
-  root 'home#index'
-
+  authenticated :user do  
+    root 'projects#index'   
+  end   
+    
+  unauthenticated do    
+    root 'home#index', :as => "unauthenticated"   
+  end 
   resources :temp_documents
 
   resources :revisions
