@@ -12,20 +12,19 @@
 
 <div class="home stackable very relaxed ui grid container">
   <h3 class="ui header">Features</h3>
-  
   <div class="row">
-    <div class="seven wide column">
-      <%=image_tag "screen1.png", class: "fluid"%>
-    </div>
+    <%=link_to image_path("screen1.png"), class: 'seven wide column', data: {lightbox: 'screen', title: 'List of projects'} do %>
+      <%=image_tag "screen1.png", class: "fluid" %>
+    <% end %>
     <div class="nine wide column">
       <div class="ui bulleted list">
         <div class="item">
           <b>Multiple projects &amp; collaborators:</b>
-          A project is a collection of a BioC documents. Users can create a project and share it with other collaborators. An owner can assign "Read", "Write", and "Admin" privileges to collaborators. 
+          A project is a collection of BioC documents. Users can create a project and share it with other collaborators. An owner can assign "Read", "Write", and "Admin" privileges to collaborators. 
         </div>
         <div class="item">
           <b>Support BioGRID tasks:</b>
-          A project can be used in one of two modes, "Normal" or "BioGRID". In addition to a general BioC viewer as "Normal" mode, PPI/GI manual curation tool is visible in the document viewer in "BioGRID" mode. 
+          A project can be used in one of two modes, "Normal" or "BioGRID". In addition to a general BioC viewer as "Normal" mode, the PPI/GI manual curation tool is visible in the document viewer in "BioGRID" mode. 
         </div>
       </div>
     </div>
@@ -33,27 +32,27 @@
 
   <div class="ui divider"></div>
   <div class="row">
-    <div class="seven wide column">
+    <%=link_to image_path("screen2.png"), class: 'seven wide column', data: {lightbox: 'screen', title: 'List of documents'} do %>
       <%=image_tag "screen2.png", class: "fluid"%>
-    </div>
+    <% end %>
     <div class="nine wide column">
       <div class="ui bulleted list">
         <div class="item">
           <b>Merge multiple BioC files:</b>
-          the viewer automatically checks whether there are multiple compatible files for the same underlying text document, i.e. files with the same source, date, key and document ID. If such compatible files are found, the interface asks users permission to merge those BioC files. 
+          The viewer automatically checks whether there are multiple compatible files for the same underlying text document, i.e. files with the same source, date, key and document ID. If such compatible files are found, the interface asks users permission to merge those BioC files. 
         </div>
         <div class="item">
           <b>Correct misaligned annotations:</b>
-          if misaligned offsets are identified, the viewer automatically correct them by finding a match within the same paragraph. Users can download the corrected files.
+          if misaligned offsets are identified, the viewer automatically corrects them by finding a match within the same paragraph. Users can download the corrected files in BioC.
         </div>
       </div>
     </div>
   </div>
   <div class="ui divider"></div>
   <div class="row">
-    <div class="seven wide column">
+    <%=link_to image_path("screen3.png"), class: 'seven wide column', data: {lightbox: 'screen', title: "Document viewer in the 'BioGRID' mode"} do %>
       <%=image_tag "screen3.png", class: "fluid"%>
-    </div>
+    <% end %>
     <div class="nine wide column">
       <div class="ui bulleted list">
         <div class="item">
@@ -62,20 +61,36 @@
         </div>
         <div class="item">
           <b>Outline viewer for easy browsing:</b>
-          Users can directly move to a section with annotated passages by clicking section titles in the BioC Viewer.
+          Users can directly move to a section with annotated passages by clicking section titles.
+        </div>
+        <div class="item">
+          <b>Automatic input for normalized gene IDs (i.e. Entrez Gene IDs):</b>
+          If there are any IDs assigned to gene/protein mentions, a mouse click on annotated genes will automatically fill the necessary information in the PPI/GI curation tool.
         </div>
         <div class="item">
           <b>Manual edit of PPI/GI entries:</b>
-          Curators should be able to edit PPI/GI entries if curated gene/protein pairs have errors: Edit icons appear in PPI/GI pairs. 
-        </div>
-        <div class="item">
-          <b>Automatical entering normalized gene IDs (i.e. Entrez Gene IDs):</b>
-          If there are any IDs assigned to gene/protein mentions, a mouse click on annotated genes automatically fills the necessary information in the PPI/GI curation tool.
+          Curators can edit PPI/GI entries if annotated gene/protein information is incorrect.
         </div>
       </div>
     </div>
   </div>
 
-</div>
+  <h3 class="ui header">Publications</h3>
+  <div class="row">
+    <div class="sixteen wide column">
+      <ul class="ui list bulleted">
+        <div class="item">
+          Soo-Yong Shin and Dongseop Kwon, "<%= link_to "A Visual Tool for Displaying Annotations in BioC", "http://www.biocreative.org/media/store/files/2015/BCV2015_paper_17.pdf"%> ," Proceedings of the Fifth BioCreative Challenge Evaluation Workshop, pp. 57-62, Sept. 2015
+        </div>
+        <div class="item">
+          Soo-Yong Shin, Sun Kim, W. John Wilbur, and Dongseop Kwon, "BioC Viewer: a web-based tool for displaying and merging annotations in BioC," Database (in revision)
+        </div>
+      </ul>
+    </div>
+  </div>
 
+</div>
+<script>
+  lightbox.init();
+</script>
 
