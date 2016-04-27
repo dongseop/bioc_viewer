@@ -13,6 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require handlebars/handlebars
-//= require lightbox2/dist/js/lightbox
+//= require lightbox
 //= require_tree .
 //

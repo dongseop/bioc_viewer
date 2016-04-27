@@ -12,8 +12,6 @@
  *
  *= require_self
  *= require toastr.min
- *= require toastr.min
- *= require lightbox2/dist/css/lightbox
  */
 $red: #db2828;
 $orange: #f2711c;
@@ -31,6 +29,7 @@ $black: #1b1c1d;
 $link-color: #DC1644;
 
 
+@import 'lightbox';
 @import "home";
 @import "documents";
 @import "projects";

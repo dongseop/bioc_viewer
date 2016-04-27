@@ -38,7 +38,7 @@ gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'browser'
 gem "simple_bioc"
-
+gem 'lightbox2-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
