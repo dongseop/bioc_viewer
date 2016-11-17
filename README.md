@@ -17,8 +17,8 @@ During the evaluation of the BioC Viewer, problems related to misaligned annotat
 ## How to run ##
 
 1. You need to install git, ruby, rails, and MySQL first.
-2. Clone this repository: `git clone git@github.com:dongseop/bioc_viewer.git`
-2. `cd bioc-viewer`
+2. Clone this repository: `git clone https://github.com/dongseop/bioc_viewer.git`
+2. `cd bioc_viewer`
 3. `bundle install`
 4. You need to create your own 'database.yml' and 'secrets.yml' in 'config' directory. You may refer sample files in the config directory.
 4. `rake db:create`
