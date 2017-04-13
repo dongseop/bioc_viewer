@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.3.5'
+lock '3.6.1'
 
 set :application, 'bioc-viewer'
 set :repo_url, 'git@github.com:dongseop/bioc_viewer.git'
